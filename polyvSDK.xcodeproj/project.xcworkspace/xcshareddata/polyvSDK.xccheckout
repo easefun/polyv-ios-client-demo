@@ -10,29 +10,29 @@
 	<string>polyvSDK</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>C51D19CD-4B94-484C-A203-6E4BC7D942DF</key>
+		<key>8C454D2B8C85862EE618EF3AD39BD9715980B365</key>
 		<string>https://github.com/easefun/polyv-ios-client-demo.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>polyvSDK.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>C51D19CD-4B94-484C-A203-6E4BC7D942DF</key>
+		<key>8C454D2B8C85862EE618EF3AD39BD9715980B365</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/easefun/polyv-ios-client-demo.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>C51D19CD-4B94-484C-A203-6E4BC7D942DF</string>
+	<string>8C454D2B8C85862EE618EF3AD39BD9715980B365</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C51D19CD-4B94-484C-A203-6E4BC7D942DF</string>
+			<string>8C454D2B8C85862EE618EF3AD39BD9715980B365</string>
 			<key>IDESourceControlWCCName</key>
 			<string>polyv-ios-client-demo</string>
 		</dict>
