@@ -14,7 +14,7 @@
 		<string>https://github.com/easefun/polyv-ios-client-demo.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>polyvSDK.xcodeproj/project.xcworkspace</string>
+	<string>polyvSDK.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>8C454D2B8C85862EE618EF3AD39BD9715980B365</key>

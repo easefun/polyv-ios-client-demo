@@ -7,15 +7,48 @@
 //
 
 #import "AppDelegate.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <UIKit/UIKit.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willExitFullscreen:)
+                                                 name:MPMoviePlayerWillExitFullscreenNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willEnterFullscreen:)
+                                                 name:MPMoviePlayerWillEnterFullscreenNotification
+                                               object:nil];
     // Override point for customization after application launch.
     return YES;
 }
-							
+
+- (void)willEnterFullscreen:(NSNotification*)notification
+{
+    NSLog(@"willEnterFullscreen");
+    isFullScreen = YES;
+}
+
+- (void)willExitFullscreen:(NSNotification*)notification
+{
+    NSLog(@"willExitFullscreen");
+    isFullScreen = NO;
+}
+
+-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    
+    
+    if (isFullScreen)
+        return UIInterfaceOrientationMaskLandscapeLeft;
+    else
+        return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

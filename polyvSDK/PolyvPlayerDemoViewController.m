@@ -14,6 +14,7 @@
     
     PolyvPlayerViewController *player;
     int plausTime;
+    NSString * vid;
 }
 
 @end
@@ -31,7 +32,7 @@
 
 
 - (IBAction)playAction:(id)sender {
-    player = [[PolyvPlayerViewController alloc] initWithVid:@"sl8da4jjbx6b8313818c398355527caf_s" delegate:self];
+    player = [[PolyvPlayerViewController alloc] initWithVid:vid delegate:self];
     [player setFrame: CGRectMake(0, 0, 320, 180)];
     [player setPlayerControlStyle:MPMovieControlStyleDefault];
     [self.view addSubview:player.view];
@@ -47,12 +48,12 @@
     DownloadHelper* downloder = [DownloadHelper sharedInstance];
     [downloder addSkipBackupAttributeToDownloadedVideos];
     downloder.delegate = self;
-    [downloder download:@"sl8da4jjbx4e11dd353258a76a98108e_s"];
+    [downloder download:vid];
 }
 
 - (IBAction)playLocalAction:(id)sender {
-    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:@"sl8da4jjbx4e11dd353258a76a98108e_s"] encoded:YES delegate:self];
-    NSLog(@"play local file:%@",[Helper getDownloadFilePath:@"sl8da4jjbx4e11dd353258a76a98108e_s"]);
+    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:YES delegate:self];
+    NSLog(@"play local file:%@",[Helper getDownloadFilePath:vid]);
     
     
     [player setFrame: CGRectMake(0, 0, 320, 180)];
@@ -76,7 +77,7 @@
 
 - (void)viewDidLoad
 {
-
+    vid = @"sl8da4jjbx842000bc1ac92fadaaae48_s";
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -173,4 +174,6 @@
      NSLog(@"dataDownloadAtPercent:%@",finalNumber);
 }
 #pragma mark -
+
+
 @end
