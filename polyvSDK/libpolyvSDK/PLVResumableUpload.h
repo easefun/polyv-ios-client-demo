@@ -24,8 +24,7 @@ typedef void (^PLVUploadProgressBlock)(NSInteger bytesWritten, NSInteger bytesTo
 
 - (id)initWithURL:(NSString *)url
               data:(PLVData *)data
-       fingerprint:(NSString *)fingerprint
-       writeToken:(NSString*)writeToken;
+       fingerprint:(NSString *)fingerprint;
 
 -(void)setExtraInfo:(NSMutableDictionary *)extraInfo;
 

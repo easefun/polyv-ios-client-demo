@@ -41,6 +41,7 @@
 
 + (DownloadHelper *) sharedInstance;
 - (void) download:(NSString *) vid;
+- (void) download:(NSString *) videoid withDf:(int) df;
 - (void) cancel;
 /**
  设置下载的视频文件属性为不备份,NSURLIsExcludedFromBackupKey=YES
