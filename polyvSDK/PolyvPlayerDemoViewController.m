@@ -77,11 +77,8 @@
 
 - (void)viewDidLoad
 {
-<<<<<<< Updated upstream
     vid = @"sl8da4jjbx842000bc1ac92fadaaae48_s";
-=======
-    vid = @"sl8da4jjbx0bbe98bc3edfd2307fdbde_s";
->>>>>>> Stashed changes
+
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
