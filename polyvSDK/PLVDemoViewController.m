@@ -82,8 +82,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
                               self.imageView.image = [UIImage imageWithCGImage:[asset thumbnail]];
                               self.imageView.alpha = .5;
                               PLVAssetData* uploadData = [[PLVAssetData alloc] initWithAsset:asset];
-                              PLVResumableUpload *upload = [[PLVResumableUpload alloc] initWithURL:[self endpoint] data:uploadData fingerprint:fingerprint writeToken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0"];
+                              //PLVResumableUpload *upload = [[PLVResumableUpload alloc] initWithURL:[self endpoint] data:uploadData fingerprint:fingerprint writeToken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0"];
                               
+                              PLVResumableUpload *upload = [[PLVResumableUpload alloc] initWithURL:[self endpoint] data:uploadData fingerprint:fingerprint];
                               NSString * surl = [assetUrl absoluteString];
                               NSString * ext = [surl substringFromIndex:[surl rangeOfString:@"ext="].location + 4];
                               NSMutableDictionary* extraInfo = [[NSMutableDictionary alloc]init];

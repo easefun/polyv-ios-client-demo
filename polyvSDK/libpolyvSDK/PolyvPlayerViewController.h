@@ -54,7 +54,7 @@
 
 
 
-@interface PolyvPlayerViewController : MPMoviePlayerController
+@interface PolyvPlayerViewController : UIViewController
 
 
 

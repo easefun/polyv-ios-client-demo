@@ -28,6 +28,8 @@
     NSInteger sizeCounter;
     NSString*vid;
     NSString*filePath;
+    BOOL encodefile;
+    
     
 }
 @property (retain) NSURLResponse *response;
@@ -40,8 +42,8 @@
 @property (assign) BOOL isDownloading;
 
 + (DownloadHelper *) sharedInstance;
-- (void) download:(NSString *) vid;
-- (void) download:(NSString *) videoid withDf:(int) df;
+- (void) download:(NSString *) vid encode:(BOOL)encode;
+- (void) download:(NSString *) videoid withDf:(int) df encode:(BOOL)encode;
 - (void) cancel;
 /**
  设置下载的视频文件属性为不备份,NSURLIsExcludedFromBackupKey=YES

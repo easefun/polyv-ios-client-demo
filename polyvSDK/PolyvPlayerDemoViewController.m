@@ -48,11 +48,11 @@
     DownloadHelper* downloder = [DownloadHelper sharedInstance];
     [downloder addSkipBackupAttributeToDownloadedVideos];
     downloder.delegate = self;
-    [downloder download:vid];
+    [downloder download:vid encode:NO];
 }
 
 - (IBAction)playLocalAction:(id)sender {
-    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:YES delegate:self];
+    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:NO delegate:self];
     NSLog(@"play local file:%@",[Helper getDownloadFilePath:vid]);
     
     
@@ -77,7 +77,7 @@
 
 - (void)viewDidLoad
 {
-    vid = @"sl8da4jjbx842000bc1ac92fadaaae48_s";
+    vid = @"b080fd1d05556a75dc40e185a2f46bf4_b";
 
     
     [super viewDidLoad];

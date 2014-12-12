@@ -44,7 +44,7 @@
     
     
     if (isFullScreen)
-        return UIInterfaceOrientationMaskLandscapeLeft;
+        return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
     else
         return UIInterfaceOrientationMaskPortrait;
 }
