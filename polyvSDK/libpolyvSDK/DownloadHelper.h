@@ -18,18 +18,22 @@
 
 @interface DownloadHelper : NSObject
 {
-    NSURLResponse *response;
     //NSMutableData *data;
     NSOutputStream *stream;
     NSString *urlString;
     NSURLConnection *urlconnection;
     id <DownloadHelperDelegate> delegate;
     BOOL isDownloading;
-    NSInteger sizeCounter;
     NSString*vid;
     NSString*filePath;
     BOOL encodefile;
     
+    int df;
+    NSFileHandle *downloadingFileHandle;
+    
+    long long downloadProgress;
+    
+    long long downloadFileSize;
     
 }
 @property (retain) NSURLResponse *response;
@@ -40,11 +44,25 @@
 @property (retain) NSString *filePath;
 @property (retain) id delegate;
 @property (assign) BOOL isDownloading;
+@property(atomic, retain) NSFileHandle *downloadingFileHandle;
 
-+ (DownloadHelper *) sharedInstance;
-- (void) download:(NSString *) vid encode:(BOOL)encode;
-- (void) download:(NSString *) videoid withDf:(int) df encode:(BOOL)encode;
+/**
+ * 初始化下载器，参数vid为视频vid，encode：是否下载加密，df：清晰度 delegate：回调代理
+ */
+
+- (id)initWithVid:(NSString *)vid encode:(BOOL)encode delegate:(id<DownloadHelperDelegate>)polyvdelegate;
+- (id)initWithVid:(NSString *)vid encode:(BOOL)encode withDf:(int)df delegate:(id<DownloadHelperDelegate>)polyvdelegate;
+
+
+- (void) download;
+//下载文件总大小
+- (long long) getDownloadFileSize;
+//当前下载大小
+- (long long) downloadProgress;
+//取消下载，可以断点恢复
 - (void) cancel;
+//删除当前下载文件
+- (void) deleteVideo;
 /**
  设置下载的视频文件属性为不备份,NSURLIsExcludedFromBackupKey=YES
  */

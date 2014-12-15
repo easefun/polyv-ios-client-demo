@@ -15,6 +15,7 @@
     PolyvPlayerViewController *player;
     int plausTime;
     NSString * vid;
+    DownloadHelper* downloder;
 }
 
 @end
@@ -30,6 +31,16 @@
     return self;
 }
 
+- (IBAction)stopAction:(id)sender {
+    
+    
+    [downloder cancel];
+}
+- (IBAction)deleteAction:(id)sender {
+    
+    
+    [downloder deleteVideo];
+}
 
 - (IBAction)playAction:(id)sender {
     player = [[PolyvPlayerViewController alloc] initWithVid:vid delegate:self];
@@ -45,10 +56,7 @@
 }
 
 - (IBAction)downloadAction:(id)sender {
-    DownloadHelper* downloder = [DownloadHelper sharedInstance];
-    [downloder addSkipBackupAttributeToDownloadedVideos];
-    downloder.delegate = self;
-    [downloder download:vid encode:NO];
+    [downloder download];
 }
 
 - (IBAction)playLocalAction:(id)sender {
@@ -79,6 +87,12 @@
 {
     vid = @"b080fd1d05556a75dc40e185a2f46bf4_b";
 
+
+    downloder = [[DownloadHelper alloc] initWithVid:vid encode:false delegate:self];
+    
+    [downloder addSkipBackupAttributeToDownloadedVideos];
+    //downloder.delegate = self;
+    
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
