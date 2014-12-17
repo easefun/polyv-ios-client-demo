@@ -85,7 +85,7 @@
 
 - (void)viewDidLoad
 {
-    vid = @"b080fd1d05556a75dc40e185a2f46bf4_b";
+    vid = @"sl8da4jjbx6f2bc1b49a7d4d3d73c989_s";
 
 
     downloder = [[DownloadHelper alloc] initWithVid:vid encode:false delegate:self];
