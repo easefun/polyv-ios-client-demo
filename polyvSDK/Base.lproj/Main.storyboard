@@ -202,6 +202,15 @@
                                     <action selector="playLocalAction:" destination="24h-Mf-573" eventType="touchUpInside" id="0d0-jD-1Nd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="By4-9C-aW3">
+                                <rect key="frame" x="195" y="205" width="77" height="30"/>
+                                <state key="normal" title="切换视频">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="switchVid:" destination="24h-Mf-573" eventType="touchUpInside" id="XNR-qo-cEu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

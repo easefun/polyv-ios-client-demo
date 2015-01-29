@@ -16,6 +16,7 @@
     int plausTime;
     NSString * vid;
     DownloadHelper* downloder;
+    BOOL isfullscreen;
 }
 
 @end
@@ -50,6 +51,11 @@
     
     [player startPlayer];
 }
+- (IBAction)switchVid:(id)sender {
+    [player stopPlayer];
+    [player changeVideo:@"sl8da4jjbx2262724b8a5132bd6103b2_s"];
+    [player startPlayer];
+}
 
 - (IBAction)pauseAction:(id)sender {
     [player pausePlayer];
@@ -81,18 +87,65 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+/*-(NSInteger)supportedInterfaceOrientations{
+    
+    if(isfullscreen){
+        return UIInterfaceOrientationLandscapeLeft;
+
+    }else{
+        return UIInterfaceOrientationPortrait ;
+    }
+}*/
+
+
+
+
+- (void)willEnterFullscreen:(NSNotification*)notification
+{
+    NSLog(@"willEnterFullscreen");
+    
+    isfullscreen = true;
+    [[UIDevice currentDevice] setValue:
+     [NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft]
+                                forKey:@"orientation"];
+
+    
+}
+
+- (void)willExitFullscreen:(NSNotification*)notification
+{
+    NSLog(@"willExitFullscreen");
+    isfullscreen = false;
+    [[UIDevice currentDevice] setValue:
+     [NSNumber numberWithInteger: UIInterfaceOrientationPortrait]
+                                forKey:@"orientation"];
+
+}
+
 
 
 - (void)viewDidLoad
 {
-    vid = @"sl8da4jjbx6f2bc1b49a7d4d3d73c989_s";
+    vid = @"sl8da4jjbx2262724b8a5132bd6103b2_s";
 
 
-    downloder = [[DownloadHelper alloc] initWithVid:vid encode:false delegate:self];
+    downloder = [[DownloadHelper alloc] initWithVid:vid encode:true delegate:self];
     
     [downloder addSkipBackupAttributeToDownloadedVideos];
     //downloder.delegate = self;
     
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willExitFullscreen:)
+                                                 name:MPMoviePlayerWillExitFullscreenNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willEnterFullscreen:)
+                                                 name:MPMoviePlayerWillEnterFullscreenNotification
+                                               object:nil];
+
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

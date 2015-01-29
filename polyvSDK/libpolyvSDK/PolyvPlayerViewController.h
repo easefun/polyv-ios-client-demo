@@ -58,7 +58,7 @@
 
 
 
-- (id)initWithVid:(NSString *)videoid delegate:(id<PolyvPlayerDelegate>)delegate;
+- (id)initWithVid:(NSString *)vid delegate:(id<PolyvPlayerDelegate>)delegate;
 
 /**
  @abstract 播放网络视频初始化
@@ -69,6 +69,13 @@
  */
 - (id)initWithURLString:(NSString *)urlString delegate:(id<PolyvPlayerDelegate>)delegate;
 
+
+/**
+ @abstract 切换视频vid
+ @discussion
+ @param urlString 视频URL
+ */
+- (void)changeVideo:(NSString *)vid;
 
 
 /**
@@ -201,5 +208,5 @@
 
 
 - (void)setFullscreen:(BOOL)isfull animated:(BOOL)animated;
-
+-(MPMoviePlayerController*)getPlayer;
 @end
