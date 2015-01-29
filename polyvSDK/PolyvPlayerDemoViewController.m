@@ -244,4 +244,9 @@
 #pragma mark -
 
 
+-(NSInteger)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

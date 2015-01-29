@@ -37,4 +37,9 @@
     
     [self presentViewController:playerController animated:YES completion:nil];
 }
+
+-(NSInteger)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationMaskPortrait;
+}
 @end
