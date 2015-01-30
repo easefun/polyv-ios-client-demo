@@ -53,7 +53,7 @@
 }
 - (IBAction)switchVid:(id)sender {
     [player stopPlayer];
-    [player changeVideo:@"sl8da4jjbx2262724b8a5132bd6103b2_s"];
+    [player changeVideo:@"sl8da4jjbx2d77fa6b3588b379f33289_s"];
     [player startPlayer];
 }
 
@@ -70,7 +70,7 @@
     NSLog(@"play local file:%@",[Helper getDownloadFilePath:vid]);
     
     
-    [player setFrame: CGRectMake(0, 0, 320, 180)];
+    [player setFrame: CGRectMake(0, 0, 320, 240)];
     [player setPlayerControlStyle:MPMovieControlStyleDefault];
     
     [self.view addSubview:player.view];
