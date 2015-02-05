@@ -66,7 +66,7 @@
 }
 
 - (IBAction)playLocalAction:(id)sender {
-    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:NO delegate:self];
+    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:YES delegate:self];
     NSLog(@"play local file:%@",[Helper getDownloadFilePath:vid]);
     
     

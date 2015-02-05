@@ -13,5 +13,6 @@
 +(void)obfuscate:(NSString*)file;
 +(NSDictionary*)loadUserJson:(NSString*)userid;
 +(NSDictionary*)loadVideoJson:(NSString*)vid;
-
++ (NSString *)genRandStringLength:(int)len;
++ (NSString*)md5HexDigest:(NSString*)input;
 @end

@@ -13,4 +13,10 @@
 #define PolyvReadtoken @"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm"
 #define PolyvWritetoken @"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0"
 
+
+#define PolyvUserId @"sl8da4jjbx"
+#define DownloadId @"testdownload"
+#define DownloadSecretKey @"f24c67d9bc0940b69ad8c0ebd6341730"
+
+
 @end
