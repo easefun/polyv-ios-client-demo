@@ -9,10 +9,14 @@
 #import "AppDelegate.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
+#import "libpolyvSDK.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
+    
+    [libpolyvSDK initConfig:@"8kg78XgjUP" Readtoken:@"BiGz01qv5w-yKyiwOqGgs-OoLrJQTHaR" Writetoken:@"MdyJKJPHNXjGmhL-cduC1Z6W4kTVJwW4" UserId:@"1b43e149c2" DownloadId:@"ecmoocs" Downloadsecretkey:@"9d8f3ba174df42df83def8bd47f2212f"];
     return YES;
 }
 
