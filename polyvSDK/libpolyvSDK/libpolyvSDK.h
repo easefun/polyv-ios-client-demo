@@ -19,7 +19,7 @@ extern NSString *DownloadId;
 extern NSString *DownloadSecretKey;
 
 
-+ (void)initConfig:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId DownloadId:(NSString*)downloadId Downloadsecretkey:(NSString*)downloadsecretkey;
++ (void)initConfigWithPrivateKey:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId DownloadId:(NSString*)downloadId Downloadsecretkey:(NSString*)downloadsecretkey;
 
 
 @end

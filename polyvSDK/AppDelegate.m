@@ -16,7 +16,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
     
-    [libpolyvSDK initConfig:@"8kg78XgjUP" Readtoken:@"BiGz01qv5w-yKyiwOqGgs-OoLrJQTHaR" Writetoken:@"MdyJKJPHNXjGmhL-cduC1Z6W4kTVJwW4" UserId:@"1b43e149c2" DownloadId:@"ecmoocs" Downloadsecretkey:@"9d8f3ba174df42df83def8bd47f2212f"];
+    [libpolyvSDK initConfigWithPrivateKey:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx" DownloadId:@"testdownload" Downloadsecretkey:@"f24c67d9bc0940b69ad8c0ebd6341730"];
     return YES;
 }
 
