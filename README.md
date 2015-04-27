@@ -7,18 +7,19 @@ polyv-ios-client-demo
 
 修改对应用户的配置信息：
 
-`privateKey`,`Readtoken`,`Writetoken`,`UserId`,`DownloadId`,`Downloadsecretkey`
+`privateKey`,`Readtoken`,`Writetoken`,`UserId`
 
 其中`privateKey`,`Readtoken`,`Writetoken`,`UserId`在polyv后台系统设置的api选项可以找到
 
-`DownloadId`,`Downloadsecretkey`需要申请。
 
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
     
-    [libpolyvSDK initConfigWithPrivateKey:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx" DownloadId:@"testdownload" Downloadsecretkey:@"f24c67d9bc0940b69ad8c0ebd6341730"];
+    
+    PolyvSettings*_polyvSettings = [[PolyvSettings alloc] init];
+    [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
     return YES;
 }
 
@@ -28,61 +29,6 @@ polyv-ios-client-demo
 --
 在线播放，下载，本地播放视频的相关演示在`PolyvPlayerDemoViewController.m`可以找到
 
-```objective-c
-/**
- 点击播放按钮执行创建一个PolyvPlayerViewController实例，设置播放器大小为320x180，位置在左上角0，0坐标
- */
-- (IBAction)playAction:(id)sender {
-    //用vid初始化播放器
-    player = [[PolyvPlayerViewController alloc] initWithVid:vid delegate:self];
-    [player setFrame: CGRectMake(0, 0, 320, 180)];
-    [player setPlayerControlStyle:MPMovieControlStyleDefault];
-    [self.view addSubview:player.view];
-    //启动播放器
-    [player startPlayer];
-}
-
-
-/**
- 播放器切换另外一个视频
- */
-- (IBAction)switchVid:(id)sender {
-    [player stopPlayer];
-    [player changeVideo:@"sl8da4jjbx2d77fa6b3588b379f33289_s"];
-    [player startPlayer];
-}
-/**
- 暂停播放器
- **/
-- (IBAction)pauseAction:(id)sender {
-    [player pausePlayer];
-}
-/**
- 启动下载器
- **/
-- (IBAction)downloadAction:(id)sender {
-    [downloder download];
-}
-
-
-/**
- 播放本地视频，要事先下载好视频之后，如果本地文件不存在则无法播放
- [Helper getDownloadFilePath:vid]用vid获取到本地文件所在路径
- */
-- (IBAction)playLocalAction:(id)sender {
-    player = [[PolyvPlayerViewController alloc] initPlayerWithLocalPath:[Helper getDownloadFilePath:vid] encoded:YES delegate:self];
-    NSLog(@"play local file:%@",[Helper getDownloadFilePath:vid]);
-    
-    
-    [player setFrame: CGRectMake(0, 0, 320, 240)];
-    [player setPlayerControlStyle:MPMovieControlStyleDefault];
-    
-    [self.view addSubview:player.view];
-    
-    [player startPlayer];
-
-}
-```
 
 
 上传视频
