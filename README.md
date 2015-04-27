@@ -30,6 +30,19 @@ polyv-ios-client-demo
 在线播放，下载，本地播放视频的相关演示在`PolyvPlayerDemoViewController.m`可以找到
 
 
+```objective-c
+#import "MPMoviePlayerController+plv.h"
+...
+//跟MPMoviePlayerController操作一样 
+
+self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];
+
+//播放指定码率的视频
+ self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];
+
+
+```
+
 
 上传视频
 --
