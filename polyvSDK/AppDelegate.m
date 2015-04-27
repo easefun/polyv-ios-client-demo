@@ -7,16 +7,20 @@
 //
 
 #import "AppDelegate.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
-#import "libpolyvSDK.h"
-
+#import "PolyvSettings.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
     
-    [libpolyvSDK initConfigWithPrivateKey:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx" DownloadId:@"testdownload" Downloadsecretkey:@"f24c67d9bc0940b69ad8c0ebd6341730"];
+
+    
+    PolyvSettings*_polyvSettings = [[PolyvSettings alloc] init];
+    [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
+
+    
+    
     return YES;
 }
 
