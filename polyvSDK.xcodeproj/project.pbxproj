@@ -66,7 +66,7 @@
 		CBC233381AEA322000B0228E /* MPMoviePlayerController+plv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPMoviePlayerController+plv.h"; sourceTree = "<group>"; };
 		CBC233391AEA322000B0228E /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		CBC233401AEA39EF00B0228E /* M3U8Downloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M3U8Downloader.h; sourceTree = "<group>"; };
+		CBC233401AEA39EF00B0228E /* VideoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloader.h; sourceTree = "<group>"; };
 		CBC233431AEA3A1A00B0228E /* DownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadDelegate.h; sourceTree = "<group>"; };
 		CBCF2B6E19A47D5400897544 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
 		CBCF2B6F19A47D5400897544 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				CBC233431AEA3A1A00B0228E /* DownloadDelegate.h */,
-				CBC233401AEA39EF00B0228E /* M3U8Downloader.h */,
+				CBC233401AEA39EF00B0228E /* VideoDownloader.h */,
 				CBC233381AEA322000B0228E /* MPMoviePlayerController+plv.h */,
 				CBC233391AEA322000B0228E /* PolyvSettings.h */,
 				CBCF2B7319A47D7000897544 /* libpolyvSDK.a */,

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DownloadDelegate.h"
-@interface M3U8Downloader : NSObject
+@interface VideoDownloader : NSObject
 
 -(void)stop;
 - (void)start:(NSString*)vid level:(int)level;

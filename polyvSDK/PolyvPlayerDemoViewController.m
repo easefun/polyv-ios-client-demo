@@ -9,11 +9,11 @@
 #import "PolyvPlayerDemoViewController.h"
 #import "MPMoviePlayerController+plv.h"
 
-#import "M3U8Downloader.h"
+#import "VideoDownloader.h"
 #import "DownloadDelegate.h"
 
 @interface PolyvPlayerDemoViewController (){
-    M3U8Downloader*_downloader;
+    VideoDownloader*_downloader;
     NSString* _vid;
 }
     
@@ -153,8 +153,8 @@
 - (void)viewDidLoad
 {
 
-    _downloader = [[M3U8Downloader alloc]init];
-    _vid = @"sl8da4jjbx811f5fe77c6a056d660e8e_s";
+    _downloader = [[VideoDownloader alloc]init];
+    _vid = @"sl8da4jjbxba02d5141c03211fdb48a5_s";
     
     //自动选择码率
     self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];
@@ -187,6 +187,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) dataDownloadFailed: (NSString *) reason{
+    NSLog(@"%@",reason);
 }
 
 - (void) downloadDidFinished: (NSString *) vid{
