@@ -158,6 +158,7 @@
     
     //自动选择码率
     self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];
+    NSLog(@"%d",[self.videoPlayer getLevel]);
     //播放流畅码率
     //self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];
 
