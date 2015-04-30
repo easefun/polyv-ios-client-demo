@@ -72,7 +72,6 @@
 		CBCF2B6F19A47D5400897544 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
 		CBCF2B7019A47D5400897544 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
 		CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
-		CBCF2B7219A47D5400897544 /* PolyvPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvPlayerViewController.h; sourceTree = "<group>"; };
 		CBCF2B7319A47D7000897544 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,7 +194,6 @@
 				CBCF2B6F19A47D5400897544 /* PLVData.h */,
 				CBCF2B7019A47D5400897544 /* PLVKit.h */,
 				CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */,
-				CBCF2B7219A47D5400897544 /* PolyvPlayerViewController.h */,
 			);
 			path = libpolyvSDK;
 			sourceTree = "<group>";

@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "PolyvPlayerDemoViewController.h"
-#import "PolyvPlayerViewController.h"
 
 @interface ViewController ()
 - (IBAction)buttonOnTouched:(id)sender;
