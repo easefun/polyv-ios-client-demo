@@ -3,7 +3,9 @@ polyv-ios-client-demo
 
 初始化设置
 --
-在AppDelegate.m里面
+首先在项目的Build settings选项找到Linking->Other Linker Flags，添加参数-ObjC
+
+其次在AppDelegate.m里面
 
 修改对应用户的配置信息：
 
