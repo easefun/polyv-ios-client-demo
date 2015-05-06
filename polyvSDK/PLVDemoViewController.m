@@ -137,8 +137,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         self.imageView.alpha = 1;
         NSString* serverResponseTxt= [[NSString alloc] initWithData:serverResponse encoding:NSUTF8StringEncoding];
         
-        NSString* text = [NSString stringWithFormat:NSLocalizedString(@"serverResponseTxt:\n%@",nil), serverResponseTxt];
-        [self.urlTextView setText:text];
+
+        NSError *e = nil;
+        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: [serverResponseTxt dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &e];
+        
+        if (!jsonArray) {
+            NSLog(@"Error parsing JSON: %@", e);
+        } else {
+            for(NSDictionary *item in jsonArray) {
+                NSLog(@"Item: %@", item);
+            }
+        }
+        
+        
+        [self.urlTextView setText:serverResponseTxt];
         
         NSLog(@"%@",serverResponseTxt);
 

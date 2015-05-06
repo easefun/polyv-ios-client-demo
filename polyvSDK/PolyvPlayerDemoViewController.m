@@ -78,7 +78,10 @@
  点击播放按钮执行创建一个PolyvPlayerViewController实例，设置播放器大小为320x180，位置在左上角0，0坐标
  */
 - (IBAction)playAction:(id)sender {
-    [self.videoPlayer play];
+    if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying){
+        [self.videoPlayer play];
+    }
+    
 }
 
 /**
