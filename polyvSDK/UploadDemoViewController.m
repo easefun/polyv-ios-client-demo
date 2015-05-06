@@ -7,9 +7,10 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#import <AssetsLibrary/ALAsset.h>
 #import "PLVKit.h"
 #import "UploadDemoViewController.h"
+#import <AVFoundation/AVFoundation.h>
 #define PLVRemoteURLDefaultsKey @"PLVRemoteURL"
 
 @interface UploadDemoViewController ()
@@ -56,22 +57,75 @@
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self.urlTextView setText:nil];
-    [self.imageView setImage:nil];
-    [self.progressBar setProgress:.0];
-    [self dismissViewControllerAnimated:YES
-                             completion:^{
-                                 NSString* type = [info valueForKey:UIImagePickerControllerMediaType];
-                                 CFStringRef typeDescription = (UTTypeCopyDescription((__bridge CFStringRef)(type)));
-                                 NSString* text = [NSString stringWithFormat:NSLocalizedString(@"Uploading %@…", nil), typeDescription];
-                                 CFRelease(typeDescription);
-                                 [self.statusLabel setText:text];
-                                 [self.imageOverlay setHidden:NO];
-                                 [self.chooseFileButton setEnabled:NO];
-                                 [self uploadVideoFromAsset:info];
-                             }];
+    NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
+    NSURL *outputURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"temp.mov"]];
+
+    [self convertVideoToLowQuailtyWithInputURL:videoURL outputURL:outputURL handler:^(AVAssetExportSession *exportSession)
+     {
+         if (exportSession.status == AVAssetExportSessionStatusCompleted)
+         {
+             [self.urlTextView setText:nil];
+             [self.imageView setImage:nil];
+             [self.progressBar setProgress:.0];
+             [self dismissViewControllerAnimated:YES
+                                      completion:^{
+                                          NSString* type = [info valueForKey:UIImagePickerControllerMediaType];
+                                          CFStringRef typeDescription = (UTTypeCopyDescription((__bridge CFStringRef)(type)));
+                                          NSString* text = [NSString stringWithFormat:NSLocalizedString(@"Uploading %@…", nil), typeDescription];
+                                          CFRelease(typeDescription);
+                                          [self.statusLabel setText:text];
+                                          [self.imageOverlay setHidden:NO];
+                                          [self.chooseFileButton setEnabled:NO];
+                                          
+                                          //[self uploadVideoFromAsset:info];
+                                          
+                                          [self uploadVideoFromURL:outputURL];
+                                      }];
+
+         }
+         else
+         {
+             printf("error\n");
+             
+         }
+     }];
+    
+    }
+/**压缩视频大小*/
+- (void)convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL
+                                   outputURL:(NSURL*)outputURL
+                                     handler:(void (^)(AVAssetExportSession*))handler
+{
+    [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^(void)
+     {
+         handler(exportSession);
+     }];
 }
 
+/**使用文件地址上传*/
+
+- (void)uploadVideoFromURL:(NSURL*)url
+{
+    PLVData*uploadData = [[PLVData alloc] initWithData:[NSData dataWithContentsOfURL:url]];
+
+    PLVResumableUpload *upload = [[PLVResumableUpload alloc] initWithURL:[self endpoint] data:uploadData fingerprint:[url absoluteString]];
+    NSString * ext = @"mov";
+    NSMutableDictionary* extraInfo = [[NSMutableDictionary alloc]init];
+    [extraInfo setValue:ext forKey:@"ext"];
+    [extraInfo setValue:@"polyvsdk" forKey:@"title"];
+    [extraInfo setValue:@"polyvsdk upload demo video" forKey:@"desc"];
+    [upload setExtraInfo:extraInfo];
+    upload.progressBlock = [self progressBlock];
+    upload.resultBlock = [self resultBlock];
+    upload.failureBlock = [self failureBlock];
+    [upload start];
+}
+/**Asset上传**/
 - (void)uploadVideoFromAsset:(NSDictionary*)info
 {
     NSURL *assetUrl = [info valueForKey:UIImagePickerControllerReferenceURL];

@@ -16,10 +16,13 @@ extern NSString *PolyvWritetoken;
 extern NSString *PolyvUserId;
 
 
++(void)stat:(NSString*)pid vid:(NSString*)vid flow:(long)flow pd:(int)pd sd:(int)sd;
 +(NSDictionary*)loadVideoJson:(NSString*)vid;
 +(BOOL)isVideoAvailable:(NSDictionary*)videoInfo;
 +(NSString*)getVideoPoolId:(NSString*)vid;
++(NSString*)getPid;
 
+/**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
 -(void)initVideoSettings:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId;
 
 @end
