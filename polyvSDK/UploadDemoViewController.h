@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PLVDemoViewController : UIViewController <UIImagePickerControllerDelegate>
+@interface UploadDemoViewController : UIViewController <UIImagePickerControllerDelegate>
 
 @property (strong,nonatomic) IBOutlet UIButton* chooseFileButton;
 @property (strong,nonatomic) IBOutlet UIProgressView* progressBar;

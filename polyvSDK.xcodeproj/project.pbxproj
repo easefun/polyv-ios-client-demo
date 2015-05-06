@@ -23,7 +23,7 @@
 		CBA3713D196E6549008E95ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA3711F196E6549008E95ED /* UIKit.framework */; };
 		CBA37145196E6549008E95ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBA37143196E6549008E95ED /* InfoPlist.strings */; };
 		CBA37147196E6549008E95ED /* polyvSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA37146196E6549008E95ED /* polyvSDKTests.m */; };
-		CBBFEAAD199C9BC100D15255 /* PLVDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* PLVDemoViewController.m */; };
+		CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBCF2B7419A47D7000897544 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCF2B7319A47D7000897544 /* libpolyvSDK.a */; };
 /* End PBXBuildFile section */
@@ -61,8 +61,8 @@
 		CBA37142196E6549008E95ED /* polyvSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "polyvSDKTests-Info.plist"; sourceTree = "<group>"; };
 		CBA37144196E6549008E95ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBA37146196E6549008E95ED /* polyvSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polyvSDKTests.m; sourceTree = "<group>"; };
-		CBBFEAAB199C9BC100D15255 /* PLVDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVDemoViewController.h; sourceTree = "<group>"; };
-		CBBFEAAC199C9BC100D15255 /* PLVDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVDemoViewController.m; sourceTree = "<group>"; };
+		CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadDemoViewController.h; sourceTree = "<group>"; };
+		CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadDemoViewController.m; sourceTree = "<group>"; };
 		CBC233381AEA322000B0228E /* MPMoviePlayerController+plv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPMoviePlayerController+plv.h"; sourceTree = "<group>"; };
 		CBC233391AEA322000B0228E /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -138,8 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				CBCF2B6D19A47D5400897544 /* libpolyvSDK */,
-				CBBFEAAB199C9BC100D15255 /* PLVDemoViewController.h */,
-				CBBFEAAC199C9BC100D15255 /* PLVDemoViewController.m */,
+				CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */,
+				CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */,
 				CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */,
 				CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */,
 				CBA3712A196E6549008E95ED /* AppDelegate.h */,
@@ -301,7 +301,7 @@
 				CBA37132196E6549008E95ED /* ViewController.m in Sources */,
 				CBA3712C196E6549008E95ED /* AppDelegate.m in Sources */,
 				CB79F827196E88C300A1B817 /* PolyvPlayerDemoViewController.m in Sources */,
-				CBBFEAAD199C9BC100D15255 /* PLVDemoViewController.m in Sources */,
+				CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

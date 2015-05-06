@@ -9,14 +9,14 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "PLVKit.h"
-#import "PLVDemoViewController.h"
+#import "UploadDemoViewController.h"
 #define PLVRemoteURLDefaultsKey @"PLVRemoteURL"
 
-@interface PLVDemoViewController ()
+@interface UploadDemoViewController ()
     @property (strong, nonatomic) ALAssetsLibrary* assetsLibrary;
 @end
 
-@implementation PLVDemoViewController
+@implementation UploadDemoViewController
 
 - (void)viewDidLoad
 {
