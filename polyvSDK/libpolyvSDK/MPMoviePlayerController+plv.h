@@ -24,7 +24,10 @@
 /**播放器设置vid和播放的码率*/
 - (void)setVid:(NSString*)vid level:(int)level;
 
-/**获取当前视频的码率数*/
+/**获取当前视频的有多少个码率*/
 -(int)getLevel;
+
+/**切换码率*/
+-(void)switchLevel:(int)level;
 
 @end
