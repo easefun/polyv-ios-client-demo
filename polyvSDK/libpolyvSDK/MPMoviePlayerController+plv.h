@@ -30,4 +30,5 @@
 /**切换码率*/
 -(void)switchLevel:(int)level;
 
+
 @end
