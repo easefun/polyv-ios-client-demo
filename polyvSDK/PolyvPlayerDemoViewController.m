@@ -157,7 +157,7 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbxba02d5141c03211fdb48a5_s";
+    _vid = @"sl8da4jjbxc5feddbc7fcd1a765100a3_s";
     
     //自动选择码率
     self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];

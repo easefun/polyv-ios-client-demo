@@ -21,12 +21,13 @@ extern NSString *PolyvUserId;
 +(BOOL)isVideoAvailable:(NSDictionary*)videoInfo;
 +(NSString*)getVideoPoolId:(NSString*)vid;
 +(NSString*)getPid;
++(void)setPort:(int)port;
++(int)getPort;
 
 /**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
 -(void)initVideoSettings:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId;
 
 /**只初始化上传功能设置*/
 -(void)initUploadSettings:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId;
-
 
 @end
