@@ -33,14 +33,14 @@ polyv-ios-client-demo
 
 
 ```objective-c
-#import "MPMoviePlayerController+plv.h"
+#import "PLVMoviePlayerController.h"
 ...
 //跟MPMoviePlayerController操作一样 
 
-self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];
+self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
 
 //播放指定码率的视频
- self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];
+ self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:vid level:1];
 
 
 ```
