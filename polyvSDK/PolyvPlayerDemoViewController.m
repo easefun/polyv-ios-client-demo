@@ -7,7 +7,7 @@
 //
 
 #import "PolyvPlayerDemoViewController.h"
-#import "MPMoviePlayerController+plv.h"
+#import "PLVMoviePlayerController.h"
 
 #import "VideoDownloader.h"
 #import "DownloadDelegate.h"
@@ -17,7 +17,7 @@
     NSString* _vid;
 }
     
-@property (nonatomic, strong) MPMoviePlayerController *videoPlayer;
+@property (nonatomic, strong) PLVMoviePlayerController *videoPlayer;
 
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 
@@ -160,7 +160,7 @@
     _vid = @"sl8da4jjbxc5feddbc7fcd1a765100a3_s";
     
     //自动选择码率
-    self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:_vid];
+    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     NSLog(@"current bitrate:%d",[self.videoPlayer getLevel]);
     //播放流畅码率
     //self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];

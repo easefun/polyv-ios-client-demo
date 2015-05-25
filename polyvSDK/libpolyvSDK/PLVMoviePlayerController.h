@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface MPMoviePlayerController(plv)
+@interface PLVMoviePlayerController: MPMoviePlayerController
 
 
 
@@ -29,6 +29,5 @@
 
 /**切换码率*/
 -(void)switchLevel:(int)level;
-
 
 @end
