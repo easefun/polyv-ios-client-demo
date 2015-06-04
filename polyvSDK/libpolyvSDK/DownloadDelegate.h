@@ -10,7 +10,7 @@
 
 @protocol DownloadDelegate <NSObject>
 @optional
-- (void) downloadDidFinished: (NSString *) aName;
-- (void) dataDownloadFailed: (NSString *) reason;
-- (void) dataDownloadAtPercent: (NSNumber *) aPercent;
+- (void) downloadDidFinished: (NSString *)vid;
+- (void) dataDownloadFailed: (NSString *)vid reason:(NSString *) reason;
+- (void) dataDownloadAtPercent:(NSString *)vid percent: (NSNumber *) aPercent;
 @end

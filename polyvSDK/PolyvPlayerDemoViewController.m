@@ -193,7 +193,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) dataDownloadFailed: (NSString *) reason{
+- (void) dataDownloadFailed:(NSString*)vid reason:(NSString *) reason{
     NSLog(@"%@",reason);
 }
 
@@ -205,7 +205,7 @@
     
 }
 
-- (void) dataDownloadAtPercent: (NSNumber *) percent{
+- (void) dataDownloadAtPercent:(NSString*)vid percent:(NSNumber *) percent{
     NSLog(@"%@",percent);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressLabel setText:[NSString stringWithFormat:@"%@%%",percent]];
