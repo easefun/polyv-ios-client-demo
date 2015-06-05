@@ -9,14 +9,16 @@
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 #import "PolyvSettings.h"
-@implementation AppDelegate
+@implementation AppDelegate{
+    PolyvSettings*_polyvSettings;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
-    PolyvSettings*_polyvSettings = [[PolyvSettings alloc] init];
-    //[_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
+    _polyvSettings = [[PolyvSettings alloc] init];
     [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
-
+    
+    
     
     
     return YES;
@@ -44,6 +46,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     [_polyvSettings reloadSettings];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

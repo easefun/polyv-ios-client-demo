@@ -24,6 +24,8 @@ extern NSString *PolyvUserId;
 +(void)setPort:(int)port;
 +(int)getPort;
 
+-(void)reloadSettings;
+
 /**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
 -(void)initVideoSettings:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId;
 
