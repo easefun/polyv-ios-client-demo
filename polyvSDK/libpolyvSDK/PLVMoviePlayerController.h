@@ -1,5 +1,5 @@
 //
-//  MPMoviePlayerController+plv.h
+//  PLVMoviePlayerController.h
 //  hlsplay
 //
 //  Created by seanwong on 4/14/15.
@@ -29,5 +29,7 @@
 
 /**切换码率*/
 -(void)switchLevel:(int)level;
+
+-(id)initWithLocalMp4:(NSString*)vid level:(int)level;
 
 @end

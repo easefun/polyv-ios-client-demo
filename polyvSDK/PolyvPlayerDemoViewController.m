@@ -115,6 +115,9 @@
 }
 
 - (IBAction)closeAction:(id)sender {
+    if(self.videoPlayer.playbackState == MPMoviePlaybackStatePlaying){
+        [self.videoPlayer stop];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -161,7 +164,7 @@
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
-    NSLog(@"current bitrate:%d",[self.videoPlayer getLevel]);
+    //NSLog(@"current bitrate:%d",[self.videoPlayer getLevel]);
     //播放流畅码率
     //self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];
 
