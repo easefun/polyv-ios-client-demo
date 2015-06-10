@@ -20,4 +20,9 @@
 -(void)deleteVideo:(NSString*)vid level:(int)level;
 /**删除某个视频所有码率文件*/
 -(void)deleteVideo:(NSString *)vid;
+/**设置视频下载目录不备份到icloud*/
+-(BOOL)addSkipBackupAttributeToDownloadedVideos;
+/**删除所有下载文件*/
+-(void)cleanDownload;
+-(BOOL)isVideoExists;
 @end

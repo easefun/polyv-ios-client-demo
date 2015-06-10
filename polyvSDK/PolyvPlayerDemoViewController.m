@@ -160,10 +160,11 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbxc5feddbc7fcd1a765100a3_s";
+    _vid = @"sl8da4jjbxcca1a8de9347734e029b02_s";
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
+    //self.videoPlayer = [[PLVMoviePlayerController alloc]initWithLocalMp4:_vid level:1];
     //NSLog(@"current bitrate:%d",[self.videoPlayer getLevel]);
     //播放流畅码率
     //self.videoPlayer = [[MPMoviePlayerController alloc]initWithVid:vid level:1];
