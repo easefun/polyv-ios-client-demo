@@ -5,9 +5,9 @@ polyv-ios-client-demo
 --
 加入
 
-MobileCoreServices.framework
-SystemConfiguration.framework
-libz.dylib
+`MobileCoreServices.framework`
+`SystemConfiguration.framework`
+`libz.dylib`
 到项目.
 
 在AppDelegate.m里面
