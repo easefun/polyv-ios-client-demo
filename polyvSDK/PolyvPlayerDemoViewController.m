@@ -165,11 +165,12 @@
     
 }
 -(void) play{
-    if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying){
+    if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying && self.videoPlayer.playbackState!=MPMoviePlaybackStatePaused){
         [_posterImageView removeFromSuperview];
         [_indicatorView startAnimating];
-        [self.videoPlayer play];
+        
     }
+    [self.videoPlayer play];
     
     
     
