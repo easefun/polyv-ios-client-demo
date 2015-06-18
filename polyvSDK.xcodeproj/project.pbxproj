@@ -26,6 +26,7 @@
 		CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBCF2B7419A47D7000897544 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCF2B7319A47D7000897544 /* libpolyvSDK.a */; };
+		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		CBCF2B7019A47D5400897544 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
 		CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
 		CBCF2B7319A47D7000897544 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
+		CBF35D331B32B1E100E97C45 /* video-play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-play.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 		CBA37122196E6549008E95ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBF35D331B32B1E100E97C45 /* video-play.png */,
 				CBA37123196E6549008E95ED /* polyvSDK-Info.plist */,
 				CBA37124196E6549008E95ED /* InfoPlist.strings */,
 				CBA37127196E6549008E95ED /* main.m */,
@@ -280,6 +283,7 @@
 				CBA37134196E6549008E95ED /* Images.xcassets in Resources */,
 				CBA37126196E6549008E95ED /* InfoPlist.strings in Resources */,
 				CBA3712F196E6549008E95ED /* Main.storyboard in Resources */,
+				CBF35D341B32B1E100E97C45 /* video-play.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

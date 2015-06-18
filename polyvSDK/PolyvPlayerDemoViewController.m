@@ -15,6 +15,8 @@
 @interface PolyvPlayerDemoViewController (){
     VideoDownloader*_downloader;
     NSString* _vid;
+    UIImageView * _posterImageView;
+    UIActivityIndicatorView * _indicatorView;
 }
     
 @property (nonatomic, strong) PLVMoviePlayerController *videoPlayer;
@@ -78,11 +80,10 @@
  点击播放按钮执行创建一个PolyvPlayerViewController实例，设置播放器大小为320x180，位置在左上角0，0坐标
  */
 - (IBAction)playAction:(id)sender {
-    if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying){
-        [self.videoPlayer play];
-    }
+    [self play];
     
 }
+
 
 /**
  播放器切换另外一个视频
@@ -142,6 +143,8 @@
     
     if ([moviePlayer loadState] != MPMovieLoadStateUnknown) {
         NSLog(@"playerReady");
+        [_posterImageView stopAnimating];
+        [_indicatorView removeFromSuperview];
         // Remove observer
         [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
         
@@ -155,15 +158,63 @@
     }
     
 }
+-(void) play{
+    [_posterImageView removeFromSuperview];
+    [_indicatorView startAnimating];
+    [self.videoPlayer play];
+    
+    
+}
+-(void)playButtonTap{
+   
+    [self play];
+
+}
+
 
 - (void)viewDidLoad
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbxcca1a8de9347734e029b02_s";
+    _vid = @"sl8da4jjbxc377d0a79c7224552b6ee4_s";
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
+    [self.view addSubview:self.videoPlayer.view];
+    [self.videoPlayer.view setFrame:CGRectMake(0,0,self.view.frame.size.width,240)];
+    
+   
+    
+    UIImage * buttonImage = [UIImage imageNamed:@"video-play.png"];
+   
+    NSURL * imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/video/getImage?vid=%@",_vid]];
+    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+    UIImage * image = [UIImage imageWithData:imageData];
+    
+    _posterImageView = [[UIImageView alloc] initWithImage:image];
+    _posterImageView.userInteractionEnabled = YES;
+    _posterImageView.frame = self.videoPlayer.view.frame;
+    UIImageView *iButton = [[UIImageView alloc] initWithImage:buttonImage];
+    iButton.frame = CGRectMake(_posterImageView.frame.size.width/2 - 30, _posterImageView.frame.size.height/2 -30, 60, 60);
+    [_posterImageView addSubview:iButton];
+    
+    UITapGestureRecognizer *playTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playButtonTap)];
+    
+    
+    [_posterImageView addGestureRecognizer:playTap];
+    
+    
+    [self.view addSubview:_posterImageView];
+    
+    _indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.videoPlayer.view.frame.size.width/2-10, self.videoPlayer.view.frame.size.height/2-10, 20, 20)];
+    
+    [_indicatorView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    
+    [self.view addSubview:_indicatorView];
+    
+    
+
+    
     //self.videoPlayer = [[PLVMoviePlayerController alloc]initWithLocalMp4:_vid level:1];
     //NSLog(@"current bitrate:%d",[self.videoPlayer getLevel]);
     //播放流畅码率
@@ -181,8 +232,7 @@
                                                object:nil];
     
     
-    [self.view addSubview:self.videoPlayer.view];
-    [self.videoPlayer.view setFrame:CGRectMake(0,0,self.view.frame.size.width,240)];
+    
     
     
     
