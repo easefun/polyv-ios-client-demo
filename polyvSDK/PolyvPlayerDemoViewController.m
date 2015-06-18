@@ -182,29 +182,38 @@
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer.view setFrame:CGRectMake(0,0,self.view.frame.size.width,240)];
-    
-   
-    
-    UIImage * buttonImage = [UIImage imageNamed:@"video-play.png"];
-   
+ 
     NSURL * imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/video/getImage?vid=%@",_vid]];
-    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    UIImage * image = [UIImage imageWithData:imageData];
-    
-    _posterImageView = [[UIImageView alloc] initWithImage:image];
-    _posterImageView.userInteractionEnabled = YES;
-    _posterImageView.frame = self.videoPlayer.view.frame;
-    UIImageView *iButton = [[UIImageView alloc] initWithImage:buttonImage];
-    iButton.frame = CGRectMake(_posterImageView.frame.size.width/2 - 30, _posterImageView.frame.size.height/2 -30, 60, 60);
-    [_posterImageView addSubview:iButton];
-    
-    UITapGestureRecognizer *playTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playButtonTap)];
     
     
-    [_posterImageView addGestureRecognizer:playTap];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+        NSData *data0 = [NSData dataWithContentsOfURL:imageURL];
+        UIImage *image = [UIImage imageWithData:data0];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^(void) {
+            
+            UIImage * buttonImage = [UIImage imageNamed:@"video-play.png"];
+             _posterImageView = [[UIImageView alloc] initWithImage:image];
+            _posterImageView.userInteractionEnabled = YES;
+            _posterImageView.frame = self.videoPlayer.view.frame;
+            UIImageView *iButton = [[UIImageView alloc] initWithImage:buttonImage];
+            iButton.frame = CGRectMake(_posterImageView.frame.size.width/2 - 30, _posterImageView.frame.size.height/2 -30, 60, 60);
+            [_posterImageView addSubview:iButton];
+            
+            UITapGestureRecognizer *playTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playButtonTap)];
+            
+            
+            [_posterImageView addGestureRecognizer:playTap];
+            
+            
+            [self.view addSubview:_posterImageView];
+
+        });
+    });
     
     
-    [self.view addSubview:_posterImageView];
+    
+   
     
     _indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.videoPlayer.view.frame.size.width/2-10, self.videoPlayer.view.frame.size.height/2-10, 20, 20)];
     
