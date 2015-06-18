@@ -90,6 +90,12 @@
  */
 - (IBAction)switchVid:(id)sender {
     [self.videoPlayer stop];
+    [_indicatorView startAnimating];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playerLoadStateDidChange:)
+                                                 name:MPMoviePlayerLoadStateDidChangeNotification
+                                               object:nil];
+    
     [self.videoPlayer setVid:@"sl8da4jjbx5d715bc3a8ce8f8194afab_s"];
     [self.videoPlayer play];
 }
@@ -143,8 +149,8 @@
     
     if ([moviePlayer loadState] != MPMovieLoadStateUnknown) {
         NSLog(@"playerReady");
-        [_posterImageView stopAnimating];
-        [_indicatorView removeFromSuperview];
+        [_indicatorView stopAnimating];
+        //[_indicatorView removeFromSuperview];
         // Remove observer
         [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
         
