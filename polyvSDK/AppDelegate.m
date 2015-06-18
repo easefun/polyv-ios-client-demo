@@ -15,10 +15,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
-    [PolyvSettings setPort:10591];
+    //[PolyvSettings setPort:10591];
     _polyvSettings = [[PolyvSettings alloc] init];
     [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
-    
+    NSLog(@"init");
     
     
     
