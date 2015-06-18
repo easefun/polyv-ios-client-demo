@@ -165,9 +165,12 @@
     
 }
 -(void) play{
-    [_posterImageView removeFromSuperview];
-    [_indicatorView startAnimating];
-    [self.videoPlayer play];
+    if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying){
+        [_posterImageView removeFromSuperview];
+        [_indicatorView startAnimating];
+        [self.videoPlayer play];
+    }
+    
     
     
 }
