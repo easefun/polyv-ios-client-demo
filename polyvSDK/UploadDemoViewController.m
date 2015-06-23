@@ -59,9 +59,31 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
     NSURL *outputURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"temp.mov"]];
-
+    //compress tip
+    UIView*_hudView = [[UIView alloc] initWithFrame:CGRectMake(75, 155, 170, 170)];
+    _hudView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    _hudView.clipsToBounds = YES;
+    _hudView.layer.cornerRadius = 10.0;
+    
+    UIActivityIndicatorView*_activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    _activityIndicatorView.frame = CGRectMake(65, 40, _activityIndicatorView.bounds.size.width, _activityIndicatorView.bounds.size.height);
+    [_hudView addSubview:_activityIndicatorView];
+    [_activityIndicatorView startAnimating];
+    
+    UILabel*_captionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 115, 130, 22)];
+    _captionLabel.backgroundColor = [UIColor clearColor];
+    _captionLabel.textColor = [UIColor whiteColor];
+    _captionLabel.adjustsFontSizeToFitWidth = YES;
+    _captionLabel.textAlignment = NSTextAlignmentCenter;
+    _captionLabel.text = @"正在压缩视频...";
+    [_hudView addSubview:_captionLabel];
+    
+    [picker.view addSubview:_hudView];
+    
+    
     [self convertVideoToLowQuailtyWithInputURL:videoURL outputURL:outputURL handler:^(AVAssetExportSession *exportSession)
      {
+         [_hudView removeFromSuperview];
          if (exportSession.status == AVAssetExportSessionStatusCompleted)
          {
              [self.urlTextView setText:nil];

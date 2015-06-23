@@ -119,6 +119,7 @@
 
 - (IBAction)fullscreenAction:(id)sender {
     
+    [self.videoPlayer setFullscreen:YES animated:YES];
 }
 
 - (IBAction)closeAction:(id)sender {
@@ -249,8 +250,7 @@
                                              selector:@selector(moviePlayBackDidFinish:)
                                                  name:MPMoviePlayerPlaybackDidFinishNotification
                                                object:nil];
-    
-    
+      
     
     
     
