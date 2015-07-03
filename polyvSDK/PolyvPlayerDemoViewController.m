@@ -187,7 +187,7 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbxf66e54041bd35a2046b990_s";
+    _vid = @"ea307b2422ebe43ec2618ae1c8fa6c76_e";
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
@@ -273,7 +273,7 @@
 - (void) downloadDidFinished: (NSString *) vid{
     //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
     //[alert show];
-    
+    NSLog(@"download fininshed");
     
     
 }

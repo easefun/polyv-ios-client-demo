@@ -17,8 +17,8 @@
 {    // Override point for customization after application launch.
     //[PolyvSettings setPort:10591];
     _polyvSettings = [[PolyvSettings alloc] init];
-    [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
-    
+    //[_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
+    [_polyvSettings initVideoSettings:@"Uy0nwD0QJe" Readtoken:@"ekNNqIqQOk-IrcU0T7O5J-KPTih5x6GE" Writetoken:@"YDndk3La1mZCWa5i-fAAaTqsOJjr328Ed" UserId:@"ea307b2422"];
    // NSLog(@"init");
     
     
