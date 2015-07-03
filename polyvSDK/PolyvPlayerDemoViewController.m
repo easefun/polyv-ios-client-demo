@@ -187,10 +187,10 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbx14c6890b5c5a9dbe6f6c38_s";
+    _vid = @"sl8da4jjbxf66e54041bd35a2046b990_s";
     
     //自动选择码率
-    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
+    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer.view setFrame:CGRectMake(0,0,self.view.frame.size.width,240)];
  
@@ -271,8 +271,8 @@
 }
 
 - (void) downloadDidFinished: (NSString *) vid{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
-    [alert show];
+    //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
+    //[alert show];
     
     
     
