@@ -26,7 +26,7 @@ polyv-ios-client-demo
     
     
     PolyvSettings*_polyvSettings = [[PolyvSettings alloc] init];
-    [_polyvSettings initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
+    [_polyvSettings initVideoSettings:@"" Readtoken:@"" Writetoken:@"" UserId:@""];
     return YES;
 }
 
