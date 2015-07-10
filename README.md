@@ -30,6 +30,15 @@ polyv-ios-client-demo
     return YES;
 }
 
+...
+
+
+//从后台切回需要重载设置
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     [_polyvSettings reloadSettings];
+}
 ```
 
 调用播放器播放视频 
