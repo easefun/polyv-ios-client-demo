@@ -21,6 +21,9 @@ extern NSString *PolyvUserId;
 +(BOOL)isVideoAvailable:(NSDictionary*)videoInfo;
 +(NSString*)getVideoPoolId:(NSString*)vid;
 +(NSString*)getPid;
++(NSString*)getDownloadDir;
++(void)setDownloadDir:(NSString*)dir;
+
 +(void)setPort:(int)port;
 +(int)getPort;
 

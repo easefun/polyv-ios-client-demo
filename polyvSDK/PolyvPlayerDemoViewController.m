@@ -187,7 +187,7 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"ea307b2422ebe43ec2618ae1c8fa6c76_e";
+    _vid = @"sl8da4jjbx8c4232cdf6cb3d0b1bdf0f_s";
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
