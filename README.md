@@ -21,11 +21,18 @@ polyv-ios-client-demo
 
 
 ```objective-c
+@interface AppDelegate (){
+    PolyvSettings* _polyvSettings;
+}
+
+...
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
-    
-    
-    PolyvSettings*_polyvSettings = [[PolyvSettings alloc] init];
+    //设置离线缓存目录
+    [PolyvSettings setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+
+    _polyvSettings = [[PolyvSettings alloc] init];
     [_polyvSettings initVideoSettings:@"" Readtoken:@"" Writetoken:@"" UserId:@""];
     return YES;
 }
