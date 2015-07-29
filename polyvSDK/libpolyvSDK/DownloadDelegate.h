@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+@class VideoDownloader;
 
 @protocol DownloadDelegate <NSObject>
 @optional
-- (void) downloadDidFinished: (NSString *)vid;
-- (void) dataDownloadFailed: (NSString *)vid reason:(NSString *) reason;
-- (void) dataDownloadAtPercent:(NSString *)vid percent: (NSNumber *) aPercent;
+- (void) downloadDidFinished:(VideoDownloader*)downloader withVid:(NSString *)vid;
+- (void) dataDownloadFailed:(VideoDownloader*)downloader withVid:(NSString *)vid reason:(NSString *) reason;
+- (void) dataDownloadAtPercent:(VideoDownloader*)downloader withVid:(NSString *)vid percent: (NSNumber *) aPercent;
 @end

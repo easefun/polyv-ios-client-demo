@@ -17,6 +17,7 @@
     NSString* _vid;
     UIImageView * _posterImageView;
     UIActivityIndicatorView * _indicatorView;
+    int _position;
 }
     
 @property (nonatomic, strong) PLVMoviePlayerController *videoPlayer;
@@ -187,7 +188,7 @@
 {
 
     _downloader = [[VideoDownloader alloc]init];
-    _vid = @"sl8da4jjbx8c4232cdf6cb3d0b1bdf0f_s";
+    _vid = @"sl8da4jjbx5aae533a50efd39a3d438e_s";
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
@@ -251,7 +252,10 @@
                                                  name:MPMoviePlayerPlaybackDidFinishNotification
                                                object:nil];
       
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moviePlayerPlaybackStateDidChangeNotification:)
+                                                 name:MPMoviePlayerPlaybackStateDidChangeNotification
+                                               object:nil];
     
     
     
@@ -259,26 +263,37 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-
+- (void)moviePlayerPlaybackStateDidChangeNotification:(NSNotification *)notification {
+    switch (self.videoPlayer.playbackState) {
+        case MPMoviePlaybackStateSeekingBackward:
+        case MPMoviePlaybackStateSeekingForward:
+            break;
+        
+        default:
+            break;
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) dataDownloadFailed:(NSString*)vid reason:(NSString *) reason{
+- (void) dataDownloadFailed:(VideoDownloader*)downloader withVid:(NSString*)vid reason:(NSString *) reason{
     NSLog(@"%@",reason);
 }
 
-- (void) downloadDidFinished: (NSString *) vid{
-    //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
-    //[alert show];
+- (void) downloadDidFinished:(VideoDownloader*)downloader withVid: (NSString *) vid{
+    
     NSLog(@"download fininshed");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
+        [alert show];    });
     
     
 }
 
-- (void) dataDownloadAtPercent:(NSString*)vid percent:(NSNumber *) percent{
+- (void) dataDownloadAtPercent:(VideoDownloader*)downloader withVid:(NSString*)vid percent:(NSNumber *) percent{
     NSLog(@"%@",percent);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressLabel setText:[NSString stringWithFormat:@"%@%%",percent]];

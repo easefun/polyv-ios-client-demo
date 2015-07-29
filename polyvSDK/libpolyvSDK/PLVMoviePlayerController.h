@@ -1,5 +1,5 @@
 //
-//  PLVMoviePlayerController.h
+//  MPMoviePlayerController+plv.h
 //  hlsplay
 //
 //  Created by seanwong on 4/14/15.

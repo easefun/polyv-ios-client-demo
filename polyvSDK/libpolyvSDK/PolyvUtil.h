@@ -11,6 +11,7 @@
 
 @interface PolyvUtil : NSObject
 
++(NSData*)getEcryptedKeyWithVideoPoolId:(NSString*)videoPoolId  BitRate:(int) bitrate;
 +(NSString*)getSign:(NSString*)ts VideoPoolId:(NSString*)videoPoolId;
 + (NSString*)md5HexDigest:(NSString*)input;
 + (NSData *)AES128EncryptedDataWithKey:(NSString *)key data:(NSData*)data;

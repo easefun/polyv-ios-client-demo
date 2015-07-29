@@ -16,7 +16,7 @@ extern NSString *PolyvWritetoken;
 extern NSString *PolyvUserId;
 
 
-+(void)stat:(NSString*)pid vid:(NSString*)vid flow:(long)flow pd:(int)pd sd:(int)sd;
++(void)stat:(NSString*)pid vid:(NSString*)vid flow:(long)flow pd:(int)pd sd:(int)sd cts:(int)cts;
 +(NSDictionary*)loadVideoJson:(NSString*)vid;
 +(BOOL)isVideoAvailable:(NSDictionary*)videoInfo;
 +(NSString*)getVideoPoolId:(NSString*)vid;
