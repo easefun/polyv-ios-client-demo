@@ -280,16 +280,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) dataDownloadFailed:(VideoDownloader*)downloader withVid:(NSString*)vid reason:(NSString *) reason{
-    NSLog(@"%@",reason);
-}
-
 - (void) downloadDidFinished:(VideoDownloader*)downloader withVid: (NSString *) vid{
     
-    NSLog(@"download fininshed");
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"视频下载完成" message:vid delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
-        [alert show];    });
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"通知"
+                                                        message:@"视频下载完成"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    });
+    
+    
+    
+    
+}
+- (void) dataDownloadFailed:(VideoDownloader*)downloader withVid: (NSString *) vid reason:(NSString *)reason{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下载失败"
+                                                        message:reason
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    });
+    
+    
+    
     
     
 }
