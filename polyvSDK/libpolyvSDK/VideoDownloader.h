@@ -24,5 +24,5 @@
 -(BOOL)addSkipBackupAttributeToDownloadedVideos;
 /**删除所有下载文件*/
 -(void)cleanDownload;
--(BOOL)isVideoExists;
+-(BOOL)isVideoExists:(NSString*)vid level:(int)level;
 @end
