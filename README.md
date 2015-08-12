@@ -50,7 +50,33 @@ polyv-ios-client-demo
 
 调用播放器播放视频 
 --
-在线播放，下载，本地播放视频的相关演示在`PolyvPlayerDemoViewController.m`可以找到
+播放器PLVMoviePlayerController继承了iOS的MPMoviePlayerController，有MPMoviePlayerController所有属性和方法，可以直接当MPMoviePlayerController来使用。
+
+播放Polyv的视频，只增加了如下接口：
+```objective-c
+/**传递vid并初始化一个播放器*/
+-(id)initWithVid:(NSString*)vid;
+/**播放器设置vid*/
+- (void)setVid:(NSString*)vid;
+
+/**传递vid和播放的码率，并初始化一个播放器*/
+-(id)initWithVid:(NSString*)vid level:(int)level;
+
+/**播放器设置vid和播放的码率*/
+- (void)setVid:(NSString*)vid level:(int)level;
+
+/**获取当前视频的有多少个码率*/
+-(int)getLevel;
+
+/**切换码率*/
+-(void)switchLevel:(int)level;
+
+//非加密视频专用
+-(id)initWithLocalMp4:(NSString*)vid level:(int)level;
+```
+
+在线播放，下载，本地播放视频的相关演示在`PolyvPlayerDemoViewController.m`可以找到。
+
 播放离线视频，跟播放在线视频的调用方式一致，但离线播放需要指定下载好的视频码率，不能用自适应播放。
 码率参数level可指定为1，2，3分别代表"流畅"，"高清"和"超清"
 
