@@ -51,7 +51,8 @@ polyv-ios-client-demo
 调用播放器播放视频 
 --
 在线播放，下载，本地播放视频的相关演示在`PolyvPlayerDemoViewController.m`可以找到
-
+播放离线视频，跟播放在线视频的调用方式一致，但离线播放需要指定下载好的视频码率，不能用自适应播放。
+码率参数level可指定为1，2，3分别代表"流畅"，"高清"和"超清"
 
 ```objective-c
 #import "PLVMoviePlayerController.h"
