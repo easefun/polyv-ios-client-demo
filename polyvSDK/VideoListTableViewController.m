@@ -199,6 +199,7 @@
         self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
         __weak typeof(self)weakSelf = self;
         [self.videoPlayer setDimissCompleteBlock:^{
+            [weakSelf.videoPlayer stop];
             weakSelf.videoPlayer = nil;
         }];
         
