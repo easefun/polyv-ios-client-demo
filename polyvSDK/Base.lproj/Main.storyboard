@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E11f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -32,7 +32,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="24h-Mf-573" kind="modal" id="dmW-lA-SR2"/>
+                                    <segue destination="gzo-XJ-ha0" kind="modal" id="lwG-4i-aVF"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -118,6 +118,60 @@
             </objects>
             <point key="canvasLocation" x="1035" y="388"/>
         </scene>
+        <!--Video List Table View Controller-->
+        <scene sceneID="zb6-1C-WmC">
+            <objects>
+                <tableViewController id="mXy-qK-PS3" customClass="VideoListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gN5-Az-N6Q">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="TOK-qq-hR9">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TOK-qq-hR9" id="yW6-DG-kQL">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="mXy-qK-PS3" id="1pr-uO-2eb"/>
+                            <outlet property="delegate" destination="mXy-qK-PS3" id="St7-Dc-tI4"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="u8Y-XH-c94"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qsX-VW-qqo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="502" y="1162"/>
+        </scene>
+        <!--Download List Table View Controller-->
+        <scene sceneID="CbX-7U-uMe">
+            <objects>
+                <tableViewController id="isR-Ft-8NM" customClass="DownloadListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UEZ-5w-aSy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cit-52-NKM">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cit-52-NKM" id="0qN-DZ-ccb">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="isR-Ft-8NM" id="izj-ow-HPV"/>
+                            <outlet property="delegate" destination="isR-Ft-8NM" id="YdP-vO-X3l"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="CW4-I6-Wr3"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6jn-Nu-wy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="404" y="1907"/>
+        </scene>
         <!--Polyv Player Demo View Controller-->
         <scene sceneID="5Gz-CI-y6r">
             <objects>
@@ -158,7 +212,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZdK-mf-e0g">
-                                <rect key="frame" x="38" y="366" width="30" height="30"/>
+                                <rect key="frame" x="237" y="362" width="30" height="30"/>
                                 <state key="normal" title="全屏">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -208,16 +262,51 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8I-Rn-6Rj">
+                                <rect key="frame" x="38" y="359" width="71" height="30"/>
+                                <state key="normal" title="视频列表">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="mXy-qK-PS3" kind="push" id="fpQ-r3-Ioo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xzx-9G-Mwy">
+                                <rect key="frame" x="128" y="359" width="74" height="30"/>
+                                <state key="normal" title="下载列表">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="isR-Ft-8NM" kind="push" id="aSo-II-qjo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="KAm-wQ-Dsb"/>
                     <connections>
                         <outlet property="progressLabel" destination="BGY-Qu-cuB" id="sLM-UZ-Y3M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Afu-ll-uG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1035" y="1068"/>
+            <point key="canvasLocation" x="1016" y="1299"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ZWq-7x-NfL">
+            <objects>
+                <navigationController id="gzo-XJ-ha0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CW1-3O-HtE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="24h-Mf-573" kind="relationship" relationship="rootViewController" id="BdM-E1-xbL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="smT-mj-32H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1412" y="960"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

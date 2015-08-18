@@ -191,10 +191,10 @@
     _vid = @"sl8da4jjbx5aae533a50efd39a3d438e_s";
     
     //自动选择码率
-    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
+    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     [self.view addSubview:self.videoPlayer.view];
     
-    [self.videoPlayer.view setFrame:CGRectMake(0,0,self.view.frame.size.width,240)];
+    [self.videoPlayer.view setFrame:CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,240)];
  
     NSURL * imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/video/getImage?vid=%@",_vid]];
     
