@@ -6,8 +6,11 @@ polyv-ios-client-demo
 加入
 
 `MobileCoreServices.framework`
+
 `SystemConfiguration.framework`
+
 `libz.dylib`
+
 `libsqlite3.0.dylib`
 
 到项目.
