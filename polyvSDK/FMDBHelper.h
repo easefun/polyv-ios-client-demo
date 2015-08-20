@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "Video.h"
 #import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 @interface FMDBHelper : NSObject
-@property (retain, nonatomic) FMDatabase *DB;
 @property (retain, nonatomic) NSString *DBName;
+@property (retain, nonatomic) FMDatabaseQueue *queue;
 
--(id)initPolyvDB;
--(id)initWithDBName:(NSString *)dbName;
++ (id)sharedInstance;
 #pragma mark download
 -(void)addDownloadVideo:(Video*)v;
 -(NSMutableArray*)listDownloadVideo;

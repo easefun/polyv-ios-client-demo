@@ -38,7 +38,7 @@
 - (id)init {
     if (self = [super init]) {
         _downloaderlist = [[NSMutableDictionary alloc] init];
-        _fmdb = [[FMDBHelper alloc] initPolyvDB];
+        _fmdb = [FMDBHelper sharedInstance];
     }
     return self;
 }

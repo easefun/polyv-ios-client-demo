@@ -44,7 +44,7 @@
     
 }
 -(void)updateTable{
-    _fmdb = [[FMDBHelper alloc] initPolyvDB];
+    _fmdb = [FMDBHelper sharedInstance];
     _videolist = [_fmdb listDownloadVideo];
     //NSLog(@"update timer");
     [self.tableView reloadData];

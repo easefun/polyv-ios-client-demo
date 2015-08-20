@@ -8,11 +8,11 @@
 
 #import "FMDBHelper.h"
 #import "FMDatabase.h"
+#import  "FMDatabaseQueue.h"
 #import "Video.h"
 @implementation FMDBHelper
-@synthesize DB;
 @synthesize DBName;
-
+@synthesize queue;
 // 数据库存储路径(内部使用)
 - (NSString *)getPath:(NSString *)dbName
 {
@@ -21,79 +21,78 @@
     return [documentsDirectory stringByAppendingPathComponent:dbName];
 
 }
--(id)initPolyvDB{
-    return [self initWithDBName:@"polyv.db"];
-}
-- (id)initWithDBName:(NSString *)dbName
-{
-    
-    self = [super init];
-    
-    if(nil != self)
-    {
-        DBName = [self getPath:dbName];
++ (id)sharedInstance{
+    static FMDBHelper *fmdbHelper = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        fmdbHelper = [[self alloc] init];
         
+    });
+    return fmdbHelper;
+}
+- (id)init {
+    if (self = [super init]) {
+        DBName = [self getPath:@"polyv.db"];
+        [self readyDownloadTable];
     }
-    [self readyDownloadTable];
     return self;
 }
+
+
 
 // 打开数据库
 - (void)readyDatabase
 {
-    DB = [FMDatabase databaseWithPath:self.DBName];
+    queue = [FMDatabaseQueue databaseQueueWithPath:self.DBName];
+    
+   // DB = [FMDatabase databaseWithPath:self.DBName];
 
 
 }
 #pragma mark downloadTable
 -(void)readyDownloadTable{
     [self readyDatabase];
-    if (![DB open])
-    {
-        return;
-    }
-   // [DB executeUpdate:@"drop table downloadlist"];
-    NSString * sql = @"create table if not exists downloadlist (vid varchar(40),title varchar(100),duration varchar(20),filesize bigint,level int,percent int default 0,status int,primary key (vid))";
-    
-    [DB executeUpdate:sql];
-    [DB close];
+    [queue inDatabase:^(FMDatabase *db) {
+        NSString * sql = @"create table if not exists downloadlist (vid varchar(40),title varchar(100),duration varchar(20),filesize bigint,level int,percent int default 0,status int,primary key (vid))";
+        [db executeUpdate:sql];
+
+    }];
     
 }
 -(void)addDownloadVideo:(Video*)v{
-    if (![DB open])
-    {
-        return;
-    }
-    [DB executeUpdate:@"replace INTO downloadlist(vid,title,duration,filesize,level,percent,status) VALUES (?,?,?,?,?,?,0)", v.vid,v.title,v.duration,[NSNumber numberWithLongLong:v.filesize],[NSNumber numberWithInt:v.level],[NSNumber numberWithInt:v.percent]];
-    [DB close];
+    
+    [queue inDatabase:^(FMDatabase *db) {
+        
+         [db executeUpdate:@"replace INTO downloadlist(vid,title,duration,filesize,level,percent,status) VALUES (?,?,?,?,?,?,0)", v.vid,v.title,v.duration,[NSNumber numberWithLongLong:v.filesize],[NSNumber numberWithInt:v.level],[NSNumber numberWithInt:v.percent]];
+    }];
+    
+   
     
 }
 -(void)updateDownloadPercent:(NSString*)vid percent:(NSNumber*)percent{
-    if (![DB open])
-    {
-        return;
-    }
-    [DB executeUpdate:@"update downloadlist set percent=? where vid=?", percent,vid];
-    [DB close];
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"update downloadlist set percent=? where vid=?", percent,vid];
+        
+     }];
+        //[DB close];
     
 }
 -(void)updateDownloadStatic:(NSString*)vid status:(int)status{
-    if (![DB open])
-    {
-        return;
-    }
-    [DB executeUpdate:@"update downloadlist set status=? where vid=?", [NSNumber numberWithInt:status],vid];
-    [DB close];
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"update downloadlist set status=? where vid=?", [NSNumber numberWithInt:status],vid];
+        
+    }];
+    
+    
     
 }
 
 -(void)removeDownloadVideo:(Video*)v{
-    if (![DB open])
-    {
-        return;
-    }
-    [DB executeUpdate:@"delete from downloadlist where vid=?", v.vid];
-    [DB close];
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"delete from downloadlist where vid=?", v.vid];
+    }];
+     
+    
     
 }
 
@@ -101,32 +100,31 @@
 -(NSMutableArray*)listDownloadVideo{
    
     NSMutableArray*downloadVideos = [NSMutableArray array];
-    if (![DB open])
-    {
-        return downloadVideos;
-    }
-    FMResultSet *rs =[DB executeQuery:@"select * from downloadlist"];
-    while ([rs next]) {
-        NSString * vid = [rs stringForColumn:@"vid"];
-        NSString * title = [rs stringForColumn:@"title"];
-        NSString * duration = [rs stringForColumn:@"duration"];
-        long long filesize = [rs longLongIntForColumn:@"filesize"];
-        int level = [rs intForColumn:@"level"];
-        int percent = [rs intForColumn:@"percent"];
-        int status = [rs intForColumn:@"status"];
-        Video*v = [[Video alloc]init];
-        v.vid = vid;
-        v.title = title;
-        v.level = level;
-        v.filesize = filesize;
-        v.duration = duration;
-        v.percent = percent;
-        v.status = status;
+    [queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs =[db executeQuery:@"select * from downloadlist"];
+        while ([rs next]) {
+            NSString * vid = [rs stringForColumn:@"vid"];
+            NSString * title = [rs stringForColumn:@"title"];
+            NSString * duration = [rs stringForColumn:@"duration"];
+            long long filesize = [rs longLongIntForColumn:@"filesize"];
+            int level = [rs intForColumn:@"level"];
+            int percent = [rs intForColumn:@"percent"];
+            int status = [rs intForColumn:@"status"];
+            Video*v = [[Video alloc]init];
+            v.vid = vid;
+            v.title = title;
+            v.level = level;
+            v.filesize = filesize;
+            v.duration = duration;
+            v.percent = percent;
+            v.status = status;
+            
+            
+            [downloadVideos insertObject:v atIndex:0];
+        }
         
-        
-        [downloadVideos insertObject:v atIndex:0];
-    }
-    [DB close];
+    }];
+    
     return downloadVideos;
     
 }

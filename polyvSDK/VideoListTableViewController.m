@@ -27,7 +27,7 @@
 - (void)viewDidLoad {
     
     _videolist = [NSMutableArray array];
-    _fmdb = [[FMDBHelper alloc] initPolyvDB];
+    _fmdb = [FMDBHelper sharedInstance];
     
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
