@@ -29,7 +29,7 @@
         Video*video = [_videolist objectAtIndex:i];
         VideoDownloader*downloader=[manager getDownloader:video.vid withLevel:video.level];
         if(!started){
-            [downloader start:video.vid level:video.level];
+            [downloader start];
         }else{
             [downloader stop];
         }

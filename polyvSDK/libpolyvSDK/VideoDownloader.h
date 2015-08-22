@@ -10,19 +10,20 @@
 #import "DownloadDelegate.h"
 @interface VideoDownloader : NSObject
 
+- (instancetype)initWithVid:(NSString*)vid level:(int)level;
 /**停止或暂停下载*/
 -(void)stop;
 /**开始下载*/
-- (void)start:(NSString*)vid level:(int)level;
+- (void)start;
 /**设置下载代理回调*/
 -(void)setDownloadDelegate:(id<DownloadDelegate>)delegate;
 /**删除某个码率视频文件*/
--(void)deleteVideo:(NSString*)vid level:(int)level;
++(void)deleteVideo:(NSString*)vid;
 /**删除某个视频所有码率文件*/
--(void)deleteVideo:(NSString *)vid;
++(void)deleteVideo:(NSString*)vid level:(int)level;
 /**设置视频下载目录不备份到icloud*/
 -(BOOL)addSkipBackupAttributeToDownloadedVideos;
 /**删除所有下载文件*/
 -(void)cleanDownload;
--(BOOL)isVideoExists:(NSString*)vid level:(int)level;
++(BOOL)isVideoExists:(NSString*)vid level:(int)level;
 @end

@@ -28,7 +28,7 @@
     NSString* key = [NSString stringWithFormat:@"%@_%d",vid,level];
     VideoDownloader*downloader = [_downloaderlist objectForKey:key];
     if(downloader==nil){
-        downloader =[[VideoDownloader alloc]init];
+        downloader =[[VideoDownloader alloc]initWithVid:vid level:level];
         [downloader setDownloadDelegate:self];
         [_downloaderlist setValue:downloader forKey:key];
     }

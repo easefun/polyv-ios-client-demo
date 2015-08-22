@@ -73,7 +73,7 @@
     
  }
 - (IBAction)deleteAction:(id)sender {
-    [_downloader deleteVideo:_vid level:1];
+    [VideoDownloader deleteVideo:_vid level:1];
     
  
 }
@@ -111,7 +111,7 @@
  **/
 - (IBAction)downloadAction:(id)sender {
     [_downloader setDownloadDelegate:self];
-    [_downloader start:_vid level:1];
+    [_downloader start];
 }
 
 /**

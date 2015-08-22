@@ -35,4 +35,5 @@ extern NSString *PolyvUserId;
 /**只初始化上传功能设置*/
 -(void)initUploadSettings:(NSString*)privateKey Readtoken:(NSString*)readtoken Writetoken:(NSString*)writetoken UserId:(NSString*)userId;
 
++ (id)sharedInstance;
 @end
