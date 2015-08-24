@@ -280,6 +280,15 @@
                                     <segue destination="isR-Ft-8NM" kind="push" id="aSo-II-qjo"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Lx-7J-HVF">
+                                <rect key="frame" x="43" y="400" width="46" height="30"/>
+                                <state key="normal" title="seek">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="seekAction:" destination="24h-Mf-573" eventType="touchUpInside" id="y3J-Wr-hPM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
