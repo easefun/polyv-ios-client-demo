@@ -127,9 +127,10 @@
 }
 
 - (IBAction)closeAction:(id)sender {
-    if(self.videoPlayer.playbackState == MPMoviePlaybackStatePlaying){
+    [self.videoPlayer stop];
+    /*if(self.videoPlayer.playbackState == MPMoviePlaybackStatePlaying){
         [self.videoPlayer stop];
-    }
+    }*/
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
