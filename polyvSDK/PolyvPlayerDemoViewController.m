@@ -195,6 +195,7 @@
     _vid = @"sl8da4jjbx5aae533a50efd39a3d438e_s";
     _downloader = [[VideoDownloader alloc]initWithVid:_vid level:1];
     
+    
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     [self.view addSubview:self.videoPlayer.view];

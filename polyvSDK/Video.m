@@ -7,7 +7,7 @@
 //
 
 #import "Video.h"
-
+#import "PolyvSettings.h"
 @implementation Video
 
 @synthesize title;
@@ -21,4 +21,19 @@
 @synthesize df;
 @synthesize percent;
 @synthesize status;
+
+
+- (id)initWithVid:(NSString*)_vid {
+    if (self = [super init]) {
+        NSDictionary*item = [PolyvSettings loadVideoJson:_vid];
+        //self.title = [item objectForKey:@"title"];
+        self.duration = [item objectForKey:@"duration"];
+        self.piclink = [item objectForKey:@"first_image"];
+        self.df = [[item objectForKey:@"df_num"] intValue];
+        self.allfilesize = [item objectForKey:@"filesize"];
+    }
+    return self;
+}
+
+
 @end

@@ -20,4 +20,6 @@
 @property int df;
 @property int status;
 @property int percent;
+
+- (id)initWithVid:(NSString*)_vid;
 @end
