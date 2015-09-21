@@ -9,14 +9,18 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 @property (nonatomic, strong) UIView *topBar;
 @property (nonatomic, strong) UIView *bottomBar;
+@property (nonatomic, strong) UIView *bitRateView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, strong) UIButton *pauseButton;
 @property (nonatomic, strong) UIButton *fullScreenButton;
 @property (nonatomic, strong) UIButton *shrinkScreenButton;
+@property (nonatomic, strong) UIButton *bitRateButton;
 @property (nonatomic, strong) UISlider *progressSlider;
 @property (nonatomic, strong) UIButton *closeButton;
+@property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, assign) BOOL isBarShowing;
+@property (nonatomic, assign) int currentBitRate;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 @end
@@ -28,12 +32,17 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.bitRateView];
+
         [self addSubview:self.topBar];
         [self.topBar addSubview:self.closeButton];
+        self.bitRateView.hidden = YES;
+
         [self addSubview:self.bottomBar];
         [self.bottomBar addSubview:self.playButton];
         [self.bottomBar addSubview:self.pauseButton];
         self.pauseButton.hidden = YES;
+        [self.bottomBar addSubview:self.bitRateButton];
         [self.bottomBar addSubview:self.fullScreenButton];
         [self.bottomBar addSubview:self.shrinkScreenButton];
         self.shrinkScreenButton.hidden = YES;
@@ -52,14 +61,71 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.topBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), pVideoControlBarHeight);
     self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
     self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - pVideoControlBarHeight, CGRectGetWidth(self.bounds), pVideoControlBarHeight);
+    self.bitRateView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds) - pVideoControlBarHeight);
     self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
     self.pauseButton.frame = self.playButton.frame;
+    
+    self.bitRateButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
+    
     self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
+    
+
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
-    self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.fullScreenButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
+    self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
     self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    [self arrangeBitRateButtons];
+    
 }
+-(void)arrangeBitRateButtons{
+    int buttonWidth = 100;
+    int buttonsize = (int)self.bitRateButtons.count*30;
+    int initHeight =(CGRectGetHeight(self.bitRateView.bounds)-buttonsize)/2;
+    
+    if (self.bitRateButtons!=nil) {
+        for (int i=0; i<self.bitRateButtons.count; i++) {
+            UIButton* _button = [self.bitRateButtons objectAtIndex:i];
+            _button.bounds = CGRectMake(0, 0, pVideoControlBarHeight, 30);
+            _button.frame = CGRectMake((CGRectGetWidth(self.bitRateView.bounds)-buttonWidth)/2, initHeight, buttonWidth, 30);
+            initHeight+=30;
+            
+        }
+    }
+}
+-(NSMutableArray*)createBitRateButton:(int)dfnum{
+    [self.bitRateView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    self.bitRateButtons = [NSMutableArray new];
+
+    for (int i=0;i<=dfnum;i++) {
+        UIButton * _button = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button.tag = i;
+        switch (i) {
+            case 0:
+                [_button setTitle:@"自动" forState:UIControlStateNormal];
+                break;
+            case 1:
+                [_button setTitle:@"流畅" forState:UIControlStateNormal];
+                break;
+            case 2:
+                [_button setTitle:@"高清" forState:UIControlStateNormal];
+                break;
+            case 3:
+                [_button setTitle:@"超清" forState:UIControlStateNormal];
+                break;
+            default:
+                break;
+        }
+        _button.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.bitRateButtons addObject:_button];
+        [self.bitRateView addSubview:_button];
+        [_button addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    [self arrangeBitRateButtons];
+    return self.bitRateButtons;
+    
+}
+
 
 - (void)didMoveToSuperview
 {
@@ -75,8 +141,10 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
         self.topBar.alpha = 0.0;
         self.bottomBar.alpha = 0.0;
+        self.bitRateView.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
+        
     }];
 }
 
@@ -88,6 +156,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
         self.topBar.alpha = 1.0;
         self.bottomBar.alpha = 1.0;
+        self.bitRateView.alpha = 1.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
         [self autoFadeOutControlBar];
@@ -138,6 +207,14 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     return _bottomBar;
 }
+- (UIView *)bitRateView
+{
+    if (!_bitRateView) {
+        _bitRateView = [UIView new];
+        _bitRateView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+    }
+    return _bitRateView;
+}
 
 - (UIButton *)playButton
 {
@@ -177,6 +254,16 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _shrinkScreenButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
     }
     return _shrinkScreenButton;
+}
+- (UIButton *)bitRateButton
+{
+    if (!_bitRateButton) {
+        _bitRateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_bitRateButton setTitle:@"自动" forState:UIControlStateNormal];
+        _bitRateButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _bitRateButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
+    }
+    return _bitRateButton;
 }
 
 - (UISlider *)progressSlider
@@ -228,12 +315,8 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 - (NSString *)videoImageName:(NSString *)name
 {
-    /*if (name) {
-     NSString *path = [NSString stringWithFormat:@"KRVideoPlayer.bundle/%@",name];
-     return path;
-     }*/
+    
     return name;
-    //return nil;
 }
 
 @end

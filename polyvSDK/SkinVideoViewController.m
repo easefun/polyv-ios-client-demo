@@ -11,6 +11,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
 @property (nonatomic, assign) BOOL isFullscreenMode;
+@property (nonatomic, assign) BOOL isBitRateViewShowing;
 @property (nonatomic, assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
 
@@ -25,7 +26,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     NSTimer *_pollPlayerTimer;
     int _watchTimeDuration;
     int _stayTimeDuration;
-    
+    int _position;
 }
 
 
@@ -67,7 +68,7 @@ int _seed;
 - (void)setVid:(NSString *)vid
 {
     [super setVid:vid];
-   
+    
 }
 #pragma mark - Publick Method
 
@@ -110,7 +111,7 @@ int _seed;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-
+    
 }
 
 - (void)cancelObserver
@@ -124,6 +125,7 @@ int _seed;
     [self.videoControl.pauseButton addTarget:self action:@selector(pauseButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
@@ -141,6 +143,10 @@ int _seed;
         [self startDurationTimer];
         [self.videoControl.indicatorView stopAnimating];
         [self.videoControl autoFadeOutControlBar];
+        if (_position>0) {
+            [super setCurrentPlaybackTime:_position];
+            _position = 0;
+        }
     } else {
         self.videoControl.pauseButton.hidden = YES;
         self.videoControl.playButton.hidden = NO;
@@ -148,7 +154,15 @@ int _seed;
         if (self.playbackState == MPMoviePlaybackStateStopped) {
             [self.videoControl animateShow];
         }
+        
     }
+    NSMutableArray*buttons = [self.videoControl createBitRateButton:[super getLevel]];
+    for (int i=0; i<buttons.count; i++) {
+        UIButton*_button = [buttons objectAtIndex:i];
+        [_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    
 }
 
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
@@ -173,6 +187,38 @@ int _seed;
 {
     [self setProgressSliderMaxMinValues];
 }
+- (void)bitRateViewButtonClick:(UIButton *)button
+{
+    _position = [super currentPlaybackTime];
+    switch (button.tag) {
+        case 0:
+            [super switchLevel:0];
+            [self.videoControl.bitRateButton setTitle:@"自动" forState:UIControlStateNormal];
+            
+            break;
+        case 1:
+            [super switchLevel:1];
+            [self.videoControl.bitRateButton setTitle:@"流畅" forState:UIControlStateNormal];
+            
+            
+            break;
+        case 2:
+            [super switchLevel:2];
+            [self.videoControl.bitRateButton setTitle:@"高清" forState:UIControlStateNormal];
+            
+            
+            break;
+        case 3:
+            [super switchLevel:3];
+            [self.videoControl.bitRateButton setTitle:@"超清" forState:UIControlStateNormal];
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (void)playButtonClick
 {
@@ -192,7 +238,19 @@ int _seed;
 {
     [self dismiss];
 }
-
+-(void)bitRateButtonClick
+{
+    if (!self.isBitRateViewShowing) {
+        self.videoControl.bitRateView.hidden = NO;
+        self.isBitRateViewShowing = YES;
+        
+    }else{
+        self.videoControl.bitRateView.hidden = YES;
+        self.isBitRateViewShowing = NO;
+    }
+    
+    
+}
 - (void)fullScreenButtonClick
 {
     if (self.isFullscreenMode) {
@@ -210,6 +268,7 @@ int _seed;
         self.videoControl.fullScreenButton.hidden = YES;
         self.videoControl.shrinkScreenButton.hidden = NO;
     }];
+    
 }
 
 - (void)shrinkScreenButtonClick
