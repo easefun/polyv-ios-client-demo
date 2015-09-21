@@ -53,6 +53,13 @@ polyv-ios-client-demo
 }
 ```
 
+播放器
+--
+演示中使用了两种视频播放器，PLVMoviePlayerController以及SkinVideoViewController
+
+SkinVideoViewController有自定义播放器皮肤，全屏旋转，以及切换码率等功能。
+
+
 调用播放器播放视频 
 --
 播放器PLVMoviePlayerController继承了iOS的MPMoviePlayerController，有MPMoviePlayerController所有属性和方法，可以直接当MPMoviePlayerController来使用。
