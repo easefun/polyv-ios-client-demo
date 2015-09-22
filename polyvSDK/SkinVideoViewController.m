@@ -67,6 +67,7 @@ int _seed;
 }
 - (void)setVid:(NSString *)vid
 {
+    
     [super setVid:vid];
     
 }
@@ -86,7 +87,7 @@ int _seed;
         
     }];
     self.videoControl.closeButton.hidden = NO;
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)dismiss
@@ -140,8 +141,8 @@ int _seed;
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
         self.videoControl.pauseButton.hidden = NO;
         self.videoControl.playButton.hidden = YES;
+        //[self.videoControl.indicatorView stopAnimating];
         [self startDurationTimer];
-        [self.videoControl.indicatorView stopAnimating];
         [self.videoControl autoFadeOutControlBar];
         if (_position>0) {
             [super setCurrentPlaybackTime:_position];
@@ -156,6 +157,22 @@ int _seed;
         }
         
     }
+
+    
+}
+
+- (void)onMPMoviePlayerLoadStateDidChangeNotification
+{
+    
+
+    if (self.loadState & MPMovieLoadStateStalled) {
+        [self.videoControl.indicatorView startAnimating];
+    }
+    if (self.loadState & MPMovieLoadStatePlaythroughOK) {
+        [self.videoControl.indicatorView stopAnimating];
+    }
+    
+    
     NSMutableArray*buttons = [self.videoControl createBitRateButton:[super getLevel]];
     for (int i=0; i<buttons.count; i++) {
         UIButton*_button = [buttons objectAtIndex:i];
@@ -163,13 +180,6 @@ int _seed;
     }
     
     
-}
-
-- (void)onMPMoviePlayerLoadStateDidChangeNotification
-{
-    if (self.loadState & MPMovieLoadStateStalled) {
-        [self.videoControl.indicatorView startAnimating];
-    }
 }
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
@@ -256,6 +266,7 @@ int _seed;
     if (self.isFullscreenMode) {
         return;
     }
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     self.originFrame = self.view.frame;
     CGFloat height = [[UIScreen mainScreen] bounds].size.width;
     CGFloat width = [[UIScreen mainScreen] bounds].size.height;
@@ -276,6 +287,7 @@ int _seed;
     if (!self.isFullscreenMode) {
         return;
     }
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [UIView animateWithDuration:0.3f animations:^{
         [self.view setTransform:CGAffineTransformIdentity];
         self.frame = self.originFrame;

@@ -77,7 +77,9 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [self arrangeBitRateButtons];
     
 }
+
 -(void)arrangeBitRateButtons{
+
     int buttonWidth = 100;
     int buttonsize = (int)self.bitRateButtons.count*30;
     int initHeight =(CGRectGetHeight(self.bitRateView.bounds)-buttonsize)/2;
@@ -93,6 +95,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
 }
 -(NSMutableArray*)createBitRateButton:(int)dfnum{
+
     [self.bitRateView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
     self.bitRateButtons = [NSMutableArray new];
 
