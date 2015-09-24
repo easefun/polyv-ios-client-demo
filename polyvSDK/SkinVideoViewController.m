@@ -65,6 +65,21 @@ int _seed;
     [super setContentURL:contentURL];
     [self play];
 }
+- (void)setLocalMp4:(NSString*)vid level:(int)level{
+    NSString *plvPath = [PolyvSettings getDownloadDir];
+    NSRange range = [vid rangeOfString:@"_"];
+    if (range.location==NSNotFound) {
+        return;
+    }
+    NSString*videoPoolId = [vid substringToIndex:range.location];
+    
+    NSString* localmp4 = [plvPath stringByAppendingString:[NSString stringWithFormat:@"/%@_%d.mp4",videoPoolId,level]];
+    NSURL *contentURL = [NSURL fileURLWithPath:localmp4];
+    [super setContentURL:contentURL];
+    [self play];
+
+
+}
 - (void)setVid:(NSString *)vid
 {
     
