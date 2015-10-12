@@ -121,7 +121,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _button.titleLabel.font = [UIFont systemFontOfSize:14];
         [self.bitRateButtons addObject:_button];
         [self.bitRateView addSubview:_button];
-        [_button addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+        //[_button addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
 
     }
     [self arrangeBitRateButtons];
