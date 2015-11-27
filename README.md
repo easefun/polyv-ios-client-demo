@@ -26,19 +26,15 @@ polyv-ios-client-demo
 
 
 ```objective-c
-@interface AppDelegate (){
-    PolyvSettings* _polyvSettings;
-}
+@interface AppDelegate ()
 
 ...
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
     //设置离线缓存目录
-    [PolyvSettings setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
-
-    _polyvSettings = [[PolyvSettings alloc] init];
-    [_polyvSettings initVideoSettings:@"" Readtoken:@"" Writetoken:@"" UserId:@""];
+      [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+    [[PolyvSettings sharedInstance] initVideoSettings:@"" Readtoken:@"" Writetoken:@"" UserId:@""];
     return YES;
 }
 
@@ -49,7 +45,7 @@ polyv-ios-client-demo
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     [_polyvSettings reloadSettings];
+     [[PolyvSettings sharedInstance] reloadSettings];
 }
 ```
 
