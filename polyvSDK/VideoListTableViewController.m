@@ -11,6 +11,38 @@
 #import "PolyvSettings.h"
 #import "SkinVideoViewController.h"
 #import "FMDBHelper.h"
+#import "DetailViewController.h"
+
+//默认Portrait避免自动旋转
+@implementation UITabBarController (rotations)
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+@end
+
+@implementation UINavigationController (navrotations)
+
+- (BOOL)shouldAutorotate {
+    
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+@end
+
+
 
 @interface VideoListTableViewController (){
     
@@ -22,7 +54,16 @@
 
 @end
 
+
+
 @implementation VideoListTableViewController
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 
 - (void)viewDidLoad {
     
@@ -33,32 +74,38 @@
     [self.tableView setDelegate:self];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
+    //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
+    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSDictionary * jsondata = [NSJSONSerialization
-                   JSONObjectWithData:data
-                   options:0
-                   error:&error];
-       
-        NSMutableArray *videos = [jsondata objectForKey:@"data"];
-        for(int i=0;i<videos.count;i++){
-            NSDictionary*item = [videos objectAtIndex:i];
-            Video *video = [[Video alloc] init];
-            video.title = [item objectForKey:@"title"];
-            video.vid = [item objectForKey:@"vid"];
-            video.duration = [item objectForKey:@"duration"];
-            video.piclink = [item objectForKey:@"first_image"];
-            video.df = [[item objectForKey:@"df"] intValue];
-            video.allfilesize = [item objectForKey:@"filesize"];
+        
+        if(data!=nil){
+            NSDictionary * jsondata = [NSJSONSerialization
+                                       JSONObjectWithData:data
+                                       options:0
+                                       error:&error];
             
-            [_videolist addObject:video];
+            NSMutableArray *videos = [jsondata objectForKey:@"data"];
+            for(int i=0;i<videos.count;i++){
+                NSDictionary*item = [videos objectAtIndex:i];
+                Video *video = [[Video alloc] init];
+                video.title = [item objectForKey:@"title"];
+                video.desc = [item objectForKey:@"context"];
+                video.vid = [item objectForKey:@"vid"];
+                video.duration = [item objectForKey:@"duration"];
+                video.piclink = [item objectForKey:@"first_image"];
+                video.df = [[item objectForKey:@"df"] intValue];
+                video.allfilesize = [item objectForKey:@"filesize"];
+                
+                [_videolist addObject:video];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+        
         
         
         
@@ -66,7 +113,12 @@
     }] resume];
     
     
-    
+    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+        
+        [self registerForPreviewingWithDelegate:(id)self sourceView:self.view];
+        
+        
+    }
     
     /*Video * v = [[Video alloc]initWithVid:@""];
     NSLog(@"%@",[v.allfilesize objectAtIndex:0]);*/
@@ -84,6 +136,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -91,19 +144,34 @@
     return [_videolist count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return 40;
-
-    
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"videoCellIdentifier"];
+
     Video*video = [_videolist objectAtIndex:indexPath.row];
     
-    if (cell == nil) {
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:video.piclink]] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        imageView.image = [UIImage imageWithData:data];
+    }];
+    
+
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    titleLabel.text = video.title;
+    
+    UILabel *descLabel = (UILabel *)[cell viewWithTag:102];
+    descLabel.text = video.desc;
+    
+    UIButton * btn = (UIButton *)[cell viewWithTag:104];
+    btn.tag = indexPath.row;
+    
+    //NSLog(@"%d - %@",indexPath.row,video.title);
+    [btn addTarget:self action:@selector(downloadClick:) forControlEvents:UIControlEventTouchDown];
+    
+    
+    
+        
+        /*
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         UILabel *label_title =[[UILabel   alloc] initWithFrame:CGRectMake(10, 10, 320, 20)] ;
         label_title.tag = 101;
@@ -119,15 +187,11 @@
                        action:@selector(downloadClick:)
              forControlEvents:UIControlEventTouchDown];
         
-        [cell.contentView addSubview:btn];
+        [cell.contentView addSubview:btn];*/
         
         
 
-    }else{
-        UILabel *label_title = (UILabel*)[cell viewWithTag:101];
-        label_title.text = video.title;
-
-    }
+   
     // Configure the cell...
     
     return cell;
@@ -135,7 +199,10 @@
 
 -(void)downloadClick:(UIButton*)sender
 {
-    _video = [_videolist objectAtIndex:(int)sender.tag];
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+    
+    _video = [_videolist objectAtIndex:indexPath.row];
     switch (_video.df) {
         case 1:
             [[[UIAlertView alloc] initWithTitle:@"选择要下载的码率"
@@ -170,7 +237,6 @@
 {
     if(buttonIndex == 0)
     {
-        NSLog(@"Cancel");
     }
     else if(buttonIndex == 1)
     {
@@ -198,7 +264,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Video *video = [_videolist objectAtIndex:indexPath.row];
-    if (!self.videoPlayer) {
+    /*if (!self.videoPlayer) {
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
         __weak typeof(self)weakSelf = self;
@@ -208,17 +274,34 @@
         }];
         
     }
+    [self.videoPlayer setHeadTitle:@"陕西高校舞蹈女教师夜跑失踪 尸体已被找到陕西高校舞蹈女教师夜跑失踪 尸体已被找到陕西高校舞蹈女教师夜跑失踪 尸体已被找到"];
     [self.videoPlayer showInWindow];
     [self.videoPlayer setVid:video.vid];
     
-    /*FullscreenVideoViewController *videoViewController = [[FullscreenVideoViewController alloc] init];
-    videoViewController.video = video;
-    videoViewController.hidesBottomBarWhenPushed = YES;
-    [self presentViewController:videoViewController animated:YES completion:nil];
+   */
     
     
     
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];*/
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                @"Main" bundle:[NSBundle mainBundle]];
+    
+    DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    
+    
+    detailViewController.video = video;
+    
+    
+    //detailViewController.hidesBottomBarWhenPushed = YES;
+    
+    //[self.navigationController pushViewController:detailViewController animated:YES];
+    [self presentViewController:detailViewController animated:YES completion:nil];
+    //[self presentViewController:[PlayViewController new] animated:YES completion:nil];
+    
+    //[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:detailViewController animated:YES completion:nil];
+
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
     
 /*
@@ -264,5 +347,20 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationPortrait;
+}
+
+
 
 @end

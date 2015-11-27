@@ -1,11 +1,21 @@
+//
+//  SkinVideoViewController.h
+//  polyvSDK
+//
+//  Created by seanwong on 8/17/15.
+//  Copyright (c) 2015 easefun. All rights reserved.
+//
 #import "SkinVideoViewController.h"
 #import "SkinVideoViewControllerView.h"
 #import "PolyvSettings.h"
 #import "PLVMoviePlayerController.h"
 
+#import "PVDanmuManager.h"
+#import "PvDanmuSendView.h"
+
 static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
-@interface SkinVideoViewController ()
+@interface SkinVideoViewController ()<PvDanmuSendViewDelegate>
 
 @property (nonatomic, strong) SkinVideoViewControllerView *videoControl;
 
@@ -15,31 +25,46 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
 
+@property (nonatomic, assign) BOOL danmuEnabled;
+@property (nonatomic, strong) PVDanmuManager *danmuManager;
+@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
 
+@property (nonatomic, assign) NSString* headtitle;
+@property (nonatomic, assign) NSString* param1;
+
+
+@property (nonatomic, assign) CGPoint startPoint;
+@property (nonatomic, assign) CGFloat curPosition;
+@property (nonatomic, assign) CGFloat curVoice;
+@property (nonatomic, assign) CGFloat curBrightness;
+
+@property (nonatomic, assign) PvGestureType gestureType;
 
 @end
 
 @implementation SkinVideoViewController{
-    int _levelNum;
-    NSString* _pid;
-    NSString*_vid;
-    NSTimer *_pollPlayerTimer;
-    int _watchTimeDuration;
-    int _stayTimeDuration;
     int _position;
+    UINavigationController* _navigationController;
+    UIViewController *_parentViewController;
+    BOOL _isPrepared;
 }
 
 
 
 
-NSDictionary* _videoInfo;
-int _seed;
+-(void)play{
+    
+    [self.videoControl.indicatorView startAnimating];
+    [super play];
+}
 
 - (void)dealloc
 {
     [self cancelObserver];
     
 }
+
+
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -53,6 +78,10 @@ int _seed;
         [self configObserver];
         [self configControlAction];
         self.videoControl.closeButton.hidden = YES;
+        
+        
+        
+
     }
     return self;
 }
@@ -65,6 +94,16 @@ int _seed;
     [super setContentURL:contentURL];
     [self play];
 }
+- (void)setNavigationController:(UINavigationController*)navigationController{
+    _navigationController = navigationController;
+    [_navigationController setNavigationBarHidden:YES animated:NO];
+}
+- (void)setParentViewController:(UIViewController*)viewController{
+    _parentViewController = viewController;
+}
+
+
+
 - (void)setLocalMp4:(NSString*)vid level:(int)level{
     NSString *plvPath = [PolyvSettings getDownloadDir];
     NSRange range = [vid rangeOfString:@"_"];
@@ -80,12 +119,18 @@ int _seed;
 
 
 }
+- (void)setHeadTitle:(NSString*)headtitle{
+    [self.videoControl setHeadTitle:headtitle];
+}
 - (void)setVid:(NSString *)vid
 {
-    
     [super setVid:vid];
     
 }
+- (void)setParam1:(NSString*)param1{
+    self.param1 = param1;
+}
+
 #pragma mark - Publick Method
 
 - (void)showInWindow
@@ -102,9 +147,38 @@ int _seed;
         
     }];
     self.videoControl.closeButton.hidden = NO;
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    self.videoControl.showInWindowMode = YES;
+    //[self enableDanmu:true];
+    
+    
+    
 }
 
+
+
+
+- (void)enableDanmu:(BOOL)enable{
+    self.danmuEnabled  = enable;
+    if (!self.danmuManager) {
+        CGRect dmFrame;
+        /*if (self.isFullscreenMode) {
+            dmFrame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, self.view.bounds.size.width);
+        }else{
+            dmFrame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height);
+        }*/
+        dmFrame = self.view.bounds;
+        
+        self.danmuManager = [[PVDanmuManager alloc] initWithFrame:dmFrame withVid:[super getVid] inView:self.view underView:self.videoControl durationTime:1];
+        
+    }
+    if(self.danmuEnabled){
+        [self.videoControl setDanmuButtonColor:[UIColor yellowColor]];
+    }else{
+        [self.videoControl setDanmuButtonColor:[UIColor whiteColor]];
+    }
+    
+    
+}
 - (void)dismiss
 {
     [self stopDurationTimer];
@@ -126,10 +200,22 @@ int _seed;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
+
+    
+    
     
 }
-
+-(void)videoInfoLoaded{
+    NSMutableArray*buttons = [self.videoControl createBitRateButton:[super getLevel]];
+    for (int i=0; i<buttons.count; i++) {
+        UIButton*_button = [buttons objectAtIndex:i];
+        [_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    [self.videoControl videoInfoLoaded:self.videoInfo];
+}
 - (void)cancelObserver
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -138,8 +224,11 @@ int _seed;
 - (void)configControlAction
 {
     [self.videoControl.playButton addTarget:self action:@selector(playButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.pauseButton addTarget:self action:@selector(pauseButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -179,21 +268,14 @@ int _seed;
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
     
-
     if (self.loadState & MPMovieLoadStateStalled) {
         [self.videoControl.indicatorView startAnimating];
     }
     if (self.loadState & MPMovieLoadStatePlaythroughOK) {
         [self.videoControl.indicatorView stopAnimating];
+        _isPrepared = YES;
     }
-    
-    
-    NSMutableArray*buttons = [self.videoControl createBitRateButton:[super getLevel]];
-    for (int i=0; i<buttons.count; i++) {
-        UIButton*_button = [buttons objectAtIndex:i];
-        [_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
+  
     
 }
 
@@ -201,11 +283,34 @@ int _seed;
 {
     
 }
--(void)onMPMoviePlayerPlaybackDidFinishNotification{
+-(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
     
     self.videoControl.progressSlider.value = self.duration;
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:totalTime totalTime:totalTime];
+    //====error report
+    NSDictionary *notificationUserInfo = [notification userInfo];
+    NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    MPMovieFinishReason reason = [resultValue intValue];
+    if (reason == MPMovieFinishReasonPlaybackError)
+    {
+        NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
+        
+        NSString*errorstring = @"";
+        if (mediaPlayerError)
+        {
+            errorstring = [NSString stringWithFormat:@"%@",[mediaPlayerError localizedDescription]];
+            
+        }
+        else
+        {
+            errorstring = @"playback failed without any given reason";
+        }
+        
+        [PolyvSettings reportError:[super getPid] vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
+
+    }
+    
     
 }
 - (void)onMPMovieDurationAvailableNotification
@@ -245,6 +350,27 @@ int _seed;
     }
 }
 
+
+
+-(void)backButtonClick{
+    if (self.isFullscreenMode) {
+        [self shrinkScreenButtonClick];
+        
+        
+    }else{
+        if (_navigationController) {
+            [_navigationController popViewControllerAnimated:YES];
+        }else if(_parentViewController){
+
+
+            [_parentViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+    }
+
+
+    
+}
 - (void)playButtonClick
 {
     [self play];
@@ -258,7 +384,32 @@ int _seed;
     self.videoControl.playButton.hidden = NO;
     self.videoControl.pauseButton.hidden = YES;
 }
+- (void)sendDanmuButtonClick{
+    if (self.danmuSendV != nil) {
+        self.danmuSendV = nil;
+    }
+    self.danmuSendV = [[PvDanmuSendView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.danmuSendV];
+    self.danmuSendV.deleagte = self;
+    [self.danmuSendV showAction:self.view];
+    [super pause];
+    [self.danmuManager pause];
+    
+}
 
+
+- (void)danmuButtonClick{
+    if (self.danmuEnabled) {
+        [self enableDanmu:false];
+        self.videoControl.sendDanmuButton.hidden=YES;
+    }else{
+        [self enableDanmu:true];
+        self.videoControl.sendDanmuButton.hidden=NO;
+    }
+    
+    
+    
+}
 - (void)closeButtonClick
 {
     [self dismiss];
@@ -267,6 +418,7 @@ int _seed;
 {
     if (!self.isBitRateViewShowing) {
         self.videoControl.bitRateView.hidden = NO;
+        [self.videoControl animateHide];
         self.isBitRateViewShowing = YES;
         
     }else{
@@ -276,40 +428,66 @@ int _seed;
     
     
 }
+
 - (void)fullScreenButtonClick
 {
     if (self.isFullscreenMode) {
         return;
     }
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
+    
     self.originFrame = self.view.frame;
-    CGFloat height = [[UIScreen mainScreen] bounds].size.width;
-    CGFloat width = [[UIScreen mainScreen] bounds].size.height;
-    CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);;
-    [UIView animateWithDuration:0.3f animations:^{
-        self.frame = frame;
-        [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+    
+    [UIView animateWithDuration:duration animations:^{
+        [_parentViewController.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
     } completion:^(BOOL finished) {
+        _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+        self.frame = self.view.superview.bounds;
+        self.view.frame =self.view.superview.bounds;
         self.isFullscreenMode = YES;
+        [self.videoControl changeToFullsreen];
         self.videoControl.fullScreenButton.hidden = YES;
         self.videoControl.shrinkScreenButton.hidden = NO;
+        if (self.danmuManager) {
+            [self.danmuManager resetDanmuWithFrame:self.view.frame];
+            [self.danmuManager initStart];
+        }
+        
+        if (self.danmuEnabled) {
+            self.videoControl.sendDanmuButton.hidden = NO;
+        }
+        
+        
     }];
-    
 }
-
 - (void)shrinkScreenButtonClick
 {
     if (!self.isFullscreenMode) {
         return;
     }
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    [UIView animateWithDuration:0.3f animations:^{
-        [self.view setTransform:CGAffineTransformIdentity];
-        self.frame = self.originFrame;
+    CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
+    
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
+    [UIView animateWithDuration:duration animations:^{
+        [_parentViewController.view setTransform:CGAffineTransformIdentity];
     } completion:^(BOOL finished) {
+        _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+        self.frame = self.originFrame;
+        self.view.frame = self.originFrame;
         self.isFullscreenMode = NO;
+        [self.videoControl changeToSmallsreen];
         self.videoControl.fullScreenButton.hidden = NO;
         self.videoControl.shrinkScreenButton.hidden = YES;
+        if (self.danmuManager) {
+            [self.danmuManager resetDanmuWithFrame:self.view.frame];
+            [self.danmuManager initStart];
+        }
+        if (self.danmuEnabled) {
+            self.videoControl.sendDanmuButton.hidden = YES;
+        }
+        
+        
     }];
 }
 
@@ -342,6 +520,10 @@ int _seed;
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
     self.videoControl.progressSlider.value = ceil(currentTime);
+    if (self.danmuEnabled) {
+        [_danmuManager rollDanmu:currentTime];
+    }
+    
 }
 
 - (void)setTimeLabelValues:(double)currentTime totalTime:(double)totalTime {
@@ -399,6 +581,38 @@ int _seed;
     [self.videoControl setNeedsLayout];
     [self.videoControl layoutIfNeeded];
 }
+
+
+
+#pragma mark - QHDanmuSendViewDelegate
+- (NSString *)timeFormatted:(int)totalSeconds
+{
+    
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    
+    return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
+}
+
+- (void)sendDanmu:(PvDanmuSendView *)danmuSendV info:(NSString *)info {
+    NSTimeInterval currentTime = [super currentPlaybackTime];
+    [self.danmuManager sendDanmu:[super getVid] msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
+    [super play];
+    
+    //[self.danmuManager rollDanmu:0];
+    //f=1 画框焦点
+    [self.danmuManager insertDanmu:@{@"c":info, @"t":@"1", @"m":@"l",@"color":@"0xFFFFFF",@"f":@"1"}];
+    [self.danmuManager resume:currentTime];
+
+    
+}
+
+- (void)closeSendDanmu:(PvDanmuSendView *)danmuSendV {
+    [super play];
+    [self.danmuManager resume:[super currentPlaybackTime]];
+}
+
 
 
 

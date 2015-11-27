@@ -31,7 +31,7 @@
 
 - (void) moviePlayBackDidFinish:(NSNotification*)notification
 {
-    NSLog(@"moviePlayBackDidFinish");
+    //NSLog(@"moviePlayBackDidFinish");
     
     NSDictionary *notificationUserInfo = [notification userInfo];
     NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
@@ -154,7 +154,7 @@
     
     
     if ([moviePlayer loadState] != MPMovieLoadStateUnknown) {
-        NSLog(@"playerReady");
+        //NSLog(@"playerReady");
         [_indicatorView stopAnimating];
         //[_indicatorView removeFromSuperview];
         // Remove observer
@@ -192,7 +192,7 @@
 {
 
     
-    _vid = @"sl8da4jjbx5aae533a50efd39a3d438e_s";
+    _vid = @"c2ae9bc9c254457574c611d91913b49a_c";
     _downloader = [[VideoDownloader alloc]initWithVid:_vid level:1];
     
     
@@ -287,7 +287,7 @@
 }
 
 - (void) downloadDidFinished:(VideoDownloader*)downloader withVid: (NSString *) vid{
-    
+    NSLog(@"vid:%@",vid);
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"通知"
                                                         message:@"视频下载完成"

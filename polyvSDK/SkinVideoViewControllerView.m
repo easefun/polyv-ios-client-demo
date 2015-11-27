@@ -1,8 +1,17 @@
+//
+//  SkinVideoViewController.h
+//  polyvSDK
+//
+//  Created by seanwong on 8/17/15.
+//  Copyright (c) 2015 easefun. All rights reserved.
+//
 #import "SkinVideoViewControllerView.h"
+#import <MediaPlayer/MediaPlayer.h>
 
-static const CGFloat pVideoControlBarHeight = 40.0;
-static const CGFloat pVideoControlAnimationTimeinterval = 0.3;
+static const CGFloat pVideoControlBarHeight = 50.0;
+static const CGFloat pVideoControlAnimationTimeinterval = 0.5;
 static const CGFloat pVideoControlTimeLabelFontSize = 10.0;
+static const CGFloat pVideoControlTitleLabelFontSize = 16.0;
 static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 @interface SkinVideoViewControllerView ()
@@ -12,21 +21,31 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 @property (nonatomic, strong) UIView *bitRateView;
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, strong) UIButton *pauseButton;
+@property (nonatomic, strong) UIButton *backButton;
 @property (nonatomic, strong) UIButton *fullScreenButton;
 @property (nonatomic, strong) UIButton *shrinkScreenButton;
 @property (nonatomic, strong) UIButton *bitRateButton;
+@property (nonatomic, strong) UIButton *danmuButton;
+@property (nonatomic, strong) UIButton *sendDanmuButton;
 @property (nonatomic, strong) UISlider *progressSlider;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+
 @property (nonatomic, assign) BOOL isBarShowing;
 @property (nonatomic, assign) int currentBitRate;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+
+@property (nonatomic, assign) BOOL isFullscreenMode;
+
+
 
 @end
 
 @implementation SkinVideoViewControllerView
 
+//UITextField*editContent;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -35,7 +54,14 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [self addSubview:self.bitRateView];
 
         [self addSubview:self.topBar];
+        [self.topBar addSubview:self.titleLabel];
+        [self.topBar addSubview:self.backButton];
+        [self.topBar addSubview:self.danmuButton];
+
         [self.topBar addSubview:self.closeButton];
+        
+        [self addSubview:self.sendDanmuButton];
+
         self.bitRateView.hidden = YES;
 
         [self addSubview:self.bottomBar];
@@ -49,8 +75,19 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [self.bottomBar addSubview:self.progressSlider];
         [self.bottomBar addSubview:self.timeLabel];
         [self addSubview:self.indicatorView];
+        self.sendDanmuButton.hidden = YES;
+        
+        //editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
+        //[self addSubview:editContent];
+        
+        
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:tapGesture];
+        
+        
+       
+        
+        
     }
     return self;
 }
@@ -59,9 +96,19 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     [super layoutSubviews];
     self.topBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), pVideoControlBarHeight);
+    
+    self.backButton.frame = CGRectMake(0, CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.backButton.bounds), CGRectGetHeight(self.backButton.bounds));
+    self.titleLabel.frame = CGRectMake(CGRectGetWidth(self.backButton.bounds), CGRectGetMinX(self.topBar.bounds), 300, CGRectGetHeight(self.topBar.bounds));
+    //NSLog(@"topBar: %@", NSStringFromCGRect(self.topBar.frame));
+
+    self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
+    
+    
+    self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
+    
     self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
     self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - pVideoControlBarHeight, CGRectGetWidth(self.bounds), pVideoControlBarHeight);
-    self.bitRateView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds) - pVideoControlBarHeight);
+    self.bitRateView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds));
     self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
     self.pauseButton.frame = self.playButton.frame;
     
@@ -74,10 +121,20 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
     self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    
+    
+    
+    //editContent.frame = self.sendDanmuButton.frame;
     [self arrangeBitRateButtons];
     
 }
-
+- (void)setHeadTitle:(NSString*)headtitle{
+    [self.titleLabel setText:headtitle];
+}
+- (void)videoInfoLoaded:(NSDictionary*)videoInfo{
+    
+    
+}
 -(void)arrangeBitRateButtons{
 
     int buttonWidth = 100;
@@ -135,7 +192,13 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [super didMoveToSuperview];
     self.isBarShowing = YES;
 }
+- (void)setDanmuButtonColor:(UIColor*)color{
+    self.danmuButton.layer.borderColor = [color CGColor];
+    [self.danmuButton setTitleColor:color forState:UIControlStateNormal];
 
+
+
+}
 - (void)animateHide
 {
     if (!self.isBarShowing) {
@@ -144,7 +207,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
         self.topBar.alpha = 0.0;
         self.bottomBar.alpha = 0.0;
-        self.bitRateView.alpha = 0.0;
+        self.sendDanmuButton.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
         
@@ -159,7 +222,8 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
         self.topBar.alpha = 1.0;
         self.bottomBar.alpha = 1.0;
-        self.bitRateView.alpha = 1.0;
+        self.sendDanmuButton.alpha = 1.0;
+        
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
         [self autoFadeOutControlBar];
@@ -179,9 +243,10 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(animateHide) object:nil];
 }
-
+#pragma touch events
 - (void)onTap:(UITapGestureRecognizer *)gesture
 {
+    self.bitRateView.hidden = YES;
     if (gesture.state == UIGestureRecognizerStateRecognized) {
         if (self.isBarShowing) {
             [self animateHide];
@@ -191,6 +256,27 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
 }
 
+
+#pragma -
+- (void)changeToFullsreen{
+    _topBar.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    
+    _titleLabel.hidden = NO;
+    _danmuButton.hidden = NO;
+    _sendDanmuButton.hidden = YES;
+    self.isFullscreenMode = YES;
+    
+}
+- (void)changeToSmallsreen{
+    _topBar.backgroundColor = [UIColor clearColor];
+    _titleLabel.hidden = YES;
+     _danmuButton.hidden = YES;
+    self.isFullscreenMode = NO;
+    self.sendDanmuButton.alpha = 0;
+}
+
+
+
 #pragma mark - Property
 
 - (UIView *)topBar
@@ -198,6 +284,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     if (!_topBar) {
         _topBar = [UIView new];
         _topBar.backgroundColor = [UIColor clearColor];
+        //_topBar.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     }
     return _topBar;
 }
@@ -206,7 +293,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     if (!_bottomBar) {
         _bottomBar = [UIView new];
-        _bottomBar.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        _bottomBar.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     }
     return _bottomBar;
 }
@@ -214,7 +301,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     if (!_bitRateView) {
         _bitRateView = [UIView new];
-        _bitRateView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        _bitRateView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
     }
     return _bitRateView;
 }
@@ -237,6 +324,45 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _pauseButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
     }
     return _pauseButton;
+}
+- (UIButton *)backButton
+{
+    if (!_backButton) {
+        _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_backButton setImage:[UIImage imageNamed:[self videoImageName:@"pl-video-player-back"]] forState:UIControlStateNormal];
+        _backButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
+    }
+    return _backButton;
+}
+- (UIButton *)danmuButton
+{
+    if (!_danmuButton) {
+        _danmuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_danmuButton setTitle:@" 弹幕 " forState:UIControlStateNormal];
+        _danmuButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_danmuButton.layer setMasksToBounds:YES];
+        [_danmuButton.layer setCornerRadius:3];
+        [_danmuButton.layer setBorderWidth:1.0];
+        _danmuButton.layer.borderColor = [[UIColor whiteColor] CGColor];
+        _danmuButton.bounds = CGRectMake(0, 0, 50, 30);
+        _danmuButton.hidden = YES;
+    }
+    return _danmuButton;
+}
+- (UIButton *)sendDanmuButton
+{
+    if (!_sendDanmuButton) {
+        _sendDanmuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_sendDanmuButton setTitle:@" 发射 " forState:UIControlStateNormal];
+        _sendDanmuButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_sendDanmuButton.layer setMasksToBounds:YES];
+        [_sendDanmuButton.layer setCornerRadius:10];
+        [_sendDanmuButton.layer setBorderWidth:1.0];
+        _sendDanmuButton.layer.borderColor = [[UIColor whiteColor] CGColor];
+        _sendDanmuButton.bounds = CGRectMake(0, 0, 50, 50);
+        //_sendDanmuButton.hidden = YES;
+    }
+    return _sendDanmuButton;
 }
 
 - (UIButton *)fullScreenButton
@@ -305,6 +431,20 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     return _timeLabel;
 }
 
+- (UILabel *)titleLabel
+{
+    if (!_titleLabel) {
+        _titleLabel = [UILabel new];
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.font = [UIFont systemFontOfSize:pVideoControlTitleLabelFontSize];
+        _titleLabel.textColor = [UIColor whiteColor];
+        _titleLabel.textAlignment = NSTextAlignmentLeft;
+        _titleLabel.bounds = CGRectMake(0, 0, pVideoControlTitleLabelFontSize, pVideoControlTitleLabelFontSize);
+        _titleLabel.hidden = TRUE;
+    }
+    return _titleLabel;
+}
+
 - (UIActivityIndicatorView *)indicatorView
 {
     if (!_indicatorView) {
@@ -314,12 +454,14 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     return _indicatorView;
 }
 
-#pragma mark - Private Method
 
 - (NSString *)videoImageName:(NSString *)name
 {
     
     return name;
 }
+
+
+
 
 @end

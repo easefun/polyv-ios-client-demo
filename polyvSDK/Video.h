@@ -11,6 +11,7 @@
 @interface Video : NSObject
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *desc;
 @property (nonatomic,copy) NSString *vid;
 @property (nonatomic,copy) NSString *piclink;
 @property (nonatomic,copy) NSString *duration;

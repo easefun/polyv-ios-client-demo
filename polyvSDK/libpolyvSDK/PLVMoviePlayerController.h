@@ -11,6 +11,7 @@
 
 @interface PLVMoviePlayerController: MPMoviePlayerController
 
+@property (nonatomic, strong)NSDictionary* videoInfo;
 
 
 /**传递vid并初始化一个播放器*/
@@ -32,4 +33,8 @@
 
 -(id)initWithLocalMp4:(NSString*)vid level:(int)level;
 
+-(void)videoInfoDidLoaded;
+
+-(NSString*)getPid;
+-(NSString*)getVid;
 @end

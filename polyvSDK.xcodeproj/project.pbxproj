@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB22BED61BD7717F00148A56 /* pl-video-player-back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */; };
+		CB22BED71BD7717F00148A56 /* pl-video-player-back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */; };
+		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
 		CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */; };
 		CB79F827196E88C300A1B817 /* PolyvPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */; };
 		CB8E99871B80C3CC00CDD71A /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99861B80C3CC00CDD71A /* Video.m */; };
@@ -34,6 +37,7 @@
 		CB8E99DA1B81E75A00CDD71A /* ShareDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99D91B81E75A00CDD71A /* ShareDownloader.m */; };
 		CB8E99DF1B82E0C800CDD71A /* SkinVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */; };
 		CB8E99E01B82E0C800CDD71A /* SkinVideoViewControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */; };
+		CB9BA7861BD9D0DE00352498 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9BA7851BD9D0DE00352498 /* DetailViewController.m */; };
 		CBA3711C196E6549008E95ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA3711B196E6549008E95ED /* Foundation.framework */; };
 		CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA3711D196E6549008E95ED /* CoreGraphics.framework */; };
 		CBA37120196E6549008E95ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA3711F196E6549008E95ED /* UIKit.framework */; };
@@ -48,6 +52,8 @@
 		CBA3713D196E6549008E95ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA3711F196E6549008E95ED /* UIKit.framework */; };
 		CBA37145196E6549008E95ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBA37143196E6549008E95ED /* InfoPlist.strings */; };
 		CBA37147196E6549008E95ED /* polyvSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA37146196E6549008E95ED /* polyvSDKTests.m */; };
+		CBA5D6C41C02EC0600781EA5 /* pl-video-player-backward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */; };
+		CBA5D6C51C02EC0600781EA5 /* pl-video-player-backward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */; };
 		CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBCF2B7419A47D7000897544 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCF2B7319A47D7000897544 /* libpolyvSDK.a */; };
@@ -65,6 +71,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@2x.png"; sourceTree = "<group>"; };
+		CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@3x.png"; sourceTree = "<group>"; };
+		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		CB23A21C1B13090F00C9F5C1 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvPlayerDemoViewController.h; sourceTree = "<group>"; };
@@ -107,6 +116,9 @@
 		CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinVideoViewController.m; sourceTree = "<group>"; };
 		CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinVideoViewControllerView.h; sourceTree = "<group>"; };
 		CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinVideoViewControllerView.m; sourceTree = "<group>"; };
+		CB9BA7841BD9D0DE00352498 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		CB9BA7851BD9D0DE00352498 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		CBA058261BCF9F7F00AB352F /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVDanmuManager.h; path = ../PVDanmuManager.h; sourceTree = "<group>"; };
 		CBA37118196E6549008E95ED /* polyvSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = polyvSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA3711B196E6549008E95ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CBA3711D196E6549008E95ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -126,6 +138,10 @@
 		CBA37142196E6549008E95ED /* polyvSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "polyvSDKTests-Info.plist"; sourceTree = "<group>"; };
 		CBA37144196E6549008E95ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBA37146196E6549008E95ED /* polyvSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polyvSDKTests.m; sourceTree = "<group>"; };
+		CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-backward@2x.png"; sourceTree = "<group>"; };
+		CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-backward@3x.png"; sourceTree = "<group>"; };
+		CBA5D6D71C082D2F00781EA5 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
+		CBA5D6D81C082D2F00781EA5 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
 		CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadDemoViewController.h; sourceTree = "<group>"; };
 		CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadDemoViewController.m; sourceTree = "<group>"; };
 		CBC233391AEA322000B0228E /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
@@ -171,6 +187,10 @@
 		CB8E99941B81778500CDD71A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */,
+				CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */,
+				CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */,
+				CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */,
 				CB8E99951B81778500CDD71A /* pl-video-player-close@2x.png */,
 				CB8E99961B81778500CDD71A /* pl-video-player-close@3x.png */,
 				CB8E99971B81778500CDD71A /* pl-video-player-fullscreen@2x.png */,
@@ -241,6 +261,10 @@
 		CBA37121196E6549008E95ED /* polyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CB8E99881B80C4EA00CDD71A /* VideoListTableViewController.h */,
+				CB8E99891B80C4EA00CDD71A /* VideoListTableViewController.m */,
+				CB9BA7841BD9D0DE00352498 /* DetailViewController.h */,
+				CB9BA7851BD9D0DE00352498 /* DetailViewController.m */,
 				CB8E99DB1B82E0C800CDD71A /* SkinVideoViewController.h */,
 				CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */,
 				CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */,
@@ -260,8 +284,6 @@
 				CBA37122196E6549008E95ED /* Supporting Files */,
 				CB8E99851B80C3CC00CDD71A /* Video.h */,
 				CB8E99861B80C3CC00CDD71A /* Video.m */,
-				CB8E99881B80C4EA00CDD71A /* VideoListTableViewController.h */,
-				CB8E99891B80C4EA00CDD71A /* VideoListTableViewController.m */,
 				CB8E99AE1B81C3B800CDD71A /* FMDBHelper.h */,
 				CB8E99AF1B81C3B800CDD71A /* FMDBHelper.m */,
 				CB8E99D41B81DB8200CDD71A /* DownloadListTableViewController.h */,
@@ -275,6 +297,7 @@
 		CBA37122196E6549008E95ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB231BEF1BDDD8B400EC18BF /* video.png */,
 				CB8E99941B81778500CDD71A /* Assets */,
 				CBF35D331B32B1E100E97C45 /* video-play.png */,
 				CBA37123196E6549008E95ED /* polyvSDK-Info.plist */,
@@ -306,6 +329,9 @@
 		CBCF2B6D19A47D5400897544 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CBA5D6D71C082D2F00781EA5 /* PvDanmuOperateView.h */,
+				CBA5D6D81C082D2F00781EA5 /* PvDanmuSendView.h */,
+				CBA058261BCF9F7F00AB352F /* PVDanmuManager.h */,
 				CB23A21C1B13090F00C9F5C1 /* PLVMoviePlayerController.h */,
 				CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */,
 				CBC233431AEA3A1A00B0228E /* DownloadDelegate.h */,
@@ -367,7 +393,7 @@
 				ORGANIZATIONNAME = easefun;
 				TargetAttributes = {
 					CBA37117196E6549008E95ED = {
-						DevelopmentTeam = X4U6ED6URV;
+						DevelopmentTeam = ETRBR9HA5V;
 					};
 					CBA37138196E6549008E95ED = {
 						TestTargetID = CBA37117196E6549008E95ED;
@@ -404,14 +430,19 @@
 				CB8E99A21B81778500CDD71A /* pl-video-player-close@3x.png in Resources */,
 				CBA37134196E6549008E95ED /* Images.xcassets in Resources */,
 				CB8E99A41B81778500CDD71A /* pl-video-player-fullscreen@3x.png in Resources */,
+				CB22BED61BD7717F00148A56 /* pl-video-player-back@2x.png in Resources */,
 				CBA37126196E6549008E95ED /* InfoPlist.strings in Resources */,
 				CB8E99AB1B81778500CDD71A /* pl-video-player-shrinkscreen@2x.png in Resources */,
+				CBA5D6C51C02EC0600781EA5 /* pl-video-player-backward@3x.png in Resources */,
 				CB8E99A91B81778500CDD71A /* pl-video-player-point@2x.png in Resources */,
+				CBA5D6C41C02EC0600781EA5 /* pl-video-player-backward@2x.png in Resources */,
 				CB8E99A31B81778500CDD71A /* pl-video-player-fullscreen@2x.png in Resources */,
 				CBA3712F196E6549008E95ED /* Main.storyboard in Resources */,
 				CB8E99A71B81778500CDD71A /* pl-video-player-play@2x.png in Resources */,
+				CB22BED71BD7717F00148A56 /* pl-video-player-back@3x.png in Resources */,
 				CBF35D341B32B1E100E97C45 /* video-play.png in Resources */,
 				CB8E99A81B81778500CDD71A /* pl-video-player-play@3x.png in Resources */,
+				CB231BF01BDDD8B400EC18BF /* video.png in Resources */,
 				CB8E99A61B81778500CDD71A /* pl-video-player-pause@3x.png in Resources */,
 				CB8E99AC1B81778500CDD71A /* pl-video-player-shrinkscreen@3x.png in Resources */,
 			);
@@ -443,6 +474,7 @@
 				CB8E99CD1B81CA0900CDD71A /* FMDatabase.m in Sources */,
 				CBA3712C196E6549008E95ED /* AppDelegate.m in Sources */,
 				CB79F827196E88C300A1B817 /* PolyvPlayerDemoViewController.m in Sources */,
+				CB9BA7861BD9D0DE00352498 /* DetailViewController.m in Sources */,
 				CB8E99D61B81DB8200CDD71A /* DownloadListTableViewController.m in Sources */,
 				CB8E99CE1B81CA0900CDD71A /* FMDatabaseAdditions.m in Sources */,
 				CB8E99871B80C3CC00CDD71A /* Video.m in Sources */,
@@ -573,19 +605,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
 					"$(PROJECT_DIR)/polyvSDK/libpolyvSDK",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -599,12 +632,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",

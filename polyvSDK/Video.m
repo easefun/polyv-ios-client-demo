@@ -11,7 +11,7 @@
 @implementation Video
 
 @synthesize title;
-
+@synthesize desc;
 @synthesize vid;
 @synthesize piclink;
 @synthesize duration;
@@ -28,6 +28,7 @@
         NSDictionary*item = [PolyvSettings loadVideoJson:_vid];
         //self.title = [item objectForKey:@"title"];
         self.duration = [item objectForKey:@"duration"];
+        self.desc = [item objectForKey:@"duration"];
         self.piclink = [item objectForKey:@"first_image"];
         self.df = [[item objectForKey:@"df_num"] intValue];
         self.allfilesize = [item objectForKey:@"filesize"];

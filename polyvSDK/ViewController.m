@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "PolyvPlayerDemoViewController.h"
 
 @interface ViewController ()
 - (IBAction)buttonOnTouched:(id)sender;
@@ -29,16 +28,21 @@
 }
 
 - (IBAction)buttonOnTouched:(id)sender {
-    PolyvPlayerDemoViewController *playerController = [[PolyvPlayerDemoViewController alloc] init];
-    //PolyvPlayerViewController *playerController = [[PolyvPlayerViewController alloc] initWithReadtoken:@"" andVid:@"sl8da4jjbxafdfdd5713a9bf756e35e4_s" delegate:self];
-    
-    //PolyvPlayerDemoViewController *playerController = [[PolyvPlayerDemoViewController alloc] initWithReadtoken:@"" andVid:@"sl8da4jjbxafdfdd5713a9bf756e35e4_s" delegate:self];
-    
-    [self presentViewController:playerController animated:YES completion:nil];
+    //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
+    //NSLog(@"before present %d",[UIApplication sharedApplication].statusBarOrientation);
+    //[self presentViewController:[SecondViewController new] animated:YES completion:nil];
 }
 
--(NSInteger)supportedInterfaceOrientations{
-    
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskPortrait;
+}
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    //NSLog(@"root preferredInterfaceOrientationForPresentation");
+    return UIInterfaceOrientationPortrait;
 }
 @end
