@@ -11,16 +11,13 @@
 #import "PolyvSettings.h"
 #import "DetailViewController.h"
 
-@implementation AppDelegate{
-    PolyvSettings*_polyvSettings;
-}
-
+@implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
 
-    [PolyvSettings setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+    [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
     [[PolyvSettings sharedInstance] initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
   
     

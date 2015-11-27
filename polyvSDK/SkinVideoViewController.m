@@ -105,7 +105,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 
 - (void)setLocalMp4:(NSString*)vid level:(int)level{
-    NSString *plvPath = [PolyvSettings getDownloadDir];
+    NSString *plvPath = [[PolyvSettings sharedInstance] getDownloadDir];
     NSRange range = [vid rangeOfString:@"_"];
     if (range.location==NSNotFound) {
         return;
