@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DownloadDelegate.h"
-@interface PolyvPlayerDemoViewController : UIViewController<DownloadDelegate>
+#import "PvUrlSessionDownloadDelegate.h"
+@interface PolyvPlayerDemoViewController : UIViewController<PvUrlSessionDownloadDelegate>
 
 @end

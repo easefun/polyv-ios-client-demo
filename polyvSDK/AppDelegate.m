@@ -19,12 +19,13 @@
 
     [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
     [[PolyvSettings sharedInstance] initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
-  
-    
-   // NSLog(@"init");
     
     
     return YES;
+}
+-(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(nonnull NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
+{
+    self.backgroundSessionCompletionHandler = completionHandler;
 }
 /*
  
@@ -55,6 +56,7 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      [[PolyvSettings sharedInstance]  reloadSettings];
+    NSLog(@"reload");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

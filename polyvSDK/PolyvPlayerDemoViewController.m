@@ -9,18 +9,22 @@
 #import "PolyvPlayerDemoViewController.h"
 #import "PLVMoviePlayerController.h"
 
-#import "VideoDownloader.h"
-#import "DownloadDelegate.h"
+#import "PvUrlSessionDownload.h"
+
+#import "SkinVideoViewController.h"
+#import "AppDelegate.h"
 
 @interface PolyvPlayerDemoViewController (){
-    VideoDownloader*_downloader;
+    PvUrlSessionDownload*_downloader;
     NSString* _vid;
     UIImageView * _posterImageView;
     UIActivityIndicatorView * _indicatorView;
+    
     int _position;
 }
     
 @property (nonatomic, strong) PLVMoviePlayerController *videoPlayer;
+@property (nonatomic, strong) SkinVideoViewController *videoController;
 
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 
@@ -76,7 +80,8 @@
     
  }
 - (IBAction)deleteAction:(id)sender {
-    [VideoDownloader deleteVideo:_vid level:1];
+   // [VideoDownloader deleteVideo:_vid level:1];
+    [PvUrlSessionDownload deleteVideo:_vid];
     
  
 }
@@ -93,7 +98,7 @@
  播放器切换另外一个视频
  */
 - (IBAction)switchVid:(id)sender {
-    [self.videoPlayer stop];
+    /*[self.videoPlayer stop];
     [_indicatorView startAnimating];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerLoadStateDidChange:)
@@ -101,7 +106,28 @@
                                                object:nil];
     
     [self.videoPlayer setVid:@"sl8da4jjbx5d715bc3a8ce8f8194afab_s"];
-    [self.videoPlayer play];
+    [self.videoPlayer play];*/
+    
+
+    
+   /* if (!self.videoController) {
+        
+        self.videoController = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
+        __weak typeof(self)weakSelf = self;
+        [self.videoController setDimissCompleteBlock:^{
+            [weakSelf.videoController stop];
+            weakSelf.videoController = nil;
+        }];
+        [self.videoController showInWindow];
+    }
+    [self.videoController setVid:@"sl8da4jjbx5d715bc3a8ce8f8194afab_s"];
+
+    */
+    
+    
+    
+
+    
 }
 /**
  暂停播放器
@@ -114,7 +140,7 @@
  **/
 - (IBAction)downloadAction:(id)sender {
     [_downloader setDownloadDelegate:self];
-    [_downloader start];
+    [_downloader startNewDownlaodVideo:_vid level:1];
 }
 
 /**
@@ -192,13 +218,29 @@
 {
 
     
-    _vid = @"c2ae9bc9c254457574c611d91913b49a_c";
-    _downloader = [[VideoDownloader alloc]initWithVid:_vid level:1];
+    _vid = @"sl8da4jjbxdaf19469f79c3d0a0ac568_s";
+    _downloader = [PvUrlSessionDownload sharedInstance];
     
+    [_downloader setCompleteBlock:^{
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        if(appDelegate.backgroundSessionCompletionHandler)
+        {
+            // Need to copy the completion handler
+            void (^handler)() = appDelegate.backgroundSessionCompletionHandler;
+            
+            appDelegate.backgroundSessionCompletionHandler = nil;
+            
+            
+            handler();
+        }
+        
+    }];
     
     //自动选择码率
     self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     [self.view addSubview:self.videoPlayer.view];
+    
     
     [self.videoPlayer.view setFrame:CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,240)];
  
@@ -286,7 +328,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) downloadDidFinished:(VideoDownloader*)downloader withVid: (NSString *) vid{
+#pragma download delegate
+
+- (void) dataDownloadStop:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
+    
+}
+
+- (void) downloadDidFinished:(PvUrlSessionDownload*)downloader withVid: (NSString *) vid{
     NSLog(@"vid:%@",vid);
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"通知"
@@ -301,7 +349,7 @@
     
     
 }
-- (void) dataDownloadFailed:(VideoDownloader*)downloader withVid: (NSString *) vid reason:(NSString *)reason{
+- (void) dataDownloadFailed:(PvUrlSessionDownload*)downloader withVid: (NSString *) vid reason:(NSString *)reason{
     
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下载失败"
@@ -318,7 +366,7 @@
     
 }
 
-- (void) dataDownloadAtPercent:(VideoDownloader*)downloader withVid:(NSString*)vid percent:(NSNumber *) percent{
+- (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString*)vid percent:(NSNumber *) percent{
     NSLog(@"%@",percent);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressLabel setText:[NSString stringWithFormat:@"%@%%",percent]];

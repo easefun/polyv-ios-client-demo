@@ -54,9 +54,9 @@
 		CBA37147196E6549008E95ED /* polyvSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA37146196E6549008E95ED /* polyvSDKTests.m */; };
 		CBA5D6C41C02EC0600781EA5 /* pl-video-player-backward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */; };
 		CBA5D6C51C02EC0600781EA5 /* pl-video-player-backward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */; };
+		CBA5D7191C0BD47E00781EA5 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBA5D7181C0BD47E00781EA5 /* libpolyvSDK.a */; };
 		CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
-		CBCF2B7419A47D7000897544 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCF2B7319A47D7000897544 /* libpolyvSDK.a */; };
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +74,6 @@
 		CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@2x.png"; sourceTree = "<group>"; };
 		CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@3x.png"; sourceTree = "<group>"; };
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
-		CB23A21C1B13090F00C9F5C1 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvPlayerDemoViewController.h; sourceTree = "<group>"; };
 		CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyvPlayerDemoViewController.m; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 		CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinVideoViewControllerView.m; sourceTree = "<group>"; };
 		CB9BA7841BD9D0DE00352498 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		CB9BA7851BD9D0DE00352498 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		CBA058261BCF9F7F00AB352F /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PVDanmuManager.h; path = ../PVDanmuManager.h; sourceTree = "<group>"; };
 		CBA37118196E6549008E95ED /* polyvSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = polyvSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA3711B196E6549008E95ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CBA3711D196E6549008E95ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -140,19 +138,24 @@
 		CBA37146196E6549008E95ED /* polyvSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polyvSDKTests.m; sourceTree = "<group>"; };
 		CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-backward@2x.png"; sourceTree = "<group>"; };
 		CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-backward@3x.png"; sourceTree = "<group>"; };
-		CBA5D6D71C082D2F00781EA5 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
-		CBA5D6D81C082D2F00781EA5 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
+		CBA5D70C1C0BD47E00781EA5 /* DownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadDelegate.h; sourceTree = "<group>"; };
+		CBA5D70D1C0BD47E00781EA5 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
+		CBA5D70E1C0BD47E00781EA5 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
+		CBA5D70F1C0BD47E00781EA5 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
+		CBA5D7101C0BD47E00781EA5 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
+		CBA5D7111C0BD47E00781EA5 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
+		CBA5D7121C0BD47E00781EA5 /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
+		CBA5D7131C0BD47E00781EA5 /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
+		CBA5D7141C0BD47E00781EA5 /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
+		CBA5D7151C0BD47E00781EA5 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
+		CBA5D7161C0BD47E00781EA5 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
+		CBA5D7171C0BD47E00781EA5 /* VideoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloader.h; sourceTree = "<group>"; };
+		CBA5D7181C0BD47E00781EA5 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
+		CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
+		CBA5D71B1C0C1FC200781EA5 /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
 		CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadDemoViewController.h; sourceTree = "<group>"; };
 		CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadDemoViewController.m; sourceTree = "<group>"; };
-		CBC233391AEA322000B0228E /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		CBC233401AEA39EF00B0228E /* VideoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDownloader.h; sourceTree = "<group>"; };
-		CBC233431AEA3A1A00B0228E /* DownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadDelegate.h; sourceTree = "<group>"; };
-		CBCF2B6E19A47D5400897544 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
-		CBCF2B6F19A47D5400897544 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
-		CBCF2B7019A47D5400897544 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
-		CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
-		CBCF2B7319A47D7000897544 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
 		CBF35D331B32B1E100E97C45 /* video-play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-play.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,11 +165,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */,
+				CBA5D7191C0BD47E00781EA5 /* libpolyvSDK.a in Frameworks */,
 				CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */,
 				CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */,
 				CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */,
 				CBA37120196E6549008E95ED /* UIKit.framework in Frameworks */,
-				CBCF2B7419A47D7000897544 /* libpolyvSDK.a in Frameworks */,
 				CBA3711C196E6549008E95ED /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,6 +264,7 @@
 		CBA37121196E6549008E95ED /* polyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CBA5D70A1C0BD47E00781EA5 /* libpolyvSDK */,
 				CB8E99881B80C4EA00CDD71A /* VideoListTableViewController.h */,
 				CB8E99891B80C4EA00CDD71A /* VideoListTableViewController.m */,
 				CB9BA7841BD9D0DE00352498 /* DetailViewController.h */,
@@ -270,7 +274,6 @@
 				CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */,
 				CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */,
 				CB8E99C11B81CA0900CDD71A /* fmdb */,
-				CBCF2B6D19A47D5400897544 /* libpolyvSDK */,
 				CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */,
 				CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */,
 				CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */,
@@ -326,21 +329,32 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CBCF2B6D19A47D5400897544 /* libpolyvSDK */ = {
+		CBA5D70A1C0BD47E00781EA5 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
-				CBA5D6D71C082D2F00781EA5 /* PvDanmuOperateView.h */,
-				CBA5D6D81C082D2F00781EA5 /* PvDanmuSendView.h */,
-				CBA058261BCF9F7F00AB352F /* PVDanmuManager.h */,
-				CB23A21C1B13090F00C9F5C1 /* PLVMoviePlayerController.h */,
-				CBCF2B7119A47D5400897544 /* PLVResumableUpload.h */,
-				CBC233431AEA3A1A00B0228E /* DownloadDelegate.h */,
-				CBC233401AEA39EF00B0228E /* VideoDownloader.h */,
-				CBC233391AEA322000B0228E /* PolyvSettings.h */,
-				CBCF2B7319A47D7000897544 /* libpolyvSDK.a */,
-				CBCF2B6E19A47D5400897544 /* PLVAssetData.h */,
-				CBCF2B6F19A47D5400897544 /* PLVData.h */,
-				CBCF2B7019A47D5400897544 /* PLVKit.h */,
+				CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */,
+				CBA5D7181C0BD47E00781EA5 /* libpolyvSDK.a */,
+			);
+			path = libpolyvSDK;
+			sourceTree = "<group>";
+		};
+		CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */,
+				CBA5D71B1C0C1FC200781EA5 /* PvUrlSessionDownloadDelegate.h */,
+				CBA5D70C1C0BD47E00781EA5 /* DownloadDelegate.h */,
+				CBA5D70D1C0BD47E00781EA5 /* PLVAssetData.h */,
+				CBA5D70E1C0BD47E00781EA5 /* PLVData.h */,
+				CBA5D70F1C0BD47E00781EA5 /* PLVKit.h */,
+				CBA5D7101C0BD47E00781EA5 /* PLVMoviePlayerController.h */,
+				CBA5D7111C0BD47E00781EA5 /* PLVResumableUpload.h */,
+				CBA5D7121C0BD47E00781EA5 /* PolyvSettings.h */,
+				CBA5D7131C0BD47E00781EA5 /* PolyvUtil.h */,
+				CBA5D7141C0BD47E00781EA5 /* PVDanmuManager.h */,
+				CBA5D7151C0BD47E00781EA5 /* PvDanmuOperateView.h */,
+				CBA5D7161C0BD47E00781EA5 /* PvDanmuSendView.h */,
+				CBA5D7171C0BD47E00781EA5 /* VideoDownloader.h */,
 			);
 			path = libpolyvSDK;
 			sourceTree = "<group>";

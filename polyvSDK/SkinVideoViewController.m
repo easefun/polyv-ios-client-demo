@@ -149,6 +149,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.videoControl.closeButton.hidden = NO;
     self.videoControl.showInWindowMode = YES;
     //[self enableDanmu:true];
+    self.videoControl.backButton.hidden = YES;
     
     
     
@@ -434,61 +435,90 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (self.isFullscreenMode) {
         return;
     }
-    CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
+    if (self.videoControl.showInWindowMode) {
+        self.originFrame = self.view.frame;
+        CGFloat height = [[UIScreen mainScreen] bounds].size.width;
+        CGFloat width = [[UIScreen mainScreen] bounds].size.height;
+        CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);;
+        [UIView animateWithDuration:0.3f animations:^{
+            self.frame = frame;
+            [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+        } completion:^(BOOL finished) {
+            self.isFullscreenMode = YES;
+            self.videoControl.fullScreenButton.hidden = YES;
+            self.videoControl.shrinkScreenButton.hidden = NO;
+        }];
+    }else{
+        CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
+        
+        self.originFrame = self.view.frame;
+        
+        [UIView animateWithDuration:duration animations:^{
+            [_parentViewController.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+        } completion:^(BOOL finished) {
+            _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+            self.frame = self.view.superview.bounds;
+            self.view.frame =self.view.superview.bounds;
+            self.isFullscreenMode = YES;
+            [self.videoControl changeToFullsreen];
+            self.videoControl.fullScreenButton.hidden = YES;
+            self.videoControl.shrinkScreenButton.hidden = NO;
+            if (self.danmuManager) {
+                [self.danmuManager resetDanmuWithFrame:self.view.frame];
+                [self.danmuManager initStart];
+            }
+            
+            if (self.danmuEnabled) {
+                self.videoControl.sendDanmuButton.hidden = NO;
+            }
+            
+            
+        }];
+    }
     
-    self.originFrame = self.view.frame;
-    
-    [UIView animateWithDuration:duration animations:^{
-        [_parentViewController.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
-    } completion:^(BOOL finished) {
-        _parentViewController.view.frame = _parentViewController.view.superview.bounds;
-        self.frame = self.view.superview.bounds;
-        self.view.frame =self.view.superview.bounds;
-        self.isFullscreenMode = YES;
-        [self.videoControl changeToFullsreen];
-        self.videoControl.fullScreenButton.hidden = YES;
-        self.videoControl.shrinkScreenButton.hidden = NO;
-        if (self.danmuManager) {
-            [self.danmuManager resetDanmuWithFrame:self.view.frame];
-            [self.danmuManager initStart];
-        }
-        
-        if (self.danmuEnabled) {
-            self.videoControl.sendDanmuButton.hidden = NO;
-        }
-        
-        
-    }];
 }
 - (void)shrinkScreenButtonClick
 {
     if (!self.isFullscreenMode) {
         return;
     }
-    CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
-    
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
-    [UIView animateWithDuration:duration animations:^{
-        [_parentViewController.view setTransform:CGAffineTransformIdentity];
-    } completion:^(BOOL finished) {
-        _parentViewController.view.frame = _parentViewController.view.superview.bounds;
-        self.frame = self.originFrame;
-        self.view.frame = self.originFrame;
-        self.isFullscreenMode = NO;
-        [self.videoControl changeToSmallsreen];
-        self.videoControl.fullScreenButton.hidden = NO;
-        self.videoControl.shrinkScreenButton.hidden = YES;
-        if (self.danmuManager) {
-            [self.danmuManager resetDanmuWithFrame:self.view.frame];
-            [self.danmuManager initStart];
-        }
-        if (self.danmuEnabled) {
-            self.videoControl.sendDanmuButton.hidden = YES;
-        }
+    if (self.videoControl.showInWindowMode) {
+        [UIView animateWithDuration:0.3f animations:^{
+            [self.view setTransform:CGAffineTransformIdentity];
+            self.frame = self.originFrame;
+        } completion:^(BOOL finished) {
+            self.isFullscreenMode = NO;
+            self.videoControl.fullScreenButton.hidden = NO;
+            self.videoControl.shrinkScreenButton.hidden = YES;
+        }];
+    }else{
+        CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
         
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
+        [UIView animateWithDuration:duration animations:^{
+            [_parentViewController.view setTransform:CGAffineTransformIdentity];
+        } completion:^(BOOL finished) {
+            _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+            self.frame = self.originFrame;
+            self.view.frame = self.originFrame;
+            self.isFullscreenMode = NO;
+            [self.videoControl changeToSmallsreen];
+            self.videoControl.fullScreenButton.hidden = NO;
+            self.videoControl.shrinkScreenButton.hidden = YES;
+            if (self.danmuManager) {
+                [self.danmuManager resetDanmuWithFrame:self.view.frame];
+                [self.danmuManager initStart];
+            }
+            if (self.danmuEnabled) {
+                self.videoControl.sendDanmuButton.hidden = YES;
+            }
+            
+            
+        }];
         
-    }];
+    }
+
 }
 
 - (void)setProgressSliderMaxMinValues {

@@ -12,8 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (nonatomic) BOOL allowRotation;
+@property (copy) void (^backgroundSessionCompletionHandler)();
 
-@property (nonatomic) BOOL forceLandscapeRight;
 
 @end

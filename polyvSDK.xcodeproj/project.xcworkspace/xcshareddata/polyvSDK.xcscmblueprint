@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8C454D2B8C85862EE618EF3AD39BD9715980B365",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "94D47BFC0A5D55B6DB62C277C34C32255685F032" : 0,
+    "8C454D2B8C85862EE618EF3AD39BD9715980B365" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B82B1A53-31E2-4C51-A87B-72D5B5667AD6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "94D47BFC0A5D55B6DB62C277C34C32255685F032" : "polyv-ios-client-demo\/polyvSDK\/libpolyvSDK\/",
+    "8C454D2B8C85862EE618EF3AD39BD9715980B365" : "polyv-ios-client-demo\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "polyvSDK",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "polyvSDK.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/easefun\/polyv-ios-client-demo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8C454D2B8C85862EE618EF3AD39BD9715980B365"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/easefun\/polyv-ios-sdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "94D47BFC0A5D55B6DB62C277C34C32255685F032"
+    }
+  ]
+}
