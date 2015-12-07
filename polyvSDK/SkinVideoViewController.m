@@ -47,6 +47,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     UINavigationController* _navigationController;
     UIViewController *_parentViewController;
     BOOL _isPrepared;
+    
+    NSTimer *_stallTimer;
+    NSDate* _firstLoadStartTime;
+    NSDate* _secondLoadStartTime;
+    BOOL _firstLoadTimeSent;
+    BOOL _secondLoadTimeSent;
 }
 
 

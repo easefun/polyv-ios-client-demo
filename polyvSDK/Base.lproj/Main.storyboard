@@ -118,11 +118,12 @@
                     <connections>
                         <segue destination="dgv-HB-CxR" kind="relationship" relationship="viewControllers" id="Lot-fm-CWY"/>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="MA4-vf-tzq"/>
+                        <segue destination="N1V-fW-7aD" kind="relationship" relationship="viewControllers" id="l0A-Nq-nMM"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmY-iR-6YU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-842" y="379"/>
+            <point key="canvasLocation" x="-856" y="429"/>
         </scene>
         <!--上传-->
         <scene sceneID="ufC-wZ-h7g">
@@ -293,7 +294,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cit-52-NKM">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cit-52-NKM" id="0qN-DZ-ccb">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -312,7 +313,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6jn-Nu-wy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="404" y="1907"/>
+            <point key="canvasLocation" x="-214" y="1252"/>
+        </scene>
+        <!--下载-->
+        <scene sceneID="n2P-QJ-Yoj">
+            <objects>
+                <navigationController id="N1V-fW-7aD" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="下载" id="hi4-8S-Gwk"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="q2l-8X-m7W">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="isR-Ft-8NM" kind="relationship" relationship="rootViewController" id="98b-mu-CEk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d6o-t3-KCN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-653" y="1305"/>
         </scene>
         <!--Polyv Player Demo View Controller-->
         <scene sceneID="5Gz-CI-y6r">
@@ -419,9 +438,6 @@
                                 <state key="normal" title="下载列表">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="isR-Ft-8NM" kind="push" id="aSo-II-qjo"/>
-                                </connections>
                             </button>
                         </subviews>
                         <animations/>

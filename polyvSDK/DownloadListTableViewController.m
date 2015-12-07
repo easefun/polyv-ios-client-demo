@@ -9,56 +9,70 @@
 #import "DownloadListTableViewController.h"
 #import "FMDBHelper.h"
 #import "Video.h"
-#import "ShareDownloader.h"
+
+
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
     FMDBHelper *_fmdb;
     NSTimer *updateTimer;
     UIBarButtonItem *btnstart;
     BOOL started;
+    int _currentTask;
+    PvUrlSessionDownload * _downloader;
 }
+
 
 @end
 
 @implementation DownloadListTableViewController
 
--(void)startall{
+-(void)startNext{
     
-    ShareDownloader* manager = [ShareDownloader sharedInstance];
-    for (int i=0;i<[_videolist count]; i++) {
-        Video*video = [_videolist objectAtIndex:i];
-        VideoDownloader*downloader=[manager getDownloader:video.vid withLevel:video.level];
-        if(!started){
-            [downloader start];
+   
+    
+    if(started){
+        [_downloader stop];
+        [btnstart setTitle:@"全部开始"];
+    }else{
+        if ([_videolist count]>0 && _currentTask<[_videolist count]) {
+            Video*video = [_videolist objectAtIndex:_currentTask];
+            [_downloader startNewDownlaodVideo:video.vid level:video.level];
         }else{
-            [downloader stop];
+            NSLog(@"所有任务已经完成");
+            
         }
-        
+        [btnstart setTitle:@"全部停止"];
     }
     started = !started;
-    if(started){
-        [btnstart setTitle:@"全部停止"];
-    }else{
-        [btnstart setTitle:@"全部开始"];
-    }
+
+    
+    
+    
+    
+
+   
+    
     
 }
 -(void)updateTable{
     _fmdb = [FMDBHelper sharedInstance];
     _videolist = [_fmdb listDownloadVideo];
-    //NSLog(@"update timer");
     [self.tableView reloadData];
 }
 - (void)viewDidLoad {
     [self updateTable];
-    
-    btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startall)];
+    _currentTask = 0;
+    btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startNext)];
     self.navigationItem.rightBarButtonItem = btnstart;
     [updateTimer invalidate];
     updateTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTable) userInfo:nil repeats:YES];
 
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
+    
+    _downloader=[PvUrlSessionDownload sharedInstance];
+    [_downloader setDownloadDelegate:self];
+    
     
     [super viewDidLoad];
     
@@ -126,6 +140,8 @@
     return cell;
 }
 
+
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -169,5 +185,26 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma download delegate
+
+- (void) downloadDidFinished:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
+    NSLog(@"finished %@",vid);
+    [_fmdb updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
+    [_fmdb updateDownloadStatic:vid status:1];
+    _currentTask++;
+    [self startNext];
+}
+- (void) dataDownloadStop:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
+    
+}
+- (void) dataDownloadFailed:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid reason:(NSString *) reason{
+    [_fmdb updateDownloadStatic:vid status:-1];
+}
+- (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid percent: (NSNumber *) aPercent{
+     [_fmdb updateDownloadPercent:vid percent:aPercent];
+}
+
+
 
 @end

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PvUrlSessionDownload.h"
 
-@interface DownloadListTableViewController : UITableViewController
+@interface DownloadListTableViewController : UITableViewController<PvUrlSessionDownloadDelegate>
 
 @end

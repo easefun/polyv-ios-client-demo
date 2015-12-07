@@ -7,6 +7,9 @@
 @property (nonatomic, strong) NSDictionary *videoInfo;
 @property (nonatomic, copy)void(^completeBlock)(void);
 
+
+@property int level;
+
 + (id)sharedInstance;
 //- (instancetype)initWithVid:(NSString*)vid level:(int)level;
 - (void)setBackgroundMode:(BOOL)isBackground;
@@ -18,7 +21,7 @@
 -(BOOL)isStoped;
 
 /**开始下载*/
-- (void)start;
+//- (void)start;
 /**设置下载代理回调*/
 -(void)setDownloadDelegate:(id<PvUrlSessionDownloadDelegate>)delegate;
 /**删除某个码率视频文件*/
@@ -29,6 +32,7 @@
 -(BOOL)addSkipBackupAttributeToDownloadedVideos;
 /**删除所有下载文件*/
 -(void)cleanDownload;
+
 +(BOOL)isVideoExists:(NSString*)vid level:(int)level;
 
 // 开始新的下载
