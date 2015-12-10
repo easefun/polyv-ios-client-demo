@@ -9,7 +9,7 @@
 #import "DownloadListTableViewController.h"
 #import "FMDBHelper.h"
 #import "Video.h"
-
+#import "SkinVideoViewController.h"
 
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
@@ -21,10 +21,13 @@
     PvUrlSessionDownload * _downloader;
 }
 
+@property (nonatomic, strong) SkinVideoViewController *videoPlayer;
 
 @end
 
 @implementation DownloadListTableViewController
+
+
 
 -(void)startNext{
     
@@ -140,7 +143,29 @@
     return cell;
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Video *video = [_videolist objectAtIndex:indexPath.row];
+    if (!self.videoPlayer) {
+     CGFloat width = [UIScreen mainScreen].bounds.size.width;
+     self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
+     __weak typeof(self)weakSelf = self;
+     [self.videoPlayer setDimissCompleteBlock:^{
+     [weakSelf.videoPlayer stop];
+     weakSelf.videoPlayer = nil;
+     }];
+     
+     }
+     [self.videoPlayer setHeadTitle:video.title];
+     [self.videoPlayer showInWindow];
+     [self.videoPlayer setVid:video.vid level:video.level];
+     
+    
+   
+    
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 /*
 // Override to support conditional editing of the table view.

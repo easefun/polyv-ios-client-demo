@@ -34,7 +34,7 @@ typedef enum PvGestureType PvGestureType;
 - (void)showInWindow;
 - (void)dismiss;
 - (void)setVid:(NSString *)vid;
-- (void)setLocalMp4:(NSString*)vid level:(int)level;
+- (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
 - (void)enableDanmu:(BOOL)enable;
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;

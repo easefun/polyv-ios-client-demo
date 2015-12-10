@@ -16,6 +16,8 @@
 + (NSString*)md5HexDigest:(NSString*)input;
 + (NSData *)AES128EncryptedDataWithKey:(NSString *)key data:(NSData*)data;
 + (NSData *)AES128DecryptedDataWithKey:(NSString *)key data:(NSData*)data;;
-+ (NSData *)AES128EncryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;;
-+ (NSData *)AES128DecryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;;
++ (NSData *)AES128EncryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;
++ (NSData *)AES128DecryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;
++ (NSArray *)decryptUserConfig:(NSData*)data;
+
 @end

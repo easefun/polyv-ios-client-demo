@@ -110,7 +110,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 
 
-- (void)setLocalMp4:(NSString*)vid level:(int)level{
+- (void)setLocalMp4:(NSString*)vid level:(int)level {
     NSString *plvPath = [[PolyvSettings sharedInstance] getDownloadDir];
     NSRange range = [vid rangeOfString:@"_"];
     if (range.location==NSNotFound) {
@@ -137,7 +137,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.param1 = param1;
 }
 
-#pragma mark - Publick Method
+#pragma mark - Public Method
 
 - (void)showInWindow
 {
@@ -168,11 +168,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.danmuEnabled  = enable;
     if (!self.danmuManager) {
         CGRect dmFrame;
-        /*if (self.isFullscreenMode) {
-            dmFrame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, self.view.bounds.size.width);
-        }else{
-            dmFrame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height);
-        }*/
+
         dmFrame = self.view.bounds;
         
         self.danmuManager = [[PVDanmuManager alloc] initWithFrame:dmFrame withVid:[super getVid] inView:self.view underView:self.videoControl durationTime:1];
@@ -252,7 +248,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
         self.videoControl.pauseButton.hidden = NO;
         self.videoControl.playButton.hidden = YES;
-        //[self.videoControl.indicatorView stopAnimating];
+        [self.videoControl.indicatorView stopAnimating];
         [self startDurationTimer];
         [self.videoControl autoFadeOutControlBar];
         if (_position>0) {

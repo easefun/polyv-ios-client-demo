@@ -31,7 +31,7 @@
 /**切换码率*/
 -(void)switchLevel:(int)level;
 
--(id)initWithLocalMp4:(NSString*)vid level:(int)level;
+-(id)initWithLocalMp4:(NSString*)vid level:(int)level __deprecated;
 
 -(void)videoInfoDidLoaded;
 
