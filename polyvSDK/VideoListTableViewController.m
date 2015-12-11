@@ -112,14 +112,6 @@
         
     }] resume];
     
-    
-    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-        
-        [self registerForPreviewingWithDelegate:(id)self sourceView:self.view];
-        
-        
-    }
-    
     /*Video * v = [[Video alloc]initWithVid:@""];
     NSLog(@"%@",[v.allfilesize objectAtIndex:0]);*/
     [super viewDidLoad];
