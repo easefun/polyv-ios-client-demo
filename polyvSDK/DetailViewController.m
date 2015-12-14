@@ -52,7 +52,7 @@
     [self.videoPlayer setHeadTitle:self.video.title];
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
-    [self.videoPlayer setVid:self.video.vid];
+    [self.videoPlayer setVid:self.video.vid level:1];
     
     
     

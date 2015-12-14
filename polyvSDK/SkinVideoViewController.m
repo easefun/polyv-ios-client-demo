@@ -12,6 +12,7 @@
 
 #import "PVDanmuManager.h"
 #import "PvDanmuSendView.h"
+#import "PvReportManager.h"
 
 static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
@@ -128,11 +129,11 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)setHeadTitle:(NSString*)headtitle{
     [self.videoControl setHeadTitle:headtitle];
 }
-- (void)setVid:(NSString *)vid
+/*- (void)setVid:(NSString *)vid
 {
     [super setVid:vid];
     
-}
+}*/
 - (void)setParam1:(NSString*)param1{
     self.param1 = param1;
 }
@@ -310,7 +311,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             errorstring = @"playback failed without any given reason";
         }
         
-        [PolyvSettings reportError:[super getPid] vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
+        //[PvReportManager reportError:[super getPid] vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
+        [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
 
     }
     

@@ -153,6 +153,7 @@
 		CBA5D7181C0BD47E00781EA5 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
 		CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
 		CBA5D71B1C0C1FC200781EA5 /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
+		CBAE508A1C1EBD2D00D8B520 /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
 		CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadDemoViewController.h; sourceTree = "<group>"; };
 		CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadDemoViewController.m; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -341,6 +342,7 @@
 		CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CBAE508A1C1EBD2D00D8B520 /* PvReportManager.h */,
 				CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */,
 				CBA5D71B1C0C1FC200781EA5 /* PvUrlSessionDownloadDelegate.h */,
 				CBA5D70C1C0BD47E00781EA5 /* DownloadDelegate.h */,

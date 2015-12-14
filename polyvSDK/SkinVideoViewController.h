@@ -33,7 +33,6 @@ typedef enum PvGestureType PvGestureType;
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInWindow;
 - (void)dismiss;
-- (void)setVid:(NSString *)vid;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
 - (void)enableDanmu:(BOOL)enable;
 - (void)setHeadTitle:(NSString*)headtitle;

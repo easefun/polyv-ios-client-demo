@@ -15,10 +15,10 @@ extern NSString *PolyvReadtoken;
 extern NSString *PolyvWritetoken;
 extern NSString *PolyvUserId;
 
-
+/*
 +(void)stat:(NSString*)pid vid:(NSString*)vid flow:(long)flow pd:(int)pd sd:(int)sd cts:(int)cts duration:(int)duration;
 +(void)reportError:(NSString*)pid vid:(NSString*)vid error:(NSString*)error param1:(NSString*)param1 param2:(NSString*)param2 param3:(NSString*)param3 param4:(NSString*)param4 param5:(NSString*)param5;
-
+*/
 +(NSDictionary*)loadVideoJson:(NSString*)vid;
 +(BOOL)isVideoAvailable:(NSDictionary*)videoInfo;
 +(NSString*)getVideoPoolId:(NSString*)vid;
