@@ -13,37 +13,37 @@
 #import "FMDBHelper.h"
 #import "DetailViewController.h"
 
-//默认Portrait避免自动旋转
-@implementation UITabBarController (rotations)
 
-- (BOOL)shouldAutorotate
-{
+//默认Portrait避免自动旋转
+@implementation UITabBarController (MyApp)
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
+        return YES;
+    return NO;
+}
+-(BOOL)shouldAutorotate{
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationPortrait;
-}
+
 
 @end
 
-@implementation UINavigationController (navrotations)
-
-- (BOOL)shouldAutorotate {
+@implementation UINavigationController (MyApp)
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
+        return YES;
     
     return NO;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationPortrait;
-}
+
 
 @end
-
-
-
 @interface VideoListTableViewController (){
     
     NSMutableArray *_videolist;
@@ -339,13 +339,11 @@
     // Pass the selected object to the new view controller.
 }
 */
-
 - (BOOL)shouldAutorotate {
     return NO;
 }
 
--(NSUInteger)supportedInterfaceOrientations
-{
+-(NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
