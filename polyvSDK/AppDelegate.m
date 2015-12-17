@@ -13,17 +13,17 @@
 #import "PolyvUtil.h"
 
 
-
-
 @implementation AppDelegate
+
+
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
 
-    /*[[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
-    [[PolyvSettings sharedInstance] initVideoSettings:@"DFZhoOnkQf" Readtoken:@"nsJ7ZgQMN0-QsVkscukWt-qLfodxoDFm" Writetoken:@"Y07Q4yopIVXN83n-MPoIlirBKmrMPJu0" UserId:@"sl8da4jjbx"];
-    */
+    //[[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+    //[[PolyvSettings sharedInstance] initVideoSettings:PRIVATE_KEY Readtoken:READ_TOKEN Writetoken:WRITE_TOKEN UserId:USER_ID];
+    
 
     
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://demo.polyv.net/demo/appkey.php"]];
@@ -32,6 +32,7 @@
         NSLog(@"加载token失败");
         
     }else{
+        //NSLog(@"%@",config);
         [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
         [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
     }
