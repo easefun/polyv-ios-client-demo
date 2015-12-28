@@ -218,6 +218,7 @@
     [_fmdb updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
     [_fmdb updateDownloadStatic:vid status:1];
     _currentTask++;
+    started = false;
     [self startNext];
 }
 - (void) dataDownloadStop:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
