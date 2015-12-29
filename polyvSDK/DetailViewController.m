@@ -18,14 +18,31 @@
 
 @implementation DetailViewController
 
-- (BOOL)shouldAutorotate {
+/*- (BOOL)shouldAutorotate {
     return NO;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return UIInterfaceOrientationPortrait;
 }
+*/
 
+
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+-(NSInteger)supportedInterfaceOrientations{
+    
+    return UIInterfaceOrientationPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    //return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+    //return YES;
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+    
+}
 
 -(void)viewDidDisappear:(BOOL)animated {
     self.isPresented = YES;
@@ -36,6 +53,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     self.isPresented = NO;
+    
     //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.videoPlayer play];
@@ -52,7 +70,9 @@
     [self.videoPlayer setHeadTitle:self.video.title];
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
+    [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid level:1];
+    
     
     
     

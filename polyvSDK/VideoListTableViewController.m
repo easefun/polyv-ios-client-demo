@@ -14,36 +14,7 @@
 #import "DetailViewController.h"
 
 
-//默认Portrait避免自动旋转
-@implementation UITabBarController (MyApp)
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
-        return YES;
-    return NO;
-}
--(BOOL)shouldAutorotate{
-    return NO;
-}
-
-
-
-@end
-
-@implementation UINavigationController (MyApp)
--(BOOL)shouldAutorotate{
-    return NO;
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
-        return YES;
-    
-    return NO;
-}
-
-
-
-@end
 @interface VideoListTableViewController (){
     
     NSMutableArray *_videolist;
@@ -75,7 +46,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
-    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js?1"]];
+    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -283,11 +254,11 @@
     
     detailViewController.video = video;
     
-    
+    detailViewController.hidesBottomBarWhenPushed = YES;
     //detailViewController.hidesBottomBarWhenPushed = YES;
     
-    //[self.navigationController pushViewController:detailViewController animated:YES];
-    [self presentViewController:detailViewController animated:YES completion:nil];
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    //[self presentViewController:detailViewController animated:YES completion:nil];
     //[self presentViewController:[PlayViewController new] animated:YES completion:nil];
     
     //[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:detailViewController animated:YES completion:nil];

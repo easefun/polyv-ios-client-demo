@@ -25,14 +25,12 @@
     //[[PolyvSettings sharedInstance] initVideoSettings:PRIVATE_KEY Readtoken:READ_TOKEN Writetoken:WRITE_TOKEN UserId:USER_ID];
     
 
-    
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://demo.polyv.net/demo/appkey.php"]];
     NSArray*config =[PolyvUtil decryptUserConfig:data];
     if ([config count]!=4) {
         NSLog(@"加载token失败");
         
     }else{
-        //NSLog(@"%@",config);
         [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
         [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
     }
@@ -81,6 +79,39 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+
+@end
+
+
+//默认Portrait避免自动旋转
+@implementation UITabBarController (PolyvDemo)
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
+        return YES;
+    return NO;
+}
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+
+
+
+@end
+
+@implementation UINavigationController (PolyvDemo)
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if(toInterfaceOrientation == UIDeviceOrientationPortrait){
+        return YES;
+    }
+    
+    return NO;
 }
 
 
