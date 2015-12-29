@@ -25,7 +25,7 @@
     self.assetsLibrary = [[ALAssetsLibrary alloc] init];
     [self.imageOverlay setHidden:YES];
     [self.progressBar setProgress:.0];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{PLVRemoteURLDefaultsKey: @"http://v.polyv.net:1080/files/"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{PLVRemoteURLDefaultsKey: @"http://upload.polyv.net:1080/files/"}];
 
 }
 
@@ -83,7 +83,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     
     [self convertVideoToLowQuailtyWithInputURL:videoURL outputURL:outputURL handler:^(AVAssetExportSession *exportSession)
      {
-         [_hudView removeFromSuperview];
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [_hudView removeFromSuperview];
+         });
+         
          if (exportSession.status == AVAssetExportSessionStatusCompleted)
          {
              [self.urlTextView setText:nil];
@@ -91,6 +94,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
              [self.progressBar setProgress:.0];
              [self dismissViewControllerAnimated:YES
                                       completion:^{
+                                          
                                           NSString* type = [info valueForKey:UIImagePickerControllerMediaType];
                                           CFStringRef typeDescription = (UTTypeCopyDescription((__bridge CFStringRef)(type)));
                                           NSString* text = [NSString stringWithFormat:NSLocalizedString(@"Uploading %@…", nil), typeDescription];
@@ -99,9 +103,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
                                           [self.imageOverlay setHidden:NO];
                                           [self.chooseFileButton setEnabled:NO];
                                           
-                                          //[self uploadVideoFromAsset:info];
-                                          
                                           [self uploadVideoFromURL:outputURL];
+                                          
+                                          
                                       }];
 
          }
@@ -185,50 +189,48 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         if (isnan(progress)) {
             progress = .0;
         }
-        [self.progressBar setProgress:progress];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressBar setProgress:progress];
+        });
+        
+        
     };
 }
 
 - (void(^)(NSError* error))failureBlock
 {
     return ^(NSError* error) {
-        NSLog(@"Failed to upload file due to: %@", error);
-        [self.chooseFileButton setEnabled:YES];
-        NSString* text = self.urlTextView.text;
-        text = [text stringByAppendingFormat:@"\n%@", [error localizedDescription]];
-        [self.urlTextView setText:text];
-        [self.statusLabel setText:NSLocalizedString(@"Failed!", nil)];
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error",nil)
-                                   message:[error localizedDescription]
-                                   delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil] show];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Failed to upload file due to: %@", error);
+            [self.chooseFileButton setEnabled:YES];
+            NSString* text = self.urlTextView.text;
+            text = [text stringByAppendingFormat:@"\n%@", [error localizedDescription]];
+            [self.urlTextView setText:text];
+            [self.statusLabel setText:NSLocalizedString(@"Failed!", nil)];
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error",nil)
+                                        message:[error localizedDescription]
+                                       delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil] show];
+        });
+
+        
     };
 }
 
-- (void(^)(NSData* serverResponse))resultBlock
+- (void(^)(NSString* vid))resultBlock
 {
-    return ^(NSData* serverResponse) {
-        
-        [self.chooseFileButton setEnabled:YES];
-        [self.imageOverlay setHidden:YES];
-        self.imageView.alpha = 1;
-        NSString* serverResponseTxt= [[NSString alloc] initWithData:serverResponse encoding:NSUTF8StringEncoding];
-        
+    return ^(NSString* vid) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.chooseFileButton setEnabled:YES];
+             [self.imageOverlay setHidden:YES];
+             self.imageView.alpha = 1;
 
-        NSError *e = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: [serverResponseTxt dataUsingEncoding:NSUTF8StringEncoding] options: NSJSONReadingMutableContainers error: &e];
+             [self.urlTextView setText:vid];
+             
+             NSLog(@"%@",vid);
         
-        if (!jsonArray) {
-            NSLog(@"Error parsing JSON: %@", e);
-        } else {
-            for(NSDictionary *item in jsonArray) {
-                NSLog(@"Item: %@", item);
-            }
-        }
-        
-        
-        [self.urlTextView setText:serverResponseTxt];
-        
-        NSLog(@"%@",serverResponseTxt);
+         
+         });
+       
 
         
        

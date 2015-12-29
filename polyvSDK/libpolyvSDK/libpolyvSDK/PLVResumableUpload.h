@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^PLVUploadResultBlock)(NSData* serverResponse);
+typedef void (^PLVUploadResultBlock)(NSString* vid);
 typedef void (^PLVUploadFailureBlock)(NSError* error);
 typedef void (^PLVUploadProgressBlock)(NSInteger bytesWritten, NSInteger bytesTotal);
 
