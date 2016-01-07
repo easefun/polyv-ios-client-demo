@@ -41,7 +41,7 @@
     
     return YES;
 }
--(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(nonnull NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
+-(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
 {
     self.backgroundSessionCompletionHandler = completionHandler;
 }
