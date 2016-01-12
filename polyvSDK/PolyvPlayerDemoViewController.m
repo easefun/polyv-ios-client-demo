@@ -218,7 +218,7 @@
 {
 
     
-    _vid = @"sl8da4jjbxd81880fcefb9c7ccf806e2_s";
+    _vid = @"sl8da4jjbxe3a66fafaec8f00dba05db_s";
     _downloader = [PvUrlSessionDownload sharedInstance];
     
     [_downloader setCompleteBlock:^{
@@ -238,7 +238,7 @@
     }];
     
     //自动选择码率
-    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
+    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
     [self.view addSubview:self.videoPlayer.view];
     
     
