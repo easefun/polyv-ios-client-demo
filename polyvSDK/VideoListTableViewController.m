@@ -46,7 +46,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
-    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
+    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js?v2"]];
     [request setHTTPMethod:@"GET"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -68,6 +68,7 @@
                 video.duration = [item objectForKey:@"duration"];
                 video.piclink = [item objectForKey:@"first_image"];
                 video.df = [[item objectForKey:@"df"] intValue];
+                video.seed = [[item objectForKey:@"seed"] intValue];
                 video.allfilesize = [item objectForKey:@"filesize"];
                 
                 [_videolist addObject:video];
@@ -125,37 +126,22 @@
     UILabel *descLabel = (UILabel *)[cell viewWithTag:102];
     descLabel.text = video.desc;
     
+    UILabel *typeLabel = (UILabel *)[cell viewWithTag:105];
+    if (video.seed == 1) {
+        typeLabel.text = @"加密";
+    }else{
+        typeLabel.text = @"";
+    }
+    
+    
+    
+    
     UIButton * btn = (UIButton *)[cell viewWithTag:104];
     btn.tag = indexPath.row;
     
     //NSLog(@"%d - %@",indexPath.row,video.title);
     [btn addTarget:self action:@selector(downloadClick:) forControlEvents:UIControlEventTouchDown];
-    
-    
-    
-        
-        /*
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        UILabel *label_title =[[UILabel   alloc] initWithFrame:CGRectMake(10, 10, 320, 20)] ;
-        label_title.tag = 101;
-        label_title.text = video.title;
-        [cell.contentView addSubview:label_title];
-        
-        UIButton * btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn.tag = indexPath.row;
-        btn.frame = CGRectMake(280, 10, 40, 20);
-        [btn setTitle:@"下载" forState:UIControlStateNormal];
-        
-        [btn addTarget:self
-                       action:@selector(downloadClick:)
-             forControlEvents:UIControlEventTouchDown];
-        
-        [cell.contentView addSubview:btn];*/
-        
-        
 
-   
-    // Configure the cell...
     
     return cell;
 }
@@ -166,7 +152,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     
     _video = [_videolist objectAtIndex:indexPath.row];
-    switch (_video.df) {
+    switch (_video.allfilesize.count) {
         case 1:
             [[[UIAlertView alloc] initWithTitle:@"选择要下载的码率"
                                         message:@"您要下载哪个清晰度的视频?"

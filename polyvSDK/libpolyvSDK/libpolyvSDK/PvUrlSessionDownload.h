@@ -10,8 +10,8 @@
 
 @property int level;
 
-+ (id)sharedInstance;
-//- (instancetype)initWithVid:(NSString*)vid level:(int)level;
+//+ (id)sharedInstance;
+- (instancetype)initWithVid:(NSString*)vid level:(int)level;
 - (void)setBackgroundMode:(BOOL)isBackground;
 
 /**停止或暂停下载*/
@@ -21,7 +21,7 @@
 -(BOOL)isStoped;
 
 /**开始下载*/
-//- (void)start;
+- (void)start;
 /**设置下载代理回调*/
 -(void)setDownloadDelegate:(id<PvUrlSessionDownloadDelegate>)delegate;
 /**删除某个码率视频文件*/
@@ -35,9 +35,8 @@
 
 +(BOOL)isVideoExists:(NSString*)vid level:(int)level;
 
-// 开始新的下载
--(void)startNewDownlaodVideo:(NSString *)vid level:(int)level;
-
+/**取消下载会话*/
+-(void)cleanSession;
 
 
 @end

@@ -10,15 +10,16 @@
 #import "FMDBHelper.h"
 #import "Video.h"
 #import "SkinVideoViewController.h"
+#import "PolyvSettings.h"
 
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
+    NSMutableDictionary *_downloaderDictionary;
     FMDBHelper *_fmdb;
-    NSTimer *updateTimer;
     UIBarButtonItem *btnstart;
     BOOL started;
-    int _currentTask;
-    PvUrlSessionDownload * _downloader;
+    NSTimer *_updateTimer;
+    NSString* currentVid;
 }
 
 @property (nonatomic, strong) SkinVideoViewController *videoPlayer;
@@ -29,61 +30,65 @@
 
 
 
--(void)startNext{
+-(void)startAll{
+    //从数据库列表获取下载任务
+    _fmdb = [FMDBHelper sharedInstance];
+    _videolist = [_fmdb listDownloadVideo];
+    for (int i=0;i<_videolist.count;  i++) {
+        Video*video = [_videolist objectAtIndex:i];
+        //只加入新增任务
+        if ([_downloaderDictionary objectForKey:video.vid]==nil) {
+            PvUrlSessionDownload* downloader = [[PvUrlSessionDownload alloc]initWithVid:video.vid level:video.level];
+            [_downloaderDictionary setObject:downloader forKey:video.vid];
+            [downloader setDownloadDelegate:self];
+        }
+        
+        
+    }
     
-   
     
     if(started){
-        [_downloader stop];
+        for (NSString *aKey in [_downloaderDictionary allKeys]) {
+            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
+            [downloader stop];
+        }
+        [_updateTimer invalidate];
         [btnstart setTitle:@"全部开始"];
     }else{
-        if ([_videolist count]>0 && _currentTask<[_videolist count]) {
-            Video*video = [_videolist objectAtIndex:_currentTask];
-            [_downloader startNewDownlaodVideo:video.vid level:video.level];
-        }else{
-            NSLog(@"所有任务已经完成");
-            
+        for (NSString *aKey in [_downloaderDictionary allKeys]) {
+            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
+            [downloader start];
         }
+        [_updateTimer invalidate];
+        _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTable) userInfo:nil repeats:YES];
         [btnstart setTitle:@"全部停止"];
     }
     started = !started;
-
-    
-    
-    
-    
-
-   
-    
+ 
     
 }
 -(void)updateTable{
-    _fmdb = [FMDBHelper sharedInstance];
     _videolist = [_fmdb listDownloadVideo];
     [self.tableView reloadData];
 }
-- (void)viewDidLoad {
-    [self updateTable];
-    _currentTask = 0;
-    btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startNext)];
-    self.navigationItem.rightBarButtonItem = btnstart;
-    [updateTimer invalidate];
-    updateTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTable) userInfo:nil repeats:YES];
 
+-(void)viewDidAppear:(BOOL)animated{
+    [self updateTable];
+}
+- (void)viewDidLoad {
+    _downloaderDictionary = [NSMutableDictionary new];
+
+    btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startAll)];
+    self.navigationItem.rightBarButtonItem = btnstart;
+   
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
-    
-    _downloader=[PvUrlSessionDownload sharedInstance];
-    [_downloader setDownloadDelegate:self];
+    _fmdb = [FMDBHelper sharedInstance];
+    _videolist = [_fmdb listDownloadVideo];
     
     
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 }
 
 
@@ -137,6 +142,9 @@
         UILabel *label_percent =(UILabel*)[cell viewWithTag:103];
         label_percent.text = [NSString stringWithFormat:@"进度:%d%%",video.percent];
         
+        UILabel *label_filesize =(UILabel*)[cell viewWithTag:102];
+        label_filesize.text = [NSString stringWithFormat:@"大小:%lld",video.filesize ];
+        
     }
     // Configure the cell...
     
@@ -159,67 +167,55 @@
      [self.videoPlayer setHeadTitle:video.title];
      [self.videoPlayer showInWindow];
      [self.videoPlayer setVid:video.vid level:video.level];
-     
-    
-   
-    
-    
+
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Video *video = [_videolist objectAtIndex:indexPath.row];
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
+    [_fmdb removeDownloadVideo:video];
+    PvUrlSessionDownload * downloader = [_downloaderDictionary objectForKey:video.vid];
+    if(downloader!=nil){
+        [_downloaderDictionary removeObjectForKey:video.vid];
+        [downloader stop];
+        //删除任务需要执行清理下载URLSession，不然会再次加入任务的时候会报告session已经存在错误
+        [downloader cleanSession];
+    }
+    
+    
+    
+    //删除文件
+    [PvUrlSessionDownload deleteVideo:video.vid level:video.level];
+    
+    [self updateTable];
+
+}
+
+    
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //
+    return UITableViewCellEditingStyleDelete;
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return YES;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma download delegate
 
 - (void) downloadDidFinished:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
     NSLog(@"finished %@",vid);
+    
     [_fmdb updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
     [_fmdb updateDownloadStatic:vid status:1];
-    _currentTask++;
-    started = false;
-    [self startNext];
+    
+    
+    
+
+   
 }
 - (void) dataDownloadStop:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
     
@@ -229,6 +225,7 @@
 }
 - (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid percent: (NSNumber *) aPercent{
      [_fmdb updateDownloadPercent:vid percent:aPercent];
+
 }
 
 

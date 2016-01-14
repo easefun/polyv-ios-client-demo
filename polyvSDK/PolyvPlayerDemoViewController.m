@@ -140,7 +140,7 @@
  **/
 - (IBAction)downloadAction:(id)sender {
     [_downloader setDownloadDelegate:self];
-    [_downloader startNewDownlaodVideo:_vid level:1];
+    [_downloader start];
 }
 
 /**
@@ -219,7 +219,7 @@
 
     
     _vid = @"sl8da4jjbxe3a66fafaec8f00dba05db_s";
-    _downloader = [PvUrlSessionDownload sharedInstance];
+    _downloader = [[PvUrlSessionDownload alloc]initWithVid:_vid level:1];
     
     [_downloader setCompleteBlock:^{
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -238,7 +238,7 @@
     }];
     
     //自动选择码率
-    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid level:1];
+    self.videoPlayer = [[PLVMoviePlayerController alloc]initWithVid:_vid];
     [self.view addSubview:self.videoPlayer.view];
     
     

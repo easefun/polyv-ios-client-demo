@@ -19,6 +19,7 @@
 @synthesize allfilesize;
 @synthesize level;
 @synthesize df;
+@synthesize seed;
 @synthesize percent;
 @synthesize status;
 
@@ -31,6 +32,7 @@
         self.desc = [item objectForKey:@"duration"];
         self.piclink = [item objectForKey:@"first_image"];
         self.df = [[item objectForKey:@"df_num"] intValue];
+        self.seed = [[item objectForKey:@"seed"] intValue];
         self.allfilesize = [item objectForKey:@"filesize"];
     }
     return self;

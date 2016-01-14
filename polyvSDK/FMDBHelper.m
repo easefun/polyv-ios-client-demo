@@ -44,9 +44,6 @@
 - (void)readyDatabase
 {
     queue = [FMDatabaseQueue databaseQueueWithPath:self.DBName];
-    
-   // DB = [FMDatabase databaseWithPath:self.DBName];
-
 
 }
 #pragma mark downloadTable
@@ -82,9 +79,7 @@
         [db executeUpdate:@"update downloadlist set status=? where vid=?", [NSNumber numberWithInt:status],vid];
         
     }];
-    
-    
-    
+
 }
 
 -(void)removeDownloadVideo:(Video*)v{

@@ -19,6 +19,7 @@
 @property NSArray* allfilesize;
 @property int level;
 @property int df;
+@property int seed;
 @property int status;
 @property int percent;
 
