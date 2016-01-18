@@ -27,6 +27,8 @@ typedef enum PvGestureType PvGestureType;
 
 
 @property (nonatomic, copy)void(^dimissCompleteBlock)(void);
+@property (nonatomic, copy)void(^fullscreenBlock)(void);
+@property (nonatomic, copy)void(^shrinkscreenBlock)(void);
 @property (nonatomic, assign) CGRect frame;
 
 
@@ -35,6 +37,7 @@ typedef enum PvGestureType PvGestureType;
 - (void)dismiss;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
 - (void)enableDanmu:(BOOL)enable;
+- (void)keepNavigationBar:(BOOL)keep;
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;
 - (void)setParentViewController:(UIViewController*)viewController;

@@ -84,6 +84,7 @@
 
 -(void)removeDownloadVideo:(Video*)v{
     [queue inDatabase:^(FMDatabase *db) {
+        NSLog(@"delete %@",v.vid);
         [db executeUpdate:@"delete from downloadlist where vid=?", v.vid];
     }];
      

@@ -22,6 +22,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
 @property (nonatomic, assign) BOOL isFullscreenMode;
+@property (nonatomic, assign) BOOL keepNavigationBar;
 @property (nonatomic, assign) BOOL isBitRateViewShowing;
 @property (nonatomic, assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
@@ -72,6 +73,14 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 
+- (void)keepNavigationBar:(BOOL)keep{
+    self.keepNavigationBar = keep;
+    if (keep) {
+        [_navigationController setNavigationBarHidden:NO animated:NO];
+        self.videoControl.backButton.hidden = YES;
+    }
+    
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -87,7 +96,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.closeButton.hidden = YES;
         
         
-        
 
     }
     return self;
@@ -95,15 +103,21 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 #pragma mark - Override Method
 
+
 - (void)setContentURL:(NSURL *)contentURL
 {
     [self stop];
     [super setContentURL:contentURL];
     [self play];
 }
+
 - (void)setNavigationController:(UINavigationController*)navigationController{
     _navigationController = navigationController;
-    [_navigationController setNavigationBarHidden:YES animated:NO];
+    if (!self.keepNavigationBar) {
+        [_navigationController setNavigationBarHidden:YES animated:NO];
+    }
+    
+    
 }
 - (void)setParentViewController:(UIViewController*)viewController{
     _parentViewController = viewController;
@@ -238,8 +252,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpOutside];
+    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+    
+    //[self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
+    //[self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpOutside];
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
 }
@@ -440,6 +456,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (self.isFullscreenMode) {
         return;
     }
+    
+    
     if (self.videoControl.showInWindowMode) {
         self.originFrame = self.view.frame;
         CGFloat height = [[UIScreen mainScreen] bounds].size.width;
@@ -462,6 +480,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [UIView animateWithDuration:duration animations:^{
             [_parentViewController.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
         } completion:^(BOOL finished) {
+            if (self.keepNavigationBar) {
+                [_navigationController setNavigationBarHidden:YES];
+                self.videoControl.backButton.hidden = NO;
+            }
             _parentViewController.view.frame = _parentViewController.view.superview.bounds;
             self.frame = self.view.superview.bounds;
             self.view.frame =self.view.superview.bounds;
@@ -469,6 +491,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             [self.videoControl changeToFullsreen];
             self.videoControl.fullScreenButton.hidden = YES;
             self.videoControl.shrinkScreenButton.hidden = NO;
+            
             if (self.danmuManager) {
                 [self.danmuManager resetDanmuWithFrame:self.view.frame];
                 [self.danmuManager initStart];
@@ -476,6 +499,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             
             if (self.danmuEnabled) {
                 self.videoControl.sendDanmuButton.hidden = NO;
+            }
+            if (self.fullscreenBlock) {
+                self.fullscreenBlock();
             }
             
             
@@ -488,6 +514,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (!self.isFullscreenMode) {
         return;
     }
+    
     if (self.videoControl.showInWindowMode) {
         [UIView animateWithDuration:0.3f animations:^{
             [self.view setTransform:CGAffineTransformIdentity];
@@ -504,7 +531,13 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [UIView animateWithDuration:duration animations:^{
             [_parentViewController.view setTransform:CGAffineTransformIdentity];
         } completion:^(BOOL finished) {
-            _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+            if (self.keepNavigationBar) {
+                [_navigationController setNavigationBarHidden:NO];
+                self.videoControl.backButton.hidden = YES;
+            }else{
+                _parentViewController.view.frame = _parentViewController.view.superview.bounds;
+            }
+            
             self.frame = self.originFrame;
             self.view.frame = self.originFrame;
             self.isFullscreenMode = NO;
@@ -518,7 +551,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             if (self.danmuEnabled) {
                 self.videoControl.sendDanmuButton.hidden = YES;
             }
-            
+            if (self.shrinkscreenBlock) {
+                self.shrinkscreenBlock();
+            }
             
         }];
         
@@ -538,6 +573,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
+    NSLog(@"%f",floor(slider.value));
     [self setCurrentPlaybackTime:floor(slider.value)];
     [self play];
     [self.videoControl autoFadeOutControlBar];

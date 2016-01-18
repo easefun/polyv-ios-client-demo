@@ -403,7 +403,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
         [_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
         _progressSlider.value = 0.f;
-        _progressSlider.continuous = YES;
+        _progressSlider.continuous = NO;
     }
     return _progressSlider;
 }

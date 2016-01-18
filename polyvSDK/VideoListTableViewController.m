@@ -12,6 +12,7 @@
 #import "SkinVideoViewController.h"
 #import "FMDBHelper.h"
 #import "DetailViewController.h"
+#import "DetailViewController2.h"
 
 
 
@@ -235,19 +236,18 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
                                 @"Main" bundle:[NSBundle mainBundle]];
     
-    DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    //去除navigationBar
+    //DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
     
+    //保留navigationBar
+    DetailViewController2 *detailViewController = [[DetailViewController2 alloc]init];
     
     detailViewController.video = video;
     
     detailViewController.hidesBottomBarWhenPushed = YES;
-    //detailViewController.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:detailViewController animated:YES];
-    //[self presentViewController:detailViewController animated:YES completion:nil];
-    //[self presentViewController:[PlayViewController new] animated:YES completion:nil];
     
-    //[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:detailViewController animated:YES completion:nil];
 
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

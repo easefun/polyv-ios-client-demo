@@ -15,10 +15,8 @@
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
     NSMutableDictionary *_downloaderDictionary;
-    FMDBHelper *_fmdb;
     UIBarButtonItem *btnstart;
     BOOL started;
-    NSTimer *_updateTimer;
     NSString* currentVid;
 }
 
@@ -32,8 +30,46 @@
 
 -(void)startAll{
     //从数据库列表获取下载任务
-    _fmdb = [FMDBHelper sharedInstance];
-    _videolist = [_fmdb listDownloadVideo];
+   // _fmdb = [FMDBHelper sharedInstance];
+   // _videolist = [_fmdb listDownloadVideo];
+    
+    
+    
+    if(started){
+        for (NSString *aKey in [_downloaderDictionary allKeys]) {
+            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
+            [downloader stop];
+        }
+        [btnstart setTitle:@"全部开始"];
+    }else{
+        for (NSString *aKey in [_downloaderDictionary allKeys]) {
+            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
+            [downloader start];
+        }
+        [btnstart setTitle:@"全部停止"];
+    }
+    started = !started;
+ 
+    
+}
+
+-(void)updateVideo:(NSString*)vid percent:(int)percent{
+    
+    for (int i=0; i<_videolist.count; i++) {
+        Video*video = [_videolist objectAtIndex:i];
+        if ([video.vid isEqualToString:vid]) {
+            video.percent = percent;
+            //NSLog(@"upldate video percent: %@ %d",vid,percent);
+        }
+    }
+    [self.tableView reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    if (_downloaderDictionary == nil) {
+        _downloaderDictionary = [NSMutableDictionary new];
+    }
+    _videolist = [[FMDBHelper sharedInstance]listDownloadVideo];
     for (int i=0;i<_videolist.count;  i++) {
         Video*video = [_videolist objectAtIndex:i];
         //只加入新增任务
@@ -45,46 +81,18 @@
         
         
     }
-    
-    
-    if(started){
-        for (NSString *aKey in [_downloaderDictionary allKeys]) {
-            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
-            [downloader stop];
-        }
-        [_updateTimer invalidate];
-        [btnstart setTitle:@"全部开始"];
-    }else{
-        for (NSString *aKey in [_downloaderDictionary allKeys]) {
-            PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
-            [downloader start];
-        }
-        [_updateTimer invalidate];
-        _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTable) userInfo:nil repeats:YES];
-        [btnstart setTitle:@"全部停止"];
-    }
-    started = !started;
- 
-    
-}
--(void)updateTable{
-    _videolist = [_fmdb listDownloadVideo];
     [self.tableView reloadData];
 }
-
--(void)viewDidAppear:(BOOL)animated{
-    [self updateTable];
-}
 - (void)viewDidLoad {
-    _downloaderDictionary = [NSMutableDictionary new];
+    
 
     btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startAll)];
     self.navigationItem.rightBarButtonItem = btnstart;
    
     [self.tableView setDataSource:self];
     [self.tableView setDelegate:self];
-    _fmdb = [FMDBHelper sharedInstance];
-    _videolist = [_fmdb listDownloadVideo];
+    //_fmdb = [FMDBHelper sharedInstance];
+    //_videolist = [_fmdb listDownloadVideo];
     
     
     [super viewDidLoad];
@@ -122,7 +130,7 @@
         UILabel *label_filesize =[[UILabel alloc] initWithFrame:CGRectMake(120, 10, 100, 20)] ;
         label_filesize.tag = 102;
         label_filesize.font = [UIFont systemFontOfSize:12];
-        label_filesize.text = [NSString stringWithFormat:@"大小:%lld",video.filesize ];
+        label_filesize.text = [NSString stringWithFormat:@"大小:%@",[NSByteCountFormatter stringFromByteCount:video.filesize countStyle:NSByteCountFormatterCountStyleFile]];
         [cell.contentView addSubview:label_filesize];
         //percent
         UILabel *label_percent =[[UILabel alloc] initWithFrame:CGRectMake(220, 10, 120, 20)] ;
@@ -143,7 +151,9 @@
         label_percent.text = [NSString stringWithFormat:@"进度:%d%%",video.percent];
         
         UILabel *label_filesize =(UILabel*)[cell viewWithTag:102];
-        label_filesize.text = [NSString stringWithFormat:@"大小:%lld",video.filesize ];
+        
+
+        label_filesize.text = [NSString stringWithFormat:@"大小:%@",[NSByteCountFormatter stringFromByteCount:video.filesize countStyle:NSByteCountFormatterCountStyleFile]];
         
     }
     // Configure the cell...
@@ -174,13 +184,14 @@
 {
     Video *video = [_videolist objectAtIndex:indexPath.row];
 
-    [_fmdb removeDownloadVideo:video];
     PvUrlSessionDownload * downloader = [_downloaderDictionary objectForKey:video.vid];
     if(downloader!=nil){
-        [_downloaderDictionary removeObjectForKey:video.vid];
         [downloader stop];
         //删除任务需要执行清理下载URLSession，不然会再次加入任务的时候会报告session已经存在错误
         [downloader cleanSession];
+        
+        [_downloaderDictionary removeObjectForKey:video.vid];
+
     }
     
     
@@ -188,14 +199,15 @@
     //删除文件
     [PvUrlSessionDownload deleteVideo:video.vid level:video.level];
     
-    [self updateTable];
+    [[FMDBHelper sharedInstance] removeDownloadVideo:video];
+    [_videolist removeObject:video];
+    [self.tableView reloadData];
 
 }
 
     
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //
     return UITableViewCellEditingStyleDelete;
 }
 
@@ -209,11 +221,8 @@
 - (void) downloadDidFinished:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
     NSLog(@"finished %@",vid);
     
-    [_fmdb updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
-    [_fmdb updateDownloadStatic:vid status:1];
-    
-    
-    
+    [[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
+    [[FMDBHelper sharedInstance] updateDownloadStatic:vid status:1];
 
    
 }
@@ -221,13 +230,19 @@
     
 }
 - (void) dataDownloadFailed:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid reason:(NSString *) reason{
-    [_fmdb updateDownloadStatic:vid status:-1];
+    [[FMDBHelper sharedInstance] updateDownloadStatic:vid status:-1];
+     NSLog(@"dataDownloadFailed %@",vid);
 }
 - (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid percent: (NSNumber *) aPercent{
-     [_fmdb updateDownloadPercent:vid percent:aPercent];
+     [[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateVideo:vid percent:[aPercent intValue]];
+        NSLog(@"dataDownloadAtPercent%@",aPercent);
+
+     });
+    
 
 }
-
-
 
 @end
