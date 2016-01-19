@@ -174,6 +174,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     
     
+    
 }
 
 
@@ -573,7 +574,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
-    NSLog(@"%f",floor(slider.value));
     [self setCurrentPlaybackTime:floor(slider.value)];
     [self play];
     [self.videoControl autoFadeOutControlBar];

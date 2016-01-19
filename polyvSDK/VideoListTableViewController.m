@@ -237,10 +237,10 @@
                                 @"Main" bundle:[NSBundle mainBundle]];
     
     //去除navigationBar
-    //DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+    DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
     
     //保留navigationBar
-    DetailViewController2 *detailViewController = [[DetailViewController2 alloc]init];
+    //DetailViewController2 *detailViewController = [[DetailViewController2 alloc]init];
     
     detailViewController.video = video;
     
