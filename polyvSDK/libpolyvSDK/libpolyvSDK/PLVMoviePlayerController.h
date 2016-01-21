@@ -12,7 +12,8 @@
 @interface PLVMoviePlayerController: MPMoviePlayerController
 
 @property (nonatomic, strong)NSDictionary* videoInfo;
-
+@property int watchTimeDuration;
+@property int stayTimeDuration;
 
 /**传递vid并初始化一个播放器*/
 -(id)initWithVid:(NSString*)vid;
@@ -33,7 +34,7 @@
 
 -(id)initWithLocalMp4:(NSString*)vid level:(int)level __deprecated;
 
--(void)videoInfoDidLoaded;
+
 
 -(NSString*)getPid;
 -(NSString*)getVid;

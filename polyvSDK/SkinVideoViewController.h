@@ -30,7 +30,8 @@ typedef enum PvGestureType PvGestureType;
 @property (nonatomic, copy)void(^fullscreenBlock)(void);
 @property (nonatomic, copy)void(^shrinkscreenBlock)(void);
 @property (nonatomic, assign) CGRect frame;
-
+@property int watchVideoTimeDuration;
+@property int watchStartTime;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInWindow;

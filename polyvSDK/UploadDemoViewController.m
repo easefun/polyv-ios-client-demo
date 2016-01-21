@@ -11,10 +11,16 @@
 #import "PLVKit.h"
 #import "UploadDemoViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "SkinVideoViewController.h"
+#import "PolyvSettings.h"
+#import "PvVideo.h"
+
 #define PLVRemoteURLDefaultsKey @"PLVRemoteURL"
 
 @interface UploadDemoViewController ()
     @property (strong, nonatomic) ALAssetsLibrary* assetsLibrary;
+    @property (nonatomic, strong) SkinVideoViewController *videoPlayer;
+    @property NSString*vid;
 @end
 
 @implementation UploadDemoViewController
@@ -27,6 +33,41 @@
     [self.progressBar setProgress:.0];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{PLVRemoteURLDefaultsKey: @"http://upload.polyv.net:1080/files/"}];
 
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
+    
+    [singleTap setNumberOfTapsRequired:1];
+    [self.urlTextView addGestureRecognizer:singleTap];
+    
+    
+    
+    
+}
+
+-(void)handleSingleTap{
+    if (!self.videoPlayer) {
+        PvVideo *video = [PolyvSettings getVideo:self.vid];
+        if([video available]){
+            CGFloat width = [UIScreen mainScreen].bounds.size.width;
+            self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
+            __weak typeof(self)weakSelf = self;
+            [self.videoPlayer setDimissCompleteBlock:^{
+                [weakSelf.videoPlayer stop];
+                weakSelf.videoPlayer = nil;
+            }];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"视频还没准备好"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            
+        }
+        
+        
+    }
+    [self.videoPlayer showInWindow];
+    [self.videoPlayer setVid:self.vid level:1];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -224,11 +265,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
              [self.imageOverlay setHidden:YES];
              self.imageView.alpha = 1;
 
-             [self.urlTextView setText:vid];
-             
-             NSLog(@"%@",vid);
-        
-         
+             [self.urlTextView setText:[NSString stringWithFormat:@"点击播放 %@",vid]];
+             self.vid = vid;
+
          });
        
 

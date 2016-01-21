@@ -21,10 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    // Override point for customization after application launch.
 
-    //[[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
-    //[[PolyvSettings sharedInstance] initVideoSettings:PRIVATE_KEY Readtoken:READ_TOKEN Writetoken:WRITE_TOKEN UserId:USER_ID];
-    
-
+   
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://demo.polyv.net/demo/appkey.php"]];
     NSArray*config =[PolyvUtil decryptUserConfig:data];
     if ([config count]!=4) {
@@ -34,10 +31,7 @@
         [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
         [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
     }
-    
    
-  
-
     
     return YES;
 }

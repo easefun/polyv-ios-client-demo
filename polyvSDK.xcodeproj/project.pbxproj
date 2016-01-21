@@ -35,7 +35,6 @@
 		CB8E99D11B81CA0900CDD71A /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99CC1B81CA0900CDD71A /* FMResultSet.m */; };
 		CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8E99D21B81CA4D00CDD71A /* libsqlite3.0.dylib */; };
 		CB8E99D61B81DB8200CDD71A /* DownloadListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99D51B81DB8200CDD71A /* DownloadListTableViewController.m */; };
-		CB8E99DA1B81E75A00CDD71A /* ShareDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99D91B81E75A00CDD71A /* ShareDownloader.m */; };
 		CB8E99DF1B82E0C800CDD71A /* SkinVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */; };
 		CB8E99E01B82E0C800CDD71A /* SkinVideoViewControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */; };
 		CB9BA7861BD9D0DE00352498 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9BA7851BD9D0DE00352498 /* DetailViewController.m */; };
@@ -77,6 +76,7 @@
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		CB6569191C48AA6000AC2EC8 /* DetailViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController2.h; path = ../DetailViewController2.h; sourceTree = "<group>"; };
 		CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController2.m; path = ../DetailViewController2.m; sourceTree = "<group>"; };
+		CB65691F1C50B07800AC2EC8 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvPlayerDemoViewController.h; sourceTree = "<group>"; };
 		CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyvPlayerDemoViewController.m; sourceTree = "<group>"; };
@@ -112,8 +112,6 @@
 		CB8E99D21B81CA4D00CDD71A /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		CB8E99D41B81DB8200CDD71A /* DownloadListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadListTableViewController.h; sourceTree = "<group>"; };
 		CB8E99D51B81DB8200CDD71A /* DownloadListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadListTableViewController.m; sourceTree = "<group>"; };
-		CB8E99D81B81E75A00CDD71A /* ShareDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDownloader.h; sourceTree = "<group>"; };
-		CB8E99D91B81E75A00CDD71A /* ShareDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDownloader.m; sourceTree = "<group>"; };
 		CB8E99DB1B82E0C800CDD71A /* SkinVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinVideoViewController.h; sourceTree = "<group>"; };
 		CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinVideoViewController.m; sourceTree = "<group>"; };
 		CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinVideoViewControllerView.h; sourceTree = "<group>"; };
@@ -297,8 +295,6 @@
 				CB8E99AF1B81C3B800CDD71A /* FMDBHelper.m */,
 				CB8E99D41B81DB8200CDD71A /* DownloadListTableViewController.h */,
 				CB8E99D51B81DB8200CDD71A /* DownloadListTableViewController.m */,
-				CB8E99D81B81E75A00CDD71A /* ShareDownloader.h */,
-				CB8E99D91B81E75A00CDD71A /* ShareDownloader.m */,
 			);
 			path = polyvSDK;
 			sourceTree = "<group>";
@@ -347,6 +343,7 @@
 		CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CB65691F1C50B07800AC2EC8 /* PvVideo.h */,
 				CBAE508A1C1EBD2D00D8B520 /* PvReportManager.h */,
 				CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */,
 				CBA5D71B1C0C1FC200781EA5 /* PvUrlSessionDownloadDelegate.h */,
@@ -501,7 +498,6 @@
 				CB65691B1C48AA6000AC2EC8 /* DetailViewController2.m in Sources */,
 				CB8E99871B80C3CC00CDD71A /* Video.m in Sources */,
 				CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */,
-				CB8E99DA1B81E75A00CDD71A /* ShareDownloader.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

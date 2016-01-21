@@ -61,9 +61,6 @@
 
 
 - (void)viewDidLoad {
-    //
-    
-    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     CGFloat width = self.view.bounds.size.width;
     self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, width, width*(9.0/16.0))];

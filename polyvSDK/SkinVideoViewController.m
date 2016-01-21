@@ -55,10 +55,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     NSDate* _secondLoadStartTime;
     BOOL _firstLoadTimeSent;
     BOOL _secondLoadTimeSent;
+    NSTimer *_watchTimer;
+    
 }
 
-
-
+@synthesize watchVideoTimeDuration;
+@synthesize watchStartTime;
 
 -(void)play{
     
@@ -69,6 +71,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)dealloc
 {
     [self cancelObserver];
+    [_watchTimer invalidate];
     
 }
 
@@ -94,7 +97,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [self configObserver];
         [self configControlAction];
         self.videoControl.closeButton.hidden = YES;
-        
+        self.watchVideoTimeDuration = 0;
         
 
     }
@@ -209,6 +212,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             self.dimissCompleteBlock();
         }
     }];
+    [_watchTimer invalidate];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
@@ -273,13 +277,20 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             [super setCurrentPlaybackTime:_position];
             _position = 0;
         }
-    } else {
+        _watchTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                       target:self
+                                                     selector:@selector(watchTimer_tick:)
+                                                     userInfo:nil
+                                                      repeats:YES];
+    } else{
         self.videoControl.pauseButton.hidden = YES;
         self.videoControl.playButton.hidden = NO;
         [self stopDurationTimer];
         if (self.playbackState == MPMoviePlaybackStateStopped) {
             [self.videoControl animateShow];
         }
+        [_watchTimer invalidate];
+        
         
     }
 
@@ -290,14 +301,26 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 {
     
     if (self.loadState & MPMovieLoadStateStalled) {
+        [_watchTimer invalidate];
         [self.videoControl.indicatorView startAnimating];
     }
     if (self.loadState & MPMovieLoadStatePlaythroughOK) {
         [self.videoControl.indicatorView stopAnimating];
+
         _isPrepared = YES;
+        if (self.watchStartTime>0) {
+            [self setCurrentPlaybackTime:self.watchStartTime];
+            self.watchStartTime = -1;
+        }
     }
+    
+    
   
     
+}
+
+- (void) watchTimer_tick:(NSObject *)sender {
+    self.watchVideoTimeDuration++;
 }
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
@@ -332,6 +355,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
 
     }
+    [_watchTimer invalidate];
     
     
 }
@@ -451,7 +475,15 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     
 }
-
+-(BOOL)isIOS8{
+    NSString *ver = [[UIDevice currentDevice] systemVersion];
+    float ver_float = [ver floatValue];
+    if (ver_float>8 && ver_float<9) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
 - (void)fullScreenButtonClick
 {
     if (self.isFullscreenMode) {
@@ -475,6 +507,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }else{
         CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
+        //ios8翻转，弹幕键盘方向有问题，不需要弹幕可以去掉这行
+        if ([self isIOS8]) {
+            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+        }
         
         self.originFrame = self.view.frame;
         
@@ -529,6 +565,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
         
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
+        
+        
         [UIView animateWithDuration:duration animations:^{
             [_parentViewController.view setTransform:CGAffineTransformIdentity];
         } completion:^(BOOL finished) {
@@ -594,6 +632,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (self.danmuEnabled) {
         [_danmuManager rollDanmu:currentTime];
     }
+    //NSLog(@"%d",self.watchVideoTimeDuration);
     
 }
 

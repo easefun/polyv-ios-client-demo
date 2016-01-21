@@ -38,6 +38,7 @@
 
 
 - (void)viewDidLoad {
+    NSLog(@"download dir:%@",[[PolyvSettings sharedInstance]getDownloadDir]);
     
     _videolist = [NSMutableArray array];
     _fmdb = [FMDBHelper sharedInstance];
@@ -47,7 +48,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
-    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js?v2"]];
+    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];

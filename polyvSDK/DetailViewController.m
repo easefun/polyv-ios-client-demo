@@ -72,8 +72,8 @@
     [self.videoPlayer setParentViewController:self];
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid level:1];
-    
-    
+    //直接跳到上一次播放位置
+    //[self.videoPlayer setWatchStartTime:60];
     
     
     [super viewDidLoad];
