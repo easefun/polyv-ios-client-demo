@@ -46,7 +46,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated {
     self.isPresented = YES;
-    [self.videoPlayer pause];
+    [self.videoPlayer stop];
     
     [super viewDidDisappear:animated];
 }
@@ -61,19 +61,24 @@
 
 
 - (void)viewDidLoad {
-    //
-
-
-    //self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    
     CGFloat width = self.view.bounds.size.width;
     self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
     [self.videoPlayer setHeadTitle:self.video.title];
+    UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
+    [self.videoPlayer setLogo:logo location:PvLogoLocationTopRight size:CGSizeMake(70,30)];
+    
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid level:1];
+    [self.videoPlayer play];
     //直接跳到上一次播放位置
-    //[self.videoPlayer setWatchStartTime:60];
+    //[self.videoPlayer setWatchStartTime:30];
+    
     
     
     [super viewDidLoad];

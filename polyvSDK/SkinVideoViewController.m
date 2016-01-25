@@ -67,7 +67,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl.indicatorView startAnimating];
     [super play];
 }
+-(void)stop{
+    [self.videoControl.indicatorView stopAnimating];
+    [super stop];
 
+    
+}
 - (void)dealloc
 {
     [self cancelObserver];
@@ -146,11 +151,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)setHeadTitle:(NSString*)headtitle{
     [self.videoControl setHeadTitle:headtitle];
 }
-/*- (void)setVid:(NSString *)vid
-{
-    [super setVid:vid];
-    
-}*/
+
 - (void)setParam1:(NSString*)param1{
     self.param1 = param1;
 }
@@ -180,7 +181,30 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 
+-(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size{
+    /*UIImageView* logoview = [[UIImageView alloc]initWithImage:image];
+    //logoview.frame = CGRectMake(0,0,size.width,size.width);
 
+    switch (location) {
+        case PvLogoLocationTopLeft:
+            logoview.frame = CGRectMake(0, 0, size.width,size.height);
+            break;
+        case PvLogoLocationTopRight:
+            logoview.frame = CGRectMake(self.view.frame.size.width-size.width, 0, size.width,size.height);
+            break;
+        case PvLogoLocationBottomLeft:
+            logoview.frame = CGRectMake(0, self.view.frame.size.height-size.height, size.width,size.height);
+            break;
+        default:
+            logoview.frame = CGRectMake(self.view.frame.size.width-size.width , self.view.frame.size.height-size.height, size.width, size.height);
+            break;
+    }
+    [self.view addSubview:logoview];*/
+    [self.videoControl setLogoImage:image];
+    [self.videoControl setLogoPosition:location];
+    [self.videoControl setLogoSize:size];
+    [self.videoControl logoImageView];
+}
 
 
 - (void)enableDanmu:(BOOL)enable{
@@ -264,7 +288,16 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
 }
-
+-(void)setVid:(NSString *)vid{
+    [super setVid:vid];
+    [self stopCountWatchTime];
+    self.watchVideoTimeDuration = 0;
+}
+- (void)setVid:(NSString*)vid level:(int)level{
+    [super setVid:vid level:level];
+    [self stopCountWatchTime];
+    self.watchVideoTimeDuration = 0;
+}
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
@@ -277,20 +310,20 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             [super setCurrentPlaybackTime:_position];
             _position = 0;
         }
-        _watchTimer = [NSTimer scheduledTimerWithTimeInterval:1
-                                                       target:self
-                                                     selector:@selector(watchTimer_tick:)
-                                                     userInfo:nil
-                                                      repeats:YES];
+        [self startCountWatchTime];
+        
     } else{
         self.videoControl.pauseButton.hidden = YES;
         self.videoControl.playButton.hidden = NO;
         [self stopDurationTimer];
         if (self.playbackState == MPMoviePlaybackStateStopped) {
             [self.videoControl animateShow];
+            
         }
-        [_watchTimer invalidate];
+        [self stopCountWatchTime];
         
+        
+        //NSLog(@"stop");
         
     }
 
@@ -301,12 +334,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 {
     
     if (self.loadState & MPMovieLoadStateStalled) {
-        [_watchTimer invalidate];
+        [self stopCountWatchTime];
         [self.videoControl.indicatorView startAnimating];
     }
     if (self.loadState & MPMovieLoadStatePlaythroughOK) {
         [self.videoControl.indicatorView stopAnimating];
-
+        [self startCountWatchTime];
         _isPrepared = YES;
         if (self.watchStartTime>0) {
             [self setCurrentPlaybackTime:self.watchStartTime];
@@ -314,14 +347,25 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         }
     }
     
-    
   
     
 }
 
+-(void)startCountWatchTime{
+    [_watchTimer invalidate];
+    _watchTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                   target:self
+                                                 selector:@selector(watchTimer_tick:)
+                                                 userInfo:nil
+                                                  repeats:YES];
+}
+-(void)stopCountWatchTime{
+    [_watchTimer invalidate];
+}
 - (void) watchTimer_tick:(NSObject *)sender {
     self.watchVideoTimeDuration++;
 }
+
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
@@ -335,7 +379,16 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     //====error report
     NSDictionary *notificationUserInfo = [notification userInfo];
     NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+
     MPMovieFinishReason reason = [resultValue intValue];
+    
+    //NSLog(@"%f %f",self.duration,self.currentPlaybackTime);
+    
+    if (fabs(self.duration-self.currentPlaybackTime) <1) {
+        NSLog(@"观看完毕");
+    }else{
+        NSLog(@"没有完成");
+    }
     if (reason == MPMovieFinishReasonPlaybackError)
     {
         NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
@@ -350,12 +403,11 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         {
             errorstring = @"playback failed without any given reason";
         }
-        
-        //[PvReportManager reportError:[super getPid] vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
         [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
 
     }
-    [_watchTimer invalidate];
+    //NSLog(@"done");
+    [self stopCountWatchTime];
     
     
 }

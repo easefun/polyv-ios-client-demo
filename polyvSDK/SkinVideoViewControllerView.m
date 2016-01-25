@@ -14,6 +14,13 @@ static const CGFloat pVideoControlTimeLabelFontSize = 10.0;
 static const CGFloat pVideoControlTitleLabelFontSize = 16.0;
 static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
+enum PvLogoLocation {
+    PvLogoLocationTopLeft = 0,
+    PvLogoLocationTopRight = 1,
+    PvLogoLocationBottomLeft = 2,
+    PvLogoLocationBottomRight = 3
+};
+
 @interface SkinVideoViewControllerView ()
 
 @property (nonatomic, strong) UIView *topBar;
@@ -35,6 +42,9 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 @property (nonatomic, assign) BOOL isBarShowing;
 @property (nonatomic, assign) int currentBitRate;
+
+
+
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 @property (nonatomic, assign) BOOL isFullscreenMode;
@@ -51,6 +61,8 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        
+        [self addSubview:self.logoImageView];
         [self addSubview:self.bitRateView];
 
         [self addSubview:self.topBar];
@@ -121,8 +133,21 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
     self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    
-    
+    //logo 位置
+    switch (_logoPosition) {
+        case PvLogoLocationTopLeft:
+            _logoImageView.frame = CGRectMake(0, 0, _logoSize.width,_logoSize.height);
+            break;
+        case PvLogoLocationTopRight:
+            _logoImageView.frame = CGRectMake(self.frame.size.width-_logoSize.width, 0, _logoSize.width,_logoSize.height);
+            break;
+        case PvLogoLocationBottomLeft:
+            _logoImageView.frame = CGRectMake(0, self.frame.size.height-_logoSize.height, _logoSize.width,_logoSize.height);
+            break;
+        default:
+            _logoImageView.frame = CGRectMake(self.frame.size.width-_logoSize.width , self.frame.size.height-_logoSize.height, _logoSize.width, _logoSize.height);
+            break;
+    }
     
     //editContent.frame = self.sendDanmuButton.frame;
     [self arrangeBitRateButtons];
@@ -407,7 +432,6 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     return _progressSlider;
 }
-
 - (UIButton *)closeButton
 {
     if (!_closeButton) {
@@ -416,6 +440,22 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _closeButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
     }
     return _closeButton;
+}
+
+- (UIImageView *)logoImageView
+{
+    if (!_logoImageView) {
+        
+        _logoImageView = [[UIImageView alloc]initWithImage:_logoImage];
+        
+    }else{
+        [_logoImageView setImage:_logoImage];
+    }
+        
+   
+    //_logoImageView.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
+    
+    return _logoImageView;
 }
 
 - (UILabel *)timeLabel

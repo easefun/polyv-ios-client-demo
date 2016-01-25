@@ -11,6 +11,7 @@
 		CB22BED71BD7717F00148A56 /* pl-video-player-back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */; };
 		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
 		CB65691B1C48AA6000AC2EC8 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */; };
+		CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6569201C561B8B00AC2EC8 /* pvlogo.png */; };
 		CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */; };
 		CB79F827196E88C300A1B817 /* PolyvPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */; };
 		CB8E99871B80C3CC00CDD71A /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = CB8E99861B80C3CC00CDD71A /* Video.m */; };
@@ -77,6 +78,7 @@
 		CB6569191C48AA6000AC2EC8 /* DetailViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController2.h; path = ../DetailViewController2.h; sourceTree = "<group>"; };
 		CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController2.m; path = ../DetailViewController2.m; sourceTree = "<group>"; };
 		CB65691F1C50B07800AC2EC8 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
+		CB6569201C561B8B00AC2EC8 /* pvlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pvlogo.png; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CB79F824196E88C300A1B817 /* PolyvPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvPlayerDemoViewController.h; sourceTree = "<group>"; };
 		CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyvPlayerDemoViewController.m; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 		CBA37122196E6549008E95ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB6569201C561B8B00AC2EC8 /* pvlogo.png */,
 				CB231BEF1BDDD8B400EC18BF /* video.png */,
 				CB8E99941B81778500CDD71A /* Assets */,
 				CBF35D331B32B1E100E97C45 /* video-play.png */,
@@ -452,6 +455,7 @@
 				CBA37126196E6549008E95ED /* InfoPlist.strings in Resources */,
 				CB8E99AB1B81778500CDD71A /* pl-video-player-shrinkscreen@2x.png in Resources */,
 				CBA5D6C51C02EC0600781EA5 /* pl-video-player-backward@3x.png in Resources */,
+				CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */,
 				CB8E99A91B81778500CDD71A /* pl-video-player-point@2x.png in Resources */,
 				CBA5D6C41C02EC0600781EA5 /* pl-video-player-backward@2x.png in Resources */,
 				CB8E99A31B81778500CDD71A /* pl-video-player-fullscreen@2x.png in Resources */,

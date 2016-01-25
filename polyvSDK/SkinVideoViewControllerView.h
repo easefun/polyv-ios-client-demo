@@ -7,6 +7,9 @@
 //
 #import <UIKit/UIKit.h>
 
+
+
+
 @interface SkinVideoViewControllerView : UIView
 
 @property (nonatomic, strong, readonly) UIView *topBar;
@@ -25,6 +28,10 @@
 @property (nonatomic, strong, readonly) UIButton *danmuButton;
 @property (nonatomic, strong, readonly) UIButton *sendDanmuButton;
 @property (nonatomic, assign) BOOL showInWindowMode;
+@property (nonatomic, assign) int logoPosition;
+@property (nonatomic, assign) CGSize logoSize;
+@property (nonatomic, assign) UIImage* logoImage;
+@property (nonatomic, strong) UIImageView *logoImageView;
 
 
 - (void)animateHide;

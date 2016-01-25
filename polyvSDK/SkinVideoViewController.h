@@ -9,13 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "PLVMoviePlayerController.h"
 
+enum PvLogoLocation {
+    PvLogoLocationTopLeft = 0,
+    PvLogoLocationTopRight = 1,
+    PvLogoLocationBottomLeft = 2,
+    PvLogoLocationBottomRight = 3
+};
 
 enum PvGestureType {
     PvUnknown = 0,
     PvBrightness,
     PvVoice,
-    PvProgress,
+    PvProgress
 };
+
 
 typedef enum PvGestureType PvGestureType;
 
@@ -42,6 +49,11 @@ typedef enum PvGestureType PvGestureType;
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;
 - (void)setParentViewController:(UIViewController*)viewController;
+-(void)stop;
+- (void)setVid:(NSString*)vid;
+- (void)setVid:(NSString*)vid level:(int)level;
+//设置播放器logo
+-(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size;
 
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString*)param1;

@@ -184,6 +184,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     NSString * ext = @"mov";
     NSMutableDictionary* extraInfo = [[NSMutableDictionary alloc]init];
     [extraInfo setValue:ext forKey:@"ext"];
+    [extraInfo setValue:@"1357359024647" forKey:@"cataid"];
     [extraInfo setValue:@"polyvsdk" forKey:@"title"];
     [extraInfo setValue:@"polyvsdk upload demo video" forKey:@"desc"];
     [upload setExtraInfo:extraInfo];

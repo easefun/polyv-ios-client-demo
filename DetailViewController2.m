@@ -51,12 +51,35 @@
     [super viewDidDisappear:animated];
 }
 
+
+- (void) showConfirmationAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"流量提示"
+                                                   message:@"3G网络下继续播放?"
+                                                  delegate:self
+                                         cancelButtonTitle:@"停止播放"
+                                         otherButtonTitles:@"继续播放",nil];
+    [alert show];
+    
+}
+
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // 0 = Tapped yes
+    if (buttonIndex == 0)
+    {
+        // ....
+        [self.videoPlayer stop];
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     self.isPresented = NO;
     
     //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [self.videoPlayer play];
+    //[self.videoPlayer play];
 }
 
 
@@ -64,6 +87,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     CGFloat width = self.view.bounds.size.width;
     self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, width, width*(9.0/16.0))];
+    
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     //需要保留导航栏
@@ -71,13 +95,20 @@
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid level:1];
     
+    UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
+    [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30)];
+    
     [self.videoPlayer setFullscreenBlock:^{
         NSLog(@"should hide toolbox in this viewcontroller if needed");
     }];
     [self.videoPlayer setShrinkscreenBlock:^{
         NSLog(@"show toolbox back if needed");
     }];
+    //[self.videoPlayer pause];
     
+    
+    //[self showConfirmationAlert];
+
     
     
     
