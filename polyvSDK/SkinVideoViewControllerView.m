@@ -42,7 +42,7 @@ enum PvLogoLocation {
 
 @property (nonatomic, assign) BOOL isBarShowing;
 @property (nonatomic, assign) int currentBitRate;
-
+@property (nonatomic, assign) BOOL hideControl;
 
 
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
@@ -68,7 +68,7 @@ enum PvLogoLocation {
         [self addSubview:self.topBar];
         [self.topBar addSubview:self.titleLabel];
         [self.topBar addSubview:self.backButton];
-        [self.topBar addSubview:self.danmuButton];
+        //[self.topBar addSubview:self.danmuButton];
 
         [self.topBar addSubview:self.closeButton];
         
@@ -103,6 +103,21 @@ enum PvLogoLocation {
     }
     return self;
 }
+- (void)disableControl:(BOOL)disabled{
+    self.hideControl = disabled;
+    self.isBarShowing = NO;
+    if (disabled) {
+        self.topBar.alpha = 0.0;
+        self.bottomBar.alpha = 0.0;
+        self.sendDanmuButton.alpha = 0.0;
+    }else{
+        self.topBar.alpha = 1.0;
+        self.bottomBar.alpha = 1.0;
+        self.sendDanmuButton.alpha = 1.0;
+    }
+    
+    
+}
 
 - (void)layoutSubviews
 {
@@ -116,7 +131,7 @@ enum PvLogoLocation {
     self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
     
     
-    self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
+    //self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
     
     self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
     self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - pVideoControlBarHeight, CGRectGetWidth(self.bounds), pVideoControlBarHeight);
@@ -241,6 +256,9 @@ enum PvLogoLocation {
 
 - (void)animateShow
 {
+    if (self.hideControl) {
+        return;
+    }
     if (self.isBarShowing) {
         return;
     }
@@ -452,9 +470,8 @@ enum PvLogoLocation {
         [_logoImageView setImage:_logoImage];
     }
         
-   
+    [_logoImageView setAlpha:self.logoAlpha];
     //_logoImageView.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
-    
     return _logoImageView;
 }
 

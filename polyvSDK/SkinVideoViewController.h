@@ -23,6 +23,12 @@ enum PvGestureType {
     PvProgress
 };
 
+enum PvPlayMode {
+    PvVideoMode = 0,
+    PvTeaserMode = 1,
+    PvAdMode = 2
+};
+
 
 typedef enum PvGestureType PvGestureType;
 
@@ -45,6 +51,7 @@ typedef enum PvGestureType PvGestureType;
 - (void)dismiss;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
 - (void)enableDanmu:(BOOL)enable;
+- (void)enableTeaser:(BOOL)enable;
 - (void)keepNavigationBar:(BOOL)keep;
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;
@@ -53,7 +60,9 @@ typedef enum PvGestureType PvGestureType;
 - (void)setVid:(NSString*)vid;
 - (void)setVid:(NSString*)vid level:(int)level;
 //设置播放器logo
--(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size;
+-(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha;
+- (void)configObserver;
+- (void)cancelObserver;
 
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString*)param1;

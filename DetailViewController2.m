@@ -8,7 +8,8 @@
 
 #import "DetailViewController2.h"
 #import "SkinVideoViewController.h"
-
+#import "PvVideo.h"
+#import "PolyvSettings.h"
 @interface DetailViewController2 ()
 
 @property (nonatomic, strong)  SkinVideoViewController*videoPlayer;
@@ -46,7 +47,8 @@
 
 -(void)viewDidDisappear:(BOOL)animated {
     self.isPresented = YES;
-    [self.videoPlayer pause];
+    [self.videoPlayer stop];
+    [self.videoPlayer cancelObserver];
     
     [super viewDidDisappear:animated];
 }
@@ -76,27 +78,33 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     self.isPresented = NO;
-    
-    //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    //[self.videoPlayer play];
+    [self.videoPlayer configObserver];
 }
 
 
 - (void)viewDidLoad {
     self.edgesForExtendedLayout = UIRectEdgeNone;
     CGFloat width = self.view.bounds.size.width;
-    self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, width, width*(9.0/16.0))];
+    
+    
+    if (!self.videoPlayer) {
+        self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, width, width*(9.0/16.0))];
+    }
+    
     
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     //需要保留导航栏
     [self.videoPlayer keepNavigationBar:YES];
+    [self.videoPlayer setHeadTitle:self.video.title];
+    //开启片头播放
+    //[self.videoPlayer enableTeaser:YES];
     [self.videoPlayer setNavigationController:self.navigationController];
-    [self.videoPlayer setVid:self.video.vid level:1];
-    
+    [self.videoPlayer setVid:self.video.vid];
     UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
-    [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30)];
+    
+    [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
     
     [self.videoPlayer setFullscreenBlock:^{
         NSLog(@"should hide toolbox in this viewcontroller if needed");
@@ -104,7 +112,6 @@
     [self.videoPlayer setShrinkscreenBlock:^{
         NSLog(@"show toolbox back if needed");
     }];
-    //[self.videoPlayer pause];
     
     
     //[self showConfirmationAlert];

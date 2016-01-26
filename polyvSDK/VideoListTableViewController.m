@@ -241,7 +241,7 @@
     //DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
     
     //保留navigationBar
-    DetailViewController2 *detailViewController = [[DetailViewController2 alloc]init];
+    DetailViewController2 *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController2"];
     
     detailViewController.video = video;
     

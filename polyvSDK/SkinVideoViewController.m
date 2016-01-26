@@ -28,10 +28,13 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, strong) NSTimer *durationTimer;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
+@property (nonatomic, assign) BOOL teaserEnabled;
 @property (nonatomic, strong) PVDanmuManager *danmuManager;
 @property (nonatomic, strong) PvDanmuSendView *danmuSendV;
 
 @property (nonatomic, assign) NSString* headtitle;
+@property (nonatomic, assign) NSString* teaserURL;
+@property (nonatomic, assign) NSURL* videoContentURL;
 @property (nonatomic, assign) NSString* param1;
 
 
@@ -56,6 +59,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     BOOL _firstLoadTimeSent;
     BOOL _secondLoadTimeSent;
     NSTimer *_watchTimer;
+    
+    PvVideo * _pvVideo;
+    int _pvPlayMode;
     
 }
 
@@ -99,7 +105,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.controlStyle = MPMovieControlStyleNone;
         [self.view addSubview:self.videoControl];
         self.videoControl.frame = self.view.bounds;
-        [self configObserver];
+        //[self configObserver];
         [self configControlAction];
         self.videoControl.closeButton.hidden = YES;
         self.watchVideoTimeDuration = 0;
@@ -173,36 +179,17 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }];
     self.videoControl.closeButton.hidden = NO;
     self.videoControl.showInWindowMode = YES;
-    //[self enableDanmu:true];
     self.videoControl.backButton.hidden = YES;
-    
-    
-    
+
     
 }
 
--(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size{
-    /*UIImageView* logoview = [[UIImageView alloc]initWithImage:image];
-    //logoview.frame = CGRectMake(0,0,size.width,size.width);
+-(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha{
 
-    switch (location) {
-        case PvLogoLocationTopLeft:
-            logoview.frame = CGRectMake(0, 0, size.width,size.height);
-            break;
-        case PvLogoLocationTopRight:
-            logoview.frame = CGRectMake(self.view.frame.size.width-size.width, 0, size.width,size.height);
-            break;
-        case PvLogoLocationBottomLeft:
-            logoview.frame = CGRectMake(0, self.view.frame.size.height-size.height, size.width,size.height);
-            break;
-        default:
-            logoview.frame = CGRectMake(self.view.frame.size.width-size.width , self.view.frame.size.height-size.height, size.width, size.height);
-            break;
-    }
-    [self.view addSubview:logoview];*/
     [self.videoControl setLogoImage:image];
     [self.videoControl setLogoPosition:location];
     [self.videoControl setLogoSize:size];
+    [self.videoControl setLogoAlpha:alpha];
     [self.videoControl logoImageView];
 }
 
@@ -224,6 +211,11 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }
     
     
+}
+- (void)enableTeaser:(BOOL)enable{
+    self.teaserEnabled = enable;
+    
+
 }
 - (void)dismiss
 {
@@ -262,6 +254,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }
     
     [self.videoControl videoInfoLoaded:self.videoInfo];
+    
 }
 - (void)cancelObserver
 {
@@ -282,19 +275,36 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
-    
-    //[self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside];
-    //[self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpOutside];
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
 }
 -(void)setVid:(NSString *)vid{
-    [super setVid:vid];
-    [self stopCountWatchTime];
-    self.watchVideoTimeDuration = 0;
+    
+    [self setVid:vid level:0];
+
+    
 }
 - (void)setVid:(NSString*)vid level:(int)level{
-    [super setVid:vid level:level];
+    _pvVideo = [PolyvSettings getVideo:vid];
+    
+    if(_pvVideo.isInteractiveVideo){
+        NSLog(@"interactive_video");
+    }
+    
+    if ([_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled) {
+        _pvPlayMode = PvTeaserMode;
+        self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
+        [self.videoControl disableControl:YES];
+    }else{
+        [super stop];
+        if (level==0) {
+            [super setVid:vid];
+        }else{
+            [super setVid:vid level:level];
+        }
+        
+        
+    }
     [self stopCountWatchTime];
     self.watchVideoTimeDuration = 0;
 }
@@ -326,6 +336,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         //NSLog(@"stop");
         
     }
+    
 
     
 }
@@ -372,42 +383,49 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
-    
-    self.videoControl.progressSlider.value = self.duration;
-    double totalTime = floor(self.duration);
-    [self setTimeLabelValues:totalTime totalTime:totalTime];
-    //====error report
-    NSDictionary *notificationUserInfo = [notification userInfo];
-    NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
 
-    MPMovieFinishReason reason = [resultValue intValue];
-    
-    //NSLog(@"%f %f",self.duration,self.currentPlaybackTime);
-    
-    if (fabs(self.duration-self.currentPlaybackTime) <1) {
-        NSLog(@"观看完毕");
+    if (_pvPlayMode == PvTeaserMode) {
+         _pvPlayMode = PvVideoMode;
+        [super setVid:_pvVideo.vid];
+        [self.videoControl disableControl:NO];
+        self.videoControl.progressSlider.value = 0;
+       
     }else{
-        NSLog(@"没有完成");
-    }
-    if (reason == MPMovieFinishReasonPlaybackError)
-    {
-        NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
+        self.videoControl.progressSlider.value = self.duration;
+        double totalTime = floor(self.duration);
+        [self setTimeLabelValues:totalTime totalTime:totalTime];
+        //====error report
+        NSDictionary *notificationUserInfo = [notification userInfo];
+        NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
         
-        NSString*errorstring = @"";
-        if (mediaPlayerError)
+        MPMovieFinishReason reason = [resultValue intValue];
+        
+        if (fabs(self.duration-self.currentPlaybackTime) <1) {
+            //NSLog(@"观看完毕");
+        }else{
+            //NSLog(@"没有完成");
+        }
+        if (reason == MPMovieFinishReasonPlaybackError)
         {
-            errorstring = [NSString stringWithFormat:@"%@",[mediaPlayerError localizedDescription]];
+            NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
+            
+            NSString*errorstring = @"";
+            if (mediaPlayerError)
+            {
+                errorstring = [NSString stringWithFormat:@"%@",[mediaPlayerError localizedDescription]];
+                
+            }
+            else
+            {
+                errorstring = @"playback failed without any given reason";
+            }
+            [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
             
         }
-        else
-        {
-            errorstring = @"playback failed without any given reason";
-        }
-        [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
-
+        //NSLog(@"done");
+        [self stopCountWatchTime];
     }
-    //NSLog(@"done");
-    [self stopCountWatchTime];
+    
     
     
 }
@@ -536,7 +554,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         return NO;
     }
 }
-- (void)fullScreenButtonClick
+/*- (void)fullScreenButtonClick
 {
     if (self.isFullscreenMode) {
         return;
@@ -651,6 +669,73 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }
 
 }
+*/
+
+- (void)fullScreenButtonClick
+{
+    if (self.isFullscreenMode) {
+        return;
+    }
+    self.originFrame = self.view.frame;
+    CGFloat height = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat width = [[UIScreen mainScreen] bounds].size.height;
+    CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        self.frame = frame;
+        [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+    } completion:^(BOOL finished) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        if (self.keepNavigationBar) {
+            [_navigationController setNavigationBarHidden:YES];
+            self.videoControl.backButton.hidden = NO;
+        }
+        //_parentViewController.view.frame = _parentViewController.view.superview.bounds;
+        
+        self.isFullscreenMode = YES;
+        [self.videoControl changeToFullsreen];
+        self.videoControl.fullScreenButton.hidden = YES;
+        self.videoControl.shrinkScreenButton.hidden = NO;
+       
+        if (self.fullscreenBlock) {
+            self.fullscreenBlock();
+        }
+
+    }];
+}
+- (void)shrinkScreenButtonClick
+{
+    if (!self.isFullscreenMode) {
+        return;
+    }
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        [self.view setTransform:CGAffineTransformIdentity];
+        self.frame = self.originFrame;
+    } completion:^(BOOL finished) {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        if (self.keepNavigationBar) {
+            [_navigationController setNavigationBarHidden:NO];
+            self.videoControl.backButton.hidden = YES;
+        }else{
+            //_parentViewController.view.frame = _parentViewController.view.superview.bounds;
+        }
+        
+        
+        self.isFullscreenMode = NO;
+        [self.videoControl changeToSmallsreen];
+        self.videoControl.fullScreenButton.hidden = NO;
+        self.videoControl.shrinkScreenButton.hidden = YES;
+        
+        if (self.shrinkscreenBlock) {
+            self.shrinkscreenBlock();
+        }
+        
+    }];
+    
+}
+
 
 - (void)setProgressSliderMaxMinValues {
     CGFloat duration = self.duration;

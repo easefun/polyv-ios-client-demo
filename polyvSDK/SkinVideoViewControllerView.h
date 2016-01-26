@@ -29,6 +29,7 @@
 @property (nonatomic, strong, readonly) UIButton *sendDanmuButton;
 @property (nonatomic, assign) BOOL showInWindowMode;
 @property (nonatomic, assign) int logoPosition;
+@property (nonatomic, assign) CGFloat logoAlpha;
 @property (nonatomic, assign) CGSize logoSize;
 @property (nonatomic, assign) UIImage* logoImage;
 @property (nonatomic, strong) UIImageView *logoImageView;
@@ -45,4 +46,5 @@
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setDanmuButtonColor:(UIColor*)color;
 - (NSString *)videoImageName:(NSString *)name;
+- (void)disableControl:(BOOL)disabled;
 @end

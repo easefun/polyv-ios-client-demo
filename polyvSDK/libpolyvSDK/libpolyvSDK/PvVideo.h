@@ -22,7 +22,14 @@
 @property BOOL isInteractiveVideo;
 @property int status;
 @property int fullmp4;
+@property NSArray *hlslinks;
+@property NSArray *mp4links;
+@property BOOL outflow;
+@property BOOL timeoutflow;
+@property NSString*teaser_url;
 
 -(BOOL)available;
+
+
 
 @end
