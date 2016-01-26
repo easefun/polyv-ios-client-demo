@@ -167,10 +167,11 @@
     if (!self.videoPlayer) {
      CGFloat width = [UIScreen mainScreen].bounds.size.width;
      self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
+     [self.videoPlayer configObserver];
      __weak typeof(self)weakSelf = self;
      [self.videoPlayer setDimissCompleteBlock:^{
-     [weakSelf.videoPlayer stop];
-     weakSelf.videoPlayer = nil;
+            [weakSelf.videoPlayer stop];
+            weakSelf.videoPlayer = nil;
      }];
      
      }
