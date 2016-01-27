@@ -16,12 +16,12 @@ enum PvLogoLocation {
     PvLogoLocationBottomRight = 3
 };
 
-enum PvGestureType {
+/*enum PvGestureType {
     PvUnknown = 0,
     PvBrightness,
     PvVoice,
     PvProgress
-};
+};*/
 
 enum PvPlayMode {
     PvVideoMode = 0,
@@ -30,7 +30,7 @@ enum PvPlayMode {
 };
 
 
-typedef enum PvGestureType PvGestureType;
+//typedef enum PvGestureType PvGestureType;
 
 
 @import MediaPlayer;
@@ -50,7 +50,7 @@ typedef enum PvGestureType PvGestureType;
 - (void)showInWindow;
 - (void)dismiss;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
-- (void)enableDanmu:(BOOL)enable;
+//- (void)enableDanmu:(BOOL)enable;
 - (void)enableTeaser:(BOOL)enable;
 - (void)keepNavigationBar:(BOOL)keep;
 - (void)setHeadTitle:(NSString*)headtitle;

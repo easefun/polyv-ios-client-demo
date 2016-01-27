@@ -26,6 +26,6 @@
 + (NSData *)AES128DecryptedDataWithKey:(NSString *)key data:(NSData*)data;;
 + (NSData *)AES128EncryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;
 + (NSData *)AES128DecryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;
-
++(NSData*)loadDataFromURL:(NSURL*)url;
 + (NSArray *)decryptUserConfig:(NSData*)data;
 @end

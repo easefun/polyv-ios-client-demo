@@ -35,6 +35,9 @@ enum PvLogoLocation {
 @property (nonatomic, strong) UIButton *danmuButton;
 @property (nonatomic, strong) UIButton *sendDanmuButton;
 @property (nonatomic, strong) UISlider *progressSlider;
+@property (nonatomic, strong) UIProgressView *progressView;
+
+//@property (nonatomic, strong) PvExamView *pvExamView;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, strong) UILabel *timeLabel;
@@ -55,7 +58,6 @@ enum PvLogoLocation {
 
 @implementation SkinVideoViewControllerView
 
-//UITextField*editContent;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -63,6 +65,7 @@ enum PvLogoLocation {
         self.backgroundColor = [UIColor clearColor];
         
         [self addSubview:self.logoImageView];
+
         [self addSubview:self.bitRateView];
 
         [self addSubview:self.topBar];
@@ -72,7 +75,7 @@ enum PvLogoLocation {
 
         [self.topBar addSubview:self.closeButton];
         
-        [self addSubview:self.sendDanmuButton];
+        //[self addSubview:self.sendDanmuButton];
 
         self.bitRateView.hidden = YES;
 
@@ -84,14 +87,19 @@ enum PvLogoLocation {
         [self.bottomBar addSubview:self.fullScreenButton];
         [self.bottomBar addSubview:self.shrinkScreenButton];
         self.shrinkScreenButton.hidden = YES;
+        //[self.bottomBar addSubview:self.progressView];
         [self.bottomBar addSubview:self.progressSlider];
+
         [self.bottomBar addSubview:self.timeLabel];
         [self addSubview:self.indicatorView];
-        self.sendDanmuButton.hidden = YES;
+        //self.sendDanmuButton.hidden = YES;
+        
         
         //editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
         //[self addSubview:editContent];
         
+        //[self addSubview:self.pvExamView];
+        //self.pvExamView.hidden = YES;
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:tapGesture];
@@ -146,7 +154,11 @@ enum PvLogoLocation {
 
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
     self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
-    self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
+     //self.progressView.frame = CGRectMake(self.progressSlider.frame.origin.x,self.progressSlider.frame.origin.y+17,self.progressSlider.frame.size.width,self.progressSlider.frame.size.height);
+    //self.progressView.center=self.progressSlider.center;
+    //NSLog(@"%@ , %@",NSStringFromCGRect(self.progressView.frame),NSStringFromCGRect(self.progressSlider.frame));
+    
+    self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     //logo 位置
     switch (_logoPosition) {
@@ -163,6 +175,7 @@ enum PvLogoLocation {
             _logoImageView.frame = CGRectMake(self.frame.size.width-_logoSize.width , self.frame.size.height-_logoSize.height, _logoSize.width, _logoSize.height);
             break;
     }
+    //self.pvExamView.frame = self.frame;
     
     //editContent.frame = self.sendDanmuButton.frame;
     [self arrangeBitRateButtons];
@@ -392,6 +405,16 @@ enum PvLogoLocation {
     }
     return _danmuButton;
 }
+/*
+-(PvExamView*) pvExamView{
+    if (!_pvExamView) {
+        _pvExamView = [[PvExamView alloc]initWithFrame:self.frame];
+    }
+    
+    return _pvExamView;
+    
+    
+}*/
 - (UIButton *)sendDanmuButton
 {
     if (!_sendDanmuButton) {
@@ -450,6 +473,20 @@ enum PvLogoLocation {
     }
     return _progressSlider;
 }
+-(UIProgressView*)progressView
+{
+    if (!_progressView) {
+        _progressView=[[UIProgressView alloc]init];
+        _progressView.progress=0;
+        _progressView.trackTintColor=[UIColor lightGrayColor];
+        _progressView.progressTintColor=[UIColor redColor];
+    }
+    
+    return _progressView;
+    
+    
+}
+
 - (UIButton *)closeButton
 {
     if (!_closeButton) {

@@ -26,6 +26,8 @@
 @property NSArray *mp4links;
 @property BOOL outflow;
 @property BOOL timeoutflow;
+@property BOOL teaserShow;
+
 @property NSString*teaser_url;
 
 -(BOOL)available;

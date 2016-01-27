@@ -99,12 +99,15 @@
     [self.videoPlayer keepNavigationBar:YES];
     [self.videoPlayer setHeadTitle:self.video.title];
     //开启片头播放
-    //[self.videoPlayer enableTeaser:YES];
+    [self.videoPlayer enableTeaser:YES];
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid];
     UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     
     [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
+    //直接跳到上一次播放位置
+    //[self.videoPlayer setWatchStartTime:18];
+
     
     [self.videoPlayer setFullscreenBlock:^{
         NSLog(@"should hide toolbox in this viewcontroller if needed");

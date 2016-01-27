@@ -9,10 +9,12 @@
 #import "SkinVideoViewControllerView.h"
 #import "PolyvSettings.h"
 #import "PLVMoviePlayerController.h"
-
+#import "PvExam.h"
 #import "PVDanmuManager.h"
 #import "PvDanmuSendView.h"
 #import "PvReportManager.h"
+//#import "PvExamView.h"
+
 
 static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
@@ -29,8 +31,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, assign) BOOL teaserEnabled;
-@property (nonatomic, strong) PVDanmuManager *danmuManager;
-@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
+//@property (nonatomic, strong) PVDanmuManager *danmuManager;
+//@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
 
 @property (nonatomic, assign) NSString* headtitle;
 @property (nonatomic, assign) NSString* teaserURL;
@@ -43,7 +45,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, assign) CGFloat curVoice;
 @property (nonatomic, assign) CGFloat curBrightness;
 
-@property (nonatomic, assign) PvGestureType gestureType;
+//@property (nonatomic, assign) PvGestureType gestureType;
 
 @end
 
@@ -62,6 +64,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     PvVideo * _pvVideo;
     int _pvPlayMode;
+    
+    NSMutableDictionary* _videoExams;
     
 }
 
@@ -193,7 +197,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl logoImageView];
 }
 
-
+/*
 - (void)enableDanmu:(BOOL)enable{
     self.danmuEnabled  = enable;
     if (!self.danmuManager) {
@@ -211,7 +215,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     }
     
     
-}
+}*/
 - (void)enableTeaser:(BOOL)enable{
     self.teaserEnabled = enable;
     
@@ -267,8 +271,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl.backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.pauseButton addTarget:self action:@selector(pauseButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    //[self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    //[self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -284,14 +288,22 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
     
 }
+
+-(void)loadExamByVid:(NSString*)vid{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+        //NSLog(@"interactive_video");
+        _videoExams = [PolyvSettings getVideoExams:vid];
+    });
+}
 - (void)setVid:(NSString*)vid level:(int)level{
     _pvVideo = [PolyvSettings getVideo:vid];
     
-    if(_pvVideo.isInteractiveVideo){
-        NSLog(@"interactive_video");
-    }
     
-    if ([_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled) {
+    /*if(_pvVideo.isInteractiveVideo){
+        [self loadExamByVid:vid];
+    }*/
+    
+    if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
         _pvPlayMode = PvTeaserMode;
         self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
         [self.videoControl disableControl:YES];
@@ -352,7 +364,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [self.videoControl.indicatorView stopAnimating];
         [self startCountWatchTime];
         _isPrepared = YES;
-        if (self.watchStartTime>0) {
+        if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+            //NSLog(@"seek to %d",self.watchStartTime);
             [self setCurrentPlaybackTime:self.watchStartTime];
             self.watchStartTime = -1;
         }
@@ -389,6 +402,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [super setVid:_pvVideo.vid];
         [self.videoControl disableControl:NO];
         self.videoControl.progressSlider.value = 0;
+        [self setTimeLabelValues:0 totalTime:0];
        
     }else{
         self.videoControl.progressSlider.value = self.duration;
@@ -501,6 +515,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.videoControl.playButton.hidden = NO;
     self.videoControl.pauseButton.hidden = YES;
 }
+/*
 - (void)sendDanmuButtonClick{
     if (self.danmuSendV != nil) {
         self.danmuSendV = nil;
@@ -527,6 +542,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     
 }
+ */
 - (void)closeButtonClick
 {
     [self dismiss];
@@ -759,16 +775,42 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
 }
-
+/*
+-(void)showExam:(PvExam*)exam{
+    [self.videoControl.pvExamView setExam:exam];
+    __weak typeof(self)weakSelf = self;
+    self.videoControl.pvExamView.closedBlock = ^() {
+        weakSelf.videoControl.pvExamView.hidden = YES;
+        [weakSelf play];
+    };
+    self.videoControl.pvExamView.hidden = NO;
+    
+}*/
 - (void)monitorVideoPlayback
 {
     double currentTime = floor(self.currentPlaybackTime);
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
     self.videoControl.progressSlider.value = ceil(currentTime);
-    if (self.danmuEnabled) {
+    //self.videoControl.progressView.progress = (CGFloat)self.playableDuration/self.duration;
+    /*if (self.danmuEnabled) {
         [_danmuManager rollDanmu:currentTime];
-    }
+    }*/
+    
+    /*if(_pvVideo.isInteractiveVideo){
+        PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
+        if (exam) {
+            //NSLog(@"exam %@ at %f",exam.question, currentTime);
+            [self pause];
+            [self showExam:exam];
+            
+            
+        }
+        
+        
+        
+    }*/
+    
     //NSLog(@"%d",self.watchVideoTimeDuration);
     
 }
@@ -841,7 +883,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
 }
-
+/*
 - (void)sendDanmu:(PvDanmuSendView *)danmuSendV info:(NSString *)info {
     NSTimeInterval currentTime = [super currentPlaybackTime];
     [self.danmuManager sendDanmu:[super getVid] msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
@@ -859,7 +901,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [super play];
     [self.danmuManager resume:[super currentPlaybackTime]];
 }
-
+*/
 
 
 

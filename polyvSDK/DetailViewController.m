@@ -52,9 +52,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
-   
-    
     self.isPresented = NO;
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO];

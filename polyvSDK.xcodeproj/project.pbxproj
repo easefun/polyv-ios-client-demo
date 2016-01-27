@@ -72,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB0F44D81C5765CB00A6B13C /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
 		CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@2x.png"; sourceTree = "<group>"; };
 		CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@3x.png"; sourceTree = "<group>"; };
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
@@ -346,6 +347,7 @@
 		CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CB0F44D81C5765CB00A6B13C /* PvExam.h */,
 				CB65691F1C50B07800AC2EC8 /* PvVideo.h */,
 				CBAE508A1C1EBD2D00D8B520 /* PvReportManager.h */,
 				CBA5D71A1C0C1FC200781EA5 /* PvUrlSessionDownload.h */,
