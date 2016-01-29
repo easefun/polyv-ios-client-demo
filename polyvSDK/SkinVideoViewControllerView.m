@@ -87,7 +87,7 @@ enum PvLogoLocation {
         [self.bottomBar addSubview:self.fullScreenButton];
         [self.bottomBar addSubview:self.shrinkScreenButton];
         self.shrinkScreenButton.hidden = YES;
-        //[self.bottomBar addSubview:self.progressView];
+        [self.bottomBar addSubview:self.progressView];
         [self.bottomBar addSubview:self.progressSlider];
 
         [self.bottomBar addSubview:self.timeLabel];
@@ -154,9 +154,9 @@ enum PvLogoLocation {
 
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
     self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
-     //self.progressView.frame = CGRectMake(self.progressSlider.frame.origin.x,self.progressSlider.frame.origin.y+17,self.progressSlider.frame.size.width,self.progressSlider.frame.size.height);
-    //self.progressView.center=self.progressSlider.center;
-    //NSLog(@"%@ , %@",NSStringFromCGRect(self.progressView.frame),NSStringFromCGRect(self.progressSlider.frame));
+    self.progressView.frame = self.progressSlider.frame;
+    self.progressView.center=self.progressSlider.center;
+
     
     self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -466,8 +466,12 @@ enum PvLogoLocation {
     if (!_progressSlider) {
         _progressSlider = [[UISlider alloc] init];
         [_progressSlider setThumbImage:[UIImage imageNamed:[self videoImageName:@"pl-video-player-point"]] forState:UIControlStateNormal];
-        [_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
-        [_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
+        //[_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
+        UIColor * playedColor = [[UIColor alloc] initWithHue:229 saturation:40 brightness:75 alpha:1];
+        [_progressSlider setMinimumTrackTintColor:playedColor];
+        
+        [_progressSlider setMaximumTrackTintColor:[UIColor clearColor]];//透明，以显示buffer
+        //[_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
         _progressSlider.value = 0.f;
         _progressSlider.continuous = NO;
     }
@@ -476,10 +480,10 @@ enum PvLogoLocation {
 -(UIProgressView*)progressView
 {
     if (!_progressView) {
-        _progressView=[[UIProgressView alloc]init];
+        _progressView=[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
         _progressView.progress=0;
-        _progressView.trackTintColor=[UIColor lightGrayColor];
-        _progressView.progressTintColor=[UIColor redColor];
+        _progressView.trackTintColor=[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        _progressView.progressTintColor=[UIColor grayColor];
     }
     
     return _progressView;

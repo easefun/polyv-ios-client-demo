@@ -28,6 +28,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, assign) BOOL isBitRateViewShowing;
 @property (nonatomic, assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
+@property (nonatomic, strong) NSTimer *bufferTimer;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, assign) BOOL teaserEnabled;
@@ -224,6 +225,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)dismiss
 {
     [self stopDurationTimer];
+    [self stopBufferTimer];
     [UIView animateWithDuration:pVideoPlayerControllerAnimationTimeinterval animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
@@ -290,35 +292,36 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 -(void)loadExamByVid:(NSString*)vid{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-        //NSLog(@"interactive_video");
-        _videoExams = [PolyvSettings getVideoExams:vid];
-    });
+    _videoExams = [PolyvSettings getVideoExams:vid];
 }
 - (void)setVid:(NSString*)vid level:(int)level{
-    _pvVideo = [PolyvSettings getVideo:vid];
     
-    
-    /*if(_pvVideo.isInteractiveVideo){
-        [self loadExamByVid:vid];
-    }*/
-    
-    if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
-        _pvPlayMode = PvTeaserMode;
-        self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
-        [self.videoControl disableControl:YES];
-    }else{
-        [super stop];
-        if (level==0) {
-            [super setVid:vid];
-        }else{
-            [super setVid:vid level:level];
-        }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+        _pvVideo = [PolyvSettings getVideo:vid];
+        //NSLog(@"%@",vid);
+        dispatch_sync(dispatch_get_main_queue(), ^(void) {
+            if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
+                _pvPlayMode = PvTeaserMode;
+                self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
+                [self.videoControl disableControl:YES];
+            }else{
+                [super stop];
+                if (level==0) {
+                    [super setVid:vid];
+                }else{
+                    [super setVid:vid level:level];
+                }
+                
+                
+            }
+            [self stopCountWatchTime];
+            self.watchVideoTimeDuration = 0;
+        });
+
         
         
-    }
-    [self stopCountWatchTime];
-    self.watchVideoTimeDuration = 0;
+    });
+    
 }
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
@@ -327,6 +330,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.playButton.hidden = YES;
         [self.videoControl.indicatorView stopAnimating];
         [self startDurationTimer];
+        [self starBufferTimer];
         [self.videoControl autoFadeOutControlBar];
         if (_position>0) {
             [super setCurrentPlaybackTime:_position];
@@ -415,9 +419,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         MPMovieFinishReason reason = [resultValue intValue];
         
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
-            //NSLog(@"观看完毕");
+            NSLog(@"观看完毕");
         }else{
-            //NSLog(@"没有完成");
+            NSLog(@"没有完成");
         }
         if (reason == MPMovieFinishReasonPlaybackError)
         {
@@ -792,7 +796,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
     self.videoControl.progressSlider.value = ceil(currentTime);
-    //self.videoControl.progressView.progress = (CGFloat)self.playableDuration/self.duration;
+    
+    
     /*if (self.danmuEnabled) {
         [_danmuManager rollDanmu:currentTime];
     }*/
@@ -814,7 +819,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     //NSLog(@"%d",self.watchVideoTimeDuration);
     
 }
-
+-(void)trackBuffer{
+    CGFloat buffer = (CGFloat)self.playableDuration/self.duration;
+    if (!isnan(buffer)) {
+        self.videoControl.progressView.progress = buffer;
+    }
+}
 - (void)setTimeLabelValues:(double)currentTime totalTime:(double)totalTime {
     double minutesElapsed = floor(currentTime / 60.0);
     double secondsElapsed = fmod(currentTime, 60.0);
@@ -836,6 +846,17 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)stopDurationTimer
 {
     [self.durationTimer invalidate];
+}
+
+- (void)starBufferTimer
+{
+    self.bufferTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(trackBuffer) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.durationTimer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)stopBufferTimer
+{
+    [self.bufferTimer invalidate];
 }
 
 - (void)fadeDismissControl
