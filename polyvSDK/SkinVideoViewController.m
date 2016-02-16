@@ -66,7 +66,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     PvVideo * _pvVideo;
     int _pvPlayMode;
     
-    NSMutableDictionary* _videoExams;
+    NSMutableArray* _videoExams;
     
 }
 
@@ -295,10 +295,16 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     _videoExams = [PolyvSettings getVideoExams:vid];
 }
 - (void)setVid:(NSString*)vid level:(int)level{
-    
+   // NSLog(@"%@",vid);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         _pvVideo = [PolyvSettings getVideo:vid];
-        //NSLog(@"%@",vid);
+        //NSLog(@"%@",_pvVideo.videoSrts);
+        
+        if (_pvVideo.isInteractiveVideo) {
+            [self loadExamByVid:vid];
+            //清空答题纪录，下次观看也会重新弹出问题
+            [self.videoControl.pvExamView resetExamHistory];
+        }
         dispatch_sync(dispatch_get_main_queue(), ^(void) {
             if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
                 _pvPlayMode = PvTeaserMode;
@@ -332,10 +338,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [self startDurationTimer];
         [self starBufferTimer];
         [self.videoControl autoFadeOutControlBar];
-        if (_position>0) {
-            [super setCurrentPlaybackTime:_position];
-            _position = 0;
-        }
+
         [self startCountWatchTime];
         
     } else{
@@ -368,11 +371,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [self.videoControl.indicatorView stopAnimating];
         [self startCountWatchTime];
         _isPrepared = YES;
-        if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
-            //NSLog(@"seek to %d",self.watchStartTime);
-            [self setCurrentPlaybackTime:self.watchStartTime];
-            self.watchStartTime = -1;
-        }
+        
     }
     
   
@@ -397,6 +396,11 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
+    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+        NSLog(@"seek to %d",self.watchStartTime);
+        [self setCurrentPlaybackTime:self.watchStartTime];
+        self.watchStartTime = -1;
+    }
     
 }
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
@@ -421,7 +425,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
             NSLog(@"观看完毕");
         }else{
-            NSLog(@"没有完成");
+            NSLog(@"没有看完视频");
         }
         if (reason == MPMovieFinishReasonPlaybackError)
         {
@@ -779,17 +783,25 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
 }
-/*
+
 -(void)showExam:(PvExam*)exam{
+
     [self.videoControl.pvExamView setExam:exam];
     __weak typeof(self)weakSelf = self;
-    self.videoControl.pvExamView.closedBlock = ^() {
+    self.videoControl.pvExamView.closedBlock = ^(int seekto) {
         weakSelf.videoControl.pvExamView.hidden = YES;
+        if (seekto!=-1) {
+             //NSLog(@"%d",seekto);
+            [weakSelf setCurrentPlaybackTime:seekto];
+        }
+       
+        
         [weakSelf play];
     };
     self.videoControl.pvExamView.hidden = NO;
     
-}*/
+}
+
 - (void)monitorVideoPlayback
 {
     double currentTime = floor(self.currentPlaybackTime);
@@ -801,20 +813,30 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     /*if (self.danmuEnabled) {
         [_danmuManager rollDanmu:currentTime];
     }*/
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    /*if(_pvVideo.isInteractiveVideo){
-        PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
-        if (exam) {
-            //NSLog(@"exam %@ at %f",exam.question, currentTime);
+    if(_pvVideo.isInteractiveVideo){
+        PvExam * examShouldShow;
+        for(PvExam* exam in _videoExams)
+        {
+            if (exam.seconds<currentTime && ![[userDefaults stringForKey:[NSString stringWithFormat:@"exam_%@",exam.examId]] isEqualToString:@"Y"]) {
+                examShouldShow = exam;
+                break;
+            }
+            
+        }
+        //PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
+        if (examShouldShow) {
+           // NSLog(@"exam %@ at %f",exam.question, currentTime);
             [self pause];
-            [self showExam:exam];
+            [self showExam:examShouldShow];
             
             
         }
         
         
         
-    }*/
+    }
     
     //NSLog(@"%d",self.watchVideoTimeDuration);
     

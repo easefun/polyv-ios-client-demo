@@ -19,5 +19,6 @@
 @property BOOL skip;
 @property int wrongTime;
 @property int wrongShow;
+@property BOOL multiple;
 
 @end

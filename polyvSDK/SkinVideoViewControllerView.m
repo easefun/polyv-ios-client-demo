@@ -37,7 +37,7 @@ enum PvLogoLocation {
 @property (nonatomic, strong) UISlider *progressSlider;
 @property (nonatomic, strong) UIProgressView *progressView;
 
-//@property (nonatomic, strong) PvExamView *pvExamView;
+@property (nonatomic, strong) PvExamView *pvExamView;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, strong) UILabel *timeLabel;
@@ -98,8 +98,8 @@ enum PvLogoLocation {
         //editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
         //[self addSubview:editContent];
         
-        //[self addSubview:self.pvExamView];
-        //self.pvExamView.hidden = YES;
+        [self addSubview:self.pvExamView];
+        self.pvExamView.hidden = YES;
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:tapGesture];
@@ -175,8 +175,7 @@ enum PvLogoLocation {
             _logoImageView.frame = CGRectMake(self.frame.size.width-_logoSize.width , self.frame.size.height-_logoSize.height, _logoSize.width, _logoSize.height);
             break;
     }
-    //self.pvExamView.frame = self.frame;
-    
+    self.pvExamView.frame = self.frame;
     //editContent.frame = self.sendDanmuButton.frame;
     [self arrangeBitRateButtons];
     
@@ -405,7 +404,7 @@ enum PvLogoLocation {
     }
     return _danmuButton;
 }
-/*
+
 -(PvExamView*) pvExamView{
     if (!_pvExamView) {
         _pvExamView = [[PvExamView alloc]initWithFrame:self.frame];
@@ -414,7 +413,7 @@ enum PvLogoLocation {
     return _pvExamView;
     
     
-}*/
+}
 - (UIButton *)sendDanmuButton
 {
     if (!_sendDanmuButton) {

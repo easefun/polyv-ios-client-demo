@@ -26,7 +26,7 @@ extern NSString *PolyvUserId;
 +(NSString*)getPid;
 -(NSString*)getDownloadDir;
 -(void)setDownloadDir:(NSString*)dir;
-+(NSMutableDictionary*)getVideoExams:(NSString*)vid;
++(NSMutableArray*)getVideoExams:(NSString*)vid;
 +(void)setPort:(int)port;
 +(int)getPort;
 //+(NSURLSession*)getSessionById:(NSString*)sessionId;

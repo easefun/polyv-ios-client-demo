@@ -24,6 +24,7 @@
 @property int fullmp4;
 @property NSArray *hlslinks;
 @property NSArray *mp4links;
+@property NSArray *videoSrts;
 @property BOOL outflow;
 @property BOOL timeoutflow;
 @property BOOL teaserShow;
