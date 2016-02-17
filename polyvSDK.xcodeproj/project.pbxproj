@@ -7,10 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB0F44E51C59E13700A6B13C /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0F44E41C59E13700A6B13C /* DetailViewController2.m */; };
 		CB22BED61BD7717F00148A56 /* pl-video-player-back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */; };
 		CB22BED71BD7717F00148A56 /* pl-video-player-back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */; };
 		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
-		CB65691B1C48AA6000AC2EC8 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */; };
+		CB30D6CC1C745306001092BE /* SubTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB30D6CB1C745306001092BE /* SubTitleLabel.m */; };
+		CB6236A91C72C00100A7B832 /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A11C72C00100A7B832 /* checkbox_checked.png */; };
+		CB6236AA1C72C00100A7B832 /* checkbox_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A21C72C00100A7B832 /* checkbox_checked@2x.png */; };
+		CB6236AB1C72C00100A7B832 /* checkbox_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A31C72C00100A7B832 /* checkbox_unchecked.png */; };
+		CB6236AC1C72C00100A7B832 /* checkbox_unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A41C72C00100A7B832 /* checkbox_unchecked@2x.png */; };
+		CB6236AD1C72C00100A7B832 /* radio_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A51C72C00100A7B832 /* radio_checked.png */; };
+		CB6236AE1C72C00100A7B832 /* radio_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A61C72C00100A7B832 /* radio_checked@2x.png */; };
+		CB6236AF1C72C00100A7B832 /* radio_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A71C72C00100A7B832 /* radio_unchecked.png */; };
+		CB6236B01C72C00100A7B832 /* radio_unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6236A81C72C00100A7B832 /* radio_unchecked@2x.png */; };
 		CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6569201C561B8B00AC2EC8 /* pvlogo.png */; };
 		CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */; };
 		CB79F827196E88C300A1B817 /* PolyvPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB79F825196E88C300A1B817 /* PolyvPlayerDemoViewController.m */; };
@@ -73,11 +82,23 @@
 
 /* Begin PBXFileReference section */
 		CB0F44D81C5765CB00A6B13C /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
+		CB0F44E31C59E13700A6B13C /* DetailViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
+		CB0F44E41C59E13700A6B13C /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
+		CB0F44EA1C5B38E800A6B13C /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
 		CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@2x.png"; sourceTree = "<group>"; };
 		CB22BED51BD7717F00148A56 /* pl-video-player-back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-back@3x.png"; sourceTree = "<group>"; };
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
-		CB6569191C48AA6000AC2EC8 /* DetailViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController2.h; path = ../DetailViewController2.h; sourceTree = "<group>"; };
-		CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController2.m; path = ../DetailViewController2.m; sourceTree = "<group>"; };
+		CB30D6CA1C745306001092BE /* SubTitleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubTitleLabel.h; sourceTree = "<group>"; };
+		CB30D6CB1C745306001092BE /* SubTitleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubTitleLabel.m; sourceTree = "<group>"; };
+		CB6236A11C72C00100A7B832 /* checkbox_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_checked.png; sourceTree = "<group>"; };
+		CB6236A21C72C00100A7B832 /* checkbox_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_checked@2x.png"; sourceTree = "<group>"; };
+		CB6236A31C72C00100A7B832 /* checkbox_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unchecked.png; sourceTree = "<group>"; };
+		CB6236A41C72C00100A7B832 /* checkbox_unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unchecked@2x.png"; sourceTree = "<group>"; };
+		CB6236A51C72C00100A7B832 /* radio_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio_checked.png; sourceTree = "<group>"; };
+		CB6236A61C72C00100A7B832 /* radio_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio_checked@2x.png"; sourceTree = "<group>"; };
+		CB6236A71C72C00100A7B832 /* radio_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio_unchecked.png; sourceTree = "<group>"; };
+		CB6236A81C72C00100A7B832 /* radio_unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio_unchecked@2x.png"; sourceTree = "<group>"; };
+		CB6236C01C72C4D500A7B832 /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
 		CB65691F1C50B07800AC2EC8 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
 		CB6569201C561B8B00AC2EC8 /* pvlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pvlogo.png; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -195,6 +216,14 @@
 		CB8E99941B81778500CDD71A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				CB6236A11C72C00100A7B832 /* checkbox_checked.png */,
+				CB6236A21C72C00100A7B832 /* checkbox_checked@2x.png */,
+				CB6236A31C72C00100A7B832 /* checkbox_unchecked.png */,
+				CB6236A41C72C00100A7B832 /* checkbox_unchecked@2x.png */,
+				CB6236A51C72C00100A7B832 /* radio_checked.png */,
+				CB6236A61C72C00100A7B832 /* radio_checked@2x.png */,
+				CB6236A71C72C00100A7B832 /* radio_unchecked.png */,
+				CB6236A81C72C00100A7B832 /* radio_unchecked@2x.png */,
 				CBA5D6C21C02EC0600781EA5 /* pl-video-player-backward@2x.png */,
 				CBA5D6C31C02EC0600781EA5 /* pl-video-player-backward@3x.png */,
 				CB22BED41BD7717E00148A56 /* pl-video-player-back@2x.png */,
@@ -274,8 +303,8 @@
 				CB8E99891B80C4EA00CDD71A /* VideoListTableViewController.m */,
 				CB9BA7841BD9D0DE00352498 /* DetailViewController.h */,
 				CB9BA7851BD9D0DE00352498 /* DetailViewController.m */,
-				CB6569191C48AA6000AC2EC8 /* DetailViewController2.h */,
-				CB65691A1C48AA6000AC2EC8 /* DetailViewController2.m */,
+				CB0F44E31C59E13700A6B13C /* DetailViewController2.h */,
+				CB0F44E41C59E13700A6B13C /* DetailViewController2.m */,
 				CB8E99DB1B82E0C800CDD71A /* SkinVideoViewController.h */,
 				CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */,
 				CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */,
@@ -298,6 +327,8 @@
 				CB8E99AF1B81C3B800CDD71A /* FMDBHelper.m */,
 				CB8E99D41B81DB8200CDD71A /* DownloadListTableViewController.h */,
 				CB8E99D51B81DB8200CDD71A /* DownloadListTableViewController.m */,
+				CB30D6CA1C745306001092BE /* SubTitleLabel.h */,
+				CB30D6CB1C745306001092BE /* SubTitleLabel.m */,
 			);
 			path = polyvSDK;
 			sourceTree = "<group>";
@@ -347,6 +378,8 @@
 		CBA5D70B1C0BD47E00781EA5 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CB6236C01C72C4D500A7B832 /* PvExamView.h */,
+				CB0F44EA1C5B38E800A6B13C /* PvCachable.h */,
 				CB0F44D81C5765CB00A6B13C /* PvExam.h */,
 				CB65691F1C50B07800AC2EC8 /* PvVideo.h */,
 				CBAE508A1C1EBD2D00D8B520 /* PvReportManager.h */,
@@ -451,21 +484,29 @@
 				CB8E99AA1B81778500CDD71A /* pl-video-player-point@3x.png in Resources */,
 				CB8E99A11B81778500CDD71A /* pl-video-player-close@2x.png in Resources */,
 				CB8E99A21B81778500CDD71A /* pl-video-player-close@3x.png in Resources */,
+				CB6236AE1C72C00100A7B832 /* radio_checked@2x.png in Resources */,
 				CBA37134196E6549008E95ED /* Images.xcassets in Resources */,
 				CB8E99A41B81778500CDD71A /* pl-video-player-fullscreen@3x.png in Resources */,
 				CB22BED61BD7717F00148A56 /* pl-video-player-back@2x.png in Resources */,
+				CB6236A91C72C00100A7B832 /* checkbox_checked.png in Resources */,
 				CBA37126196E6549008E95ED /* InfoPlist.strings in Resources */,
 				CB8E99AB1B81778500CDD71A /* pl-video-player-shrinkscreen@2x.png in Resources */,
+				CB6236AC1C72C00100A7B832 /* checkbox_unchecked@2x.png in Resources */,
 				CBA5D6C51C02EC0600781EA5 /* pl-video-player-backward@3x.png in Resources */,
 				CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */,
 				CB8E99A91B81778500CDD71A /* pl-video-player-point@2x.png in Resources */,
+				CB6236B01C72C00100A7B832 /* radio_unchecked@2x.png in Resources */,
 				CBA5D6C41C02EC0600781EA5 /* pl-video-player-backward@2x.png in Resources */,
 				CB8E99A31B81778500CDD71A /* pl-video-player-fullscreen@2x.png in Resources */,
 				CBA3712F196E6549008E95ED /* Main.storyboard in Resources */,
 				CB8E99A71B81778500CDD71A /* pl-video-player-play@2x.png in Resources */,
+				CB6236AA1C72C00100A7B832 /* checkbox_checked@2x.png in Resources */,
+				CB6236AB1C72C00100A7B832 /* checkbox_unchecked.png in Resources */,
 				CB22BED71BD7717F00148A56 /* pl-video-player-back@3x.png in Resources */,
 				CBF35D341B32B1E100E97C45 /* video-play.png in Resources */,
+				CB6236AF1C72C00100A7B832 /* radio_unchecked.png in Resources */,
 				CB8E99A81B81778500CDD71A /* pl-video-player-play@3x.png in Resources */,
+				CB6236AD1C72C00100A7B832 /* radio_checked.png in Resources */,
 				CB231BF01BDDD8B400EC18BF /* video.png in Resources */,
 				CB8E99A61B81778500CDD71A /* pl-video-player-pause@3x.png in Resources */,
 				CB8E99AC1B81778500CDD71A /* pl-video-player-shrinkscreen@3x.png in Resources */,
@@ -501,9 +542,10 @@
 				CB9BA7861BD9D0DE00352498 /* DetailViewController.m in Sources */,
 				CB8E99D61B81DB8200CDD71A /* DownloadListTableViewController.m in Sources */,
 				CB8E99CE1B81CA0900CDD71A /* FMDatabaseAdditions.m in Sources */,
-				CB65691B1C48AA6000AC2EC8 /* DetailViewController2.m in Sources */,
 				CB8E99871B80C3CC00CDD71A /* Video.m in Sources */,
+				CB30D6CC1C745306001092BE /* SubTitleLabel.m in Sources */,
 				CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */,
+				CB0F44E51C59E13700A6B13C /* DetailViewController2.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

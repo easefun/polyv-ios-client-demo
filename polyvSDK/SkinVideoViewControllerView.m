@@ -7,6 +7,7 @@
 //
 #import "SkinVideoViewControllerView.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "SubTitleLabel.h"
 
 static const CGFloat pVideoControlBarHeight = 50.0;
 static const CGFloat pVideoControlAnimationTimeinterval = 0.5;
@@ -42,6 +43,7 @@ enum PvLogoLocation {
 @property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *subtitleLabel;
 
 @property (nonatomic, assign) BOOL isBarShowing;
 @property (nonatomic, assign) int currentBitRate;
@@ -65,6 +67,7 @@ enum PvLogoLocation {
         self.backgroundColor = [UIColor clearColor];
         
         [self addSubview:self.logoImageView];
+        [self addSubview:self.subtitleLabel];
 
         [self addSubview:self.bitRateView];
 
@@ -157,6 +160,8 @@ enum PvLogoLocation {
     self.progressView.frame = self.progressSlider.frame;
     self.progressView.center=self.progressSlider.center;
 
+    
+    self.subtitleLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
     
     self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -538,8 +543,26 @@ enum PvLogoLocation {
         _titleLabel.textAlignment = NSTextAlignmentLeft;
         _titleLabel.bounds = CGRectMake(0, 0, pVideoControlTitleLabelFontSize, pVideoControlTitleLabelFontSize);
         _titleLabel.hidden = TRUE;
+        
     }
     return _titleLabel;
+}
+-(UILabel*)subtitleLabel{
+    if (!_subtitleLabel) {
+        _subtitleLabel = [SubTitleLabel new];
+        _subtitleLabel.backgroundColor = [UIColor clearColor];
+        _subtitleLabel.font = [UIFont systemFontOfSize:pVideoControlTitleLabelFontSize];
+        _subtitleLabel.textColor = [UIColor whiteColor];
+        _subtitleLabel.numberOfLines = 0;
+        _subtitleLabel.textAlignment = NSTextAlignmentCenter;
+        //_subtitleLabel.bounds = CGRectMake(0, 0, pVideoControlTitleLabelFontSize, pVideoControlTitleLabelFontSize);
+        //_subtitleLabel.hidden = TRUE;
+        _subtitleLabel.shadowColor = [UIColor blackColor];
+        _subtitleLabel.shadowOffset = CGSizeMake(0,1);
+        [_subtitleLabel sizeToFit];
+
+    }
+    return _subtitleLabel;
 }
 
 - (UIActivityIndicatorView *)indicatorView

@@ -67,6 +67,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     int _pvPlayMode;
     
     NSMutableArray* _videoExams;
+    NSMutableDictionary * _parsedSrt;
     
 }
 
@@ -298,8 +299,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
    // NSLog(@"%@",vid);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         _pvVideo = [PolyvSettings getVideo:vid];
-        //NSLog(@"%@",_pvVideo.videoSrts);
         
+        
+        [self parseSubRip];
         if (_pvVideo.isInteractiveVideo) {
             [self loadExamByVid:vid];
             //清空答题纪录，下次观看也会重新弹出问题
@@ -378,6 +380,122 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 
+-(void)searchSubtitles{
+    if (self.playbackState == MPMoviePlaybackStatePlaying) {
+        //NSLog(@"%@",[_parsedSrt allValues]);
+        //let predicate = NSPredicate(format: "(%f >= %K) AND (%f <= %K)", currentPlaybackTime, "from", currentPlaybackTime, "to")
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K <= %f AND %K >= %f", @"from", self.currentPlaybackTime, @"to",self.currentPlaybackTime];
+        
+        NSArray* values = [_parsedSrt allValues];
+        //NSLog(@"%@",values);
+        if ([values count]>0) {
+            NSArray*search = [values filteredArrayUsingPredicate:predicate];
+            if ([search count]>0) {
+                NSDictionary* result =  [search objectAtIndex:0];
+                NSString* text = [result objectForKey:@"text"];
+                //NSLog(@"%@ - %f from:%@ to:%@",text,self.currentPlaybackTime,[result objectForKey:@"from"],[result objectForKey:@"to"]);
+                self.videoControl.subtitleLabel.text = text;
+            }else{
+                self.videoControl.subtitleLabel.text = @"";
+            }
+            
+        }
+       
+    }
+}
+
+-(void)parseSubRip{
+    //NSLog(@"%@",_pvVideo.videoSrts);
+    _parsedSrt = [NSMutableDictionary new];
+    
+    NSString * val = nil;
+    NSArray *values = [_pvVideo.videoSrts allValues];
+    
+    if ([values count] != 0){
+        val = [values objectAtIndex:0];
+    }
+    if (!val) {
+        return;
+    }
+    
+    self.videoControl.subtitleLabel.hidden = NO;
+    
+    
+    NSString *string = [NSString stringWithContentsOfURL:[NSURL URLWithString:val] encoding:NSUTF8StringEncoding error:NULL];
+    
+    string = [string stringByReplacingOccurrencesOfString:@"\n\r\n" withString:@"\n\n"];
+    string = [string stringByReplacingOccurrencesOfString:@"\n\n\n" withString:@"\n\n"];
+
+    
+    NSScanner *scanner = [NSScanner scannerWithString:string];
+    
+    while (![scanner isAtEnd])
+    {
+        @autoreleasepool
+        {
+            NSString *indexString;
+            (void) [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&indexString];
+            
+            NSString *startString;
+            (void) [scanner scanUpToString:@" --> " intoString:&startString];
+            NSScanner *aScanner = [NSScanner scannerWithString:startString];
+            
+            NSTimeInterval h =  0.0;
+            NSTimeInterval m =  0.0;
+            NSTimeInterval s =  0.0;
+            NSTimeInterval c =  0.0;
+            
+            [aScanner scanDouble:&h];
+            [aScanner scanString:@":" intoString:NULL];
+            [aScanner scanDouble:&m];
+            [aScanner scanString:@":" intoString:NULL];
+
+            [aScanner scanDouble:&s];
+            [aScanner scanString:@"," intoString:NULL];
+            [aScanner scanDouble:&c];
+            double fromTime = (h * 3600.0) + (m * 60.0) + s + (c / 1000.0);
+
+            
+            // My string constant doesn't begin with spaces because scanners
+            // skip spaces and newlines by default.
+            (void) [scanner scanString:@"-->" intoString:NULL];
+            
+            NSString *endString;
+            (void) [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&endString];
+            aScanner = [NSScanner scannerWithString:endString];
+            [aScanner scanDouble:&h];
+            [aScanner scanString:@":" intoString:NULL];
+            [aScanner scanDouble:&m];
+            [aScanner scanString:@":" intoString:NULL];
+            
+            [aScanner scanDouble:&s];
+            [aScanner scanString:@"," intoString:NULL];
+            [aScanner scanDouble:&c];
+            double endTime = (h * 3600.0) + (m * 60.0) + s + (c / 1000.0);
+            
+            NSString *textString;
+            // (void) [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&textString];
+            // BEGIN EDIT
+            (void) [scanner scanUpToString:@"\n\n" intoString:&textString];
+            
+            textString = [textString stringByReplacingOccurrencesOfString:@"\r\n" withString:@" "];
+            // Addresses trailing space added if CRLF is on a line by itself at the end of the SRT file
+            textString = [textString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            // END EDIT
+            
+            NSMutableDictionary *dictionary = [NSMutableDictionary new];
+            [dictionary setObject:[NSNumber numberWithDouble:fromTime] forKey:@"from"];
+            [dictionary setObject:[NSNumber numberWithDouble:endTime] forKey:@"to"];
+            //[dictionary setObject:indexString forKey:@"index"];
+            [dictionary setObject:textString forKey:@"text"];
+
+            
+            
+            //NSLog(@"%@", dictionary);
+            [_parsedSrt setObject:dictionary forKey:indexString];
+        }
+    }
+}
 -(void)startCountWatchTime{
     [_watchTimer invalidate];
     _watchTimer = [NSTimer scheduledTimerWithTimeInterval:1
@@ -810,6 +928,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.videoControl.progressSlider.value = ceil(currentTime);
     
     
+    [self searchSubtitles];
     /*if (self.danmuEnabled) {
         [_danmuManager rollDanmu:currentTime];
     }*/
