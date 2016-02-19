@@ -139,7 +139,7 @@ enum PvLogoLocation {
     self.titleLabel.frame = CGRectMake(CGRectGetWidth(self.backButton.bounds), CGRectGetMinX(self.topBar.bounds), 300, CGRectGetHeight(self.topBar.bounds));
     //NSLog(@"topBar: %@", NSStringFromCGRect(self.topBar.frame));
 
-    self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
+    //self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
     
     
     //self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
@@ -157,6 +157,8 @@ enum PvLogoLocation {
 
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
     self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
+    //self.progressSlider.frame = CGRectMake(0, -17, CGRectGetWidth(self.bounds), CGRectGetHeight(self.progressSlider.bounds));
+    
     self.progressView.frame = self.progressSlider.frame;
     self.progressView.center=self.progressSlider.center;
 

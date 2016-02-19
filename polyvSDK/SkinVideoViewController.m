@@ -382,18 +382,14 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 -(void)searchSubtitles{
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
-        //NSLog(@"%@",[_parsedSrt allValues]);
-        //let predicate = NSPredicate(format: "(%f >= %K) AND (%f <= %K)", currentPlaybackTime, "from", currentPlaybackTime, "to")
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K <= %f AND %K >= %f", @"from", self.currentPlaybackTime, @"to",self.currentPlaybackTime];
         
         NSArray* values = [_parsedSrt allValues];
-        //NSLog(@"%@",values);
         if ([values count]>0) {
             NSArray*search = [values filteredArrayUsingPredicate:predicate];
             if ([search count]>0) {
                 NSDictionary* result =  [search objectAtIndex:0];
                 NSString* text = [result objectForKey:@"text"];
-                //NSLog(@"%@ - %f from:%@ to:%@",text,self.currentPlaybackTime,[result objectForKey:@"from"],[result objectForKey:@"to"]);
                 self.videoControl.subtitleLabel.text = text;
             }else{
                 self.videoControl.subtitleLabel.text = @"";
@@ -405,28 +401,29 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 -(void)parseSubRip{
-    //NSLog(@"%@",_pvVideo.videoSrts);
     _parsedSrt = [NSMutableDictionary new];
     
     NSString * val = nil;
     NSArray *values = [_pvVideo.videoSrts allValues];
     
     if ([values count] != 0){
+        //暂时只选择第一条字幕
         val = [values objectAtIndex:0];
     }
     if (!val) {
         return;
     }
-    
-    self.videoControl.subtitleLabel.hidden = NO;
-    
+        
     
     NSString *string = [NSString stringWithContentsOfURL:[NSURL URLWithString:val] encoding:NSUTF8StringEncoding error:NULL];
+    if (string == nil) {
+        return;
+    }
     
     string = [string stringByReplacingOccurrencesOfString:@"\n\r\n" withString:@"\n\n"];
     string = [string stringByReplacingOccurrencesOfString:@"\n\n\n" withString:@"\n\n"];
 
-    
+   
     NSScanner *scanner = [NSScanner scannerWithString:string];
     
     while (![scanner isAtEnd])
@@ -456,8 +453,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             double fromTime = (h * 3600.0) + (m * 60.0) + s + (c / 1000.0);
 
             
-            // My string constant doesn't begin with spaces because scanners
-            // skip spaces and newlines by default.
             (void) [scanner scanString:@"-->" intoString:NULL];
             
             NSString *endString;
@@ -474,24 +469,20 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             double endTime = (h * 3600.0) + (m * 60.0) + s + (c / 1000.0);
             
             NSString *textString;
-            // (void) [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&textString];
             // BEGIN EDIT
             (void) [scanner scanUpToString:@"\n\n" intoString:&textString];
             
             textString = [textString stringByReplacingOccurrencesOfString:@"\r\n" withString:@" "];
-            // Addresses trailing space added if CRLF is on a line by itself at the end of the SRT file
             textString = [textString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             // END EDIT
             
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             [dictionary setObject:[NSNumber numberWithDouble:fromTime] forKey:@"from"];
             [dictionary setObject:[NSNumber numberWithDouble:endTime] forKey:@"to"];
-            //[dictionary setObject:indexString forKey:@"index"];
             [dictionary setObject:textString forKey:@"text"];
 
             
             
-            //NSLog(@"%@", dictionary);
             [_parsedSrt setObject:dictionary forKey:indexString];
         }
     }
@@ -897,6 +888,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 - (void)progressSliderValueChanged:(UISlider *)slider {
+
     double currentTime = floor(slider.value);
     double totalTime = floor(self.duration);
     [self setTimeLabelValues:currentTime totalTime:totalTime];
