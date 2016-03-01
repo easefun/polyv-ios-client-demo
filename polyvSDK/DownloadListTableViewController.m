@@ -177,7 +177,7 @@
      }
      [self.videoPlayer setHeadTitle:video.title];
      [self.videoPlayer showInWindow];
-     [self.videoPlayer setVid:video.vid level:video.level];
+      [self.videoPlayer setVid:video.vid level:0];
      //[self.videoPlayer setCurrentPlaybackRate:1.5f];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

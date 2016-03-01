@@ -61,6 +61,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     NSDate* _secondLoadStartTime;
     BOOL _firstLoadTimeSent;
     BOOL _secondLoadTimeSent;
+    BOOL _cancel;
     NSTimer *_watchTimer;
     
     PvVideo * _pvVideo;
@@ -84,6 +85,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [super stop];
 
     
+}
+- (void)cancel{
+    _cancel = YES;
+    [super cancel];
 }
 - (void)dealloc
 {
@@ -296,7 +301,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     _videoExams = [PolyvSettings getVideoExams:vid];
 }
 - (void)setVid:(NSString*)vid level:(int)level{
-   // NSLog(@"%@",vid);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         _pvVideo = [PolyvSettings getVideo:vid];
         
@@ -308,6 +312,9 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             [self.videoControl.pvExamView resetExamHistory];
         }
         dispatch_sync(dispatch_get_main_queue(), ^(void) {
+            if (_cancel) {
+                return;
+            }
             if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
                 _pvPlayMode = PvTeaserMode;
                 self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];

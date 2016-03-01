@@ -63,6 +63,7 @@ enum PvPlayMode {
 -(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha;
 - (void)configObserver;
 - (void)cancelObserver;
+- (void)cancel;
 
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString*)param1;

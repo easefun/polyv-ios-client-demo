@@ -32,12 +32,13 @@
 /**切换码率*/
 -(void)switchLevel:(int)level;
 
+-(void)cancel;
+
 -(id)initWithLocalMp4:(NSString*)vid level:(int)level __deprecated;
 
 
 
 -(NSString*)getPid;
 -(NSString*)getVid;
-
 
 @end

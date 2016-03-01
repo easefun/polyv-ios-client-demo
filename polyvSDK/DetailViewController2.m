@@ -56,6 +56,7 @@
 -(void)viewDidDisappear:(BOOL)animated {
     self.isPresented = YES;
     [self.videoPlayer stop];
+    [self.videoPlayer cancel];
     [self.videoPlayer cancelObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidDisappear:animated];
