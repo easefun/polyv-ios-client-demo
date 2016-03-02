@@ -371,6 +371,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
+    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+        [self setCurrentPlaybackTime:self.watchStartTime];
+        self.watchStartTime = -1;
+    }
     
     if (self.loadState & MPMovieLoadStateStalled) {
         [self stopCountWatchTime];
@@ -512,11 +516,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
-    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
-        NSLog(@"seek to %d",self.watchStartTime);
-        [self setCurrentPlaybackTime:self.watchStartTime];
-        self.watchStartTime = -1;
-    }
     
 }
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{

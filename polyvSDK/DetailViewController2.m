@@ -122,7 +122,7 @@
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid];
     //直接跳到上一次播放位置
-    //[self.videoPlayer setWatchStartTime:8];
+    //[self.videoPlayer setWatchStartTime:380];
     [self.videoPlayer play];
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     
