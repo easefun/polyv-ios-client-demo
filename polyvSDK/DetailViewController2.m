@@ -55,6 +55,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated {
     self.isPresented = YES;
+    self.videoPlayer.contentURL = nil;
     [self.videoPlayer stop];
     [self.videoPlayer cancel];
     [self.videoPlayer cancelObserver];
@@ -113,7 +114,7 @@
     
     
     [self.view addSubview:self.videoPlayer.view];
-    [self.videoPlayer setParentViewController:self];
+    //[self.videoPlayer setParentViewController:self];
     //需要保留导航栏
     [self.videoPlayer keepNavigationBar:YES];
     [self.videoPlayer setHeadTitle:self.video.title];

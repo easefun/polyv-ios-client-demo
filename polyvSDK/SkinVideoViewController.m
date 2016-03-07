@@ -87,6 +87,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 - (void)cancel{
+    NSLog(@"cancel");
     _cancel = YES;
     [super cancel];
 }
