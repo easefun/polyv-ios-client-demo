@@ -919,6 +919,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 
+//
 - (void)monitorVideoPlayback
 {
     double currentTime = floor(self.currentPlaybackTime);
