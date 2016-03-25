@@ -294,7 +294,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     [self setProgressSliderMaxMinValues];
@@ -886,16 +886,18 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
-    [self setCurrentPlaybackTime:floor(slider.value)];
-    [self play];
-    [self.videoControl autoFadeOutControlBar];
+	// NSLog(@"end");
+	
+	[self play];
+	[self.videoControl autoFadeOutControlBar];
 }
 
 - (void)progressSliderValueChanged:(UISlider *)slider {
-
-    double currentTime = floor(slider.value);
-    double totalTime = floor(self.duration);
-    [self setTimeLabelValues:currentTime totalTime:totalTime];
+	//	NSLog(@"slider: %f", slider.value);
+	[self setCurrentPlaybackTime:floor(slider.value)];
+	double currentTime = floor(slider.value);
+	double totalTime = floor(self.duration);
+	[self setTimeLabelValues:currentTime totalTime:totalTime];
 }
 
 -(void)showExam:(PvExam*)exam{
