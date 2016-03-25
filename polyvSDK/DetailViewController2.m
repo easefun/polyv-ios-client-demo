@@ -99,6 +99,7 @@
                                              selector:@selector(movieLoadStateDidChange:)
                                                  name:MPMoviePlayerPlaybackStateDidChangeNotification
                                                object:nil];
+	[super viewWillAppear:animated];
 }
 
 

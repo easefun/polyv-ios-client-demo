@@ -104,12 +104,8 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     NSLog(@"cancel");
     _cancel = YES;
     [super cancel];
-}
-- (void)dealloc
-{
-    [self cancelObserver];
-    [_watchTimer invalidate];
-    
+	[self cancelObserver];
+	[_watchTimer invalidate];
 }
 
 
@@ -119,7 +115,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [_navigationController setNavigationBarHidden:NO animated:NO];
         self.videoControl.backButton.hidden = YES;
     }
-    
 }
 
 - (instancetype)initWithFrame:(CGRect)frame

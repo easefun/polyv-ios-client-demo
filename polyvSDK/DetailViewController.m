@@ -58,6 +58,7 @@
     [self.videoPlayer configObserver];
     
     [self.videoPlayer play];
+	[super viewWillAppear:animated];
 }
 
 
