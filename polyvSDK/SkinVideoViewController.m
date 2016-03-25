@@ -75,6 +75,20 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @synthesize watchVideoTimeDuration;
 @synthesize watchStartTime;
 
+- (void)setEnableExam:(BOOL)enableExam{
+	_enableExam = enableExam;
+//	NSLog(@"%s - vid = %@ - 是否可交互 = %d", __FUNCTION__, self.getVid, _pvVideo.isInteractiveVideo);
+	if (!self.getVid || !_pvVideo.isInteractiveVideo) return;
+	if (_enableExam) { // 开启问答
+//		NSLog(@"开启问答");
+		_videoExams = [PolyvSettings getVideoExams:self.getVid];
+		//清空答题纪录，下次观看也会重新弹出问题
+		[self.videoControl.pvExamView resetExamHistory];
+	}else{ // 关闭问答
+//		NSLog(@"关闭问答");
+	}
+}
+
 -(void)play{
     
     [self.videoControl.indicatorView startAnimating];
@@ -297,48 +311,36 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
     
 }
-
--(void)loadExamByVid:(NSString*)vid{
-    _videoExams = [PolyvSettings getVideoExams:vid];
-}
 - (void)setVid:(NSString*)vid level:(int)level{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-        _pvVideo = [PolyvSettings getVideo:vid];
-        
-        
-        [self parseSubRip];
-        if (_pvVideo.isInteractiveVideo) {
-            [self loadExamByVid:vid];
-            //清空答题纪录，下次观看也会重新弹出问题
-            [self.videoControl.pvExamView resetExamHistory];
-        }
-        dispatch_sync(dispatch_get_main_queue(), ^(void) {
-            if (_cancel) {
-                return;
-            }
-            if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && self.teaserEnabled && _pvVideo.teaserShow) {
-                _pvPlayMode = PvTeaserMode;
-                self.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
-                [self.videoControl disableControl:YES];
-            }else{
-                [super stop];
-                if (level==0) {
-                    [super setVid:vid];
-                }else{
-                    [super setVid:vid level:level];
-                }
-                
-                
-            }
-            [self stopCountWatchTime];
-            self.watchVideoTimeDuration = 0;
-        });
-
-        
-        
-    });
-    
+	__weak typeof(self)weakSelf = self;
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+		_pvVideo = [PolyvSettings getVideo:vid];
+		[weakSelf parseSubRip];
+		NSLog(@"vid = %@", weakSelf.getVid);
+		
+		dispatch_sync(dispatch_get_main_queue(), ^(void) {
+			if (_cancel) {
+				return;
+			}
+			if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
+				_pvPlayMode = PvTeaserMode;
+				weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
+				[weakSelf.videoControl disableControl:YES];
+			}else{
+				[super stop];
+				if (level==0) {
+					[super setVid:vid];
+				}else{
+					[super setVid:vid level:level];
+				}
+			}
+			[weakSelf stopCountWatchTime];
+			weakSelf.watchVideoTimeDuration = 0;
+			[weakSelf setEnableExam:weakSelf.enableExam];
+		});
+	});
 }
+
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
@@ -922,43 +924,43 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 //
 - (void)monitorVideoPlayback
 {
-    double currentTime = floor(self.currentPlaybackTime);
-    double totalTime = floor(self.duration);
-    [self setTimeLabelValues:currentTime totalTime:totalTime];
-    self.videoControl.progressSlider.value = ceil(currentTime);
-    
-    
-    [self searchSubtitles];
-    /*if (self.danmuEnabled) {
-        [_danmuManager rollDanmu:currentTime];
-    }*/
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    if(_pvVideo.isInteractiveVideo){
-        PvExam * examShouldShow;
-        for(PvExam* exam in _videoExams)
-        {
-            if (exam.seconds<currentTime && ![[userDefaults stringForKey:[NSString stringWithFormat:@"exam_%@",exam.examId]] isEqualToString:@"Y"]) {
-                examShouldShow = exam;
-                break;
-            }
-            
-        }
-        //PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
-        if (examShouldShow) {
-           // NSLog(@"exam %@ at %f",exam.question, currentTime);
-            [self pause];
-            [self showExam:examShouldShow];
-            
-            
-        }
-        
-        
-        
-    }
-    
-    //NSLog(@"%d",self.watchVideoTimeDuration);
-    
+	double currentTime = floor(self.currentPlaybackTime);
+	double totalTime = floor(self.duration);
+	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	self.videoControl.progressSlider.value = ceil(currentTime);
+	
+	
+	[self searchSubtitles];
+	/*if (self.danmuEnabled) {
+	 [_danmuManager rollDanmu:currentTime];
+	 }*/
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	
+	if(self.enableExam){
+		PvExam * examShouldShow;
+		for(PvExam* exam in _videoExams){
+			if (exam.seconds<currentTime && ![[userDefaults stringForKey:[NSString stringWithFormat:@"exam_%@",exam.examId]] isEqualToString:@"Y"]) {
+				NSLog(@"%sYYY", __FUNCTION__);
+				examShouldShow = exam;
+				break;
+			}
+			
+		}
+		//        PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
+		if (examShouldShow) {
+			NSLog(@"exam %@ at %f",examShouldShow.question, currentTime);
+			[self pause];
+			[self showExam:examShouldShow];
+			
+			
+		}
+		
+		
+		
+	}
+	
+	//NSLog(@"%d",self.watchVideoTimeDuration);
+	
 }
 -(void)trackBuffer{
     CGFloat buffer = (CGFloat)self.playableDuration/self.duration;

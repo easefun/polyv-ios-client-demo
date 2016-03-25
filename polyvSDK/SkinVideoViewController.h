@@ -46,6 +46,9 @@ enum PvPlayMode {
 @property int watchVideoTimeDuration;
 @property int watchStartTime;
 
+/// 问答开关，默认为关闭
+@property (nonatomic, assign) BOOL enableExam;
+
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInWindow;
 - (void)dismiss;

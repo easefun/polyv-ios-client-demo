@@ -124,6 +124,10 @@
     [self.videoPlayer setVid:self.video.vid];
     //直接跳到上一次播放位置
     //[self.videoPlayer setWatchStartTime:380];
+	
+	// 问答开关
+	self.videoPlayer.enableExam = YES;
+	
     [self.videoPlayer play];
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     
