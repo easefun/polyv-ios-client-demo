@@ -105,7 +105,19 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     _cancel = YES;
     [super cancel];
 	[self cancelObserver];
-	[_watchTimer invalidate];
+    [self stopBufferTimer];
+    [self stopDurationTimer];
+    [self stopCountWatchTime];
+    [_watchTimer invalidate];
+    [_bufferTimer invalidate];
+    [_stallTimer invalidate];
+    _durationTimer = nil;
+    _watchTimer = nil;
+    _bufferTimer = nil;
+    _stallTimer = nil;
+    [self.videoControl removeFromSuperview];
+    _pvVideo = nil;
+    self.videoControl = nil;
 }
 
 
@@ -242,12 +254,14 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 {
     [self stopDurationTimer];
     [self stopBufferTimer];
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:pVideoPlayerControllerAnimationTimeinterval animations:^{
-        self.view.alpha = 0.0;
+        weakSelf.view.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [self.view removeFromSuperview];
-        if (self.dimissCompleteBlock) {
-            self.dimissCompleteBlock();
+        [weakSelf.view removeFromSuperview];
+        if (weakSelf.dimissCompleteBlock) {
+            // 回调结束闭包
+            weakSelf.dimissCompleteBlock();
         }
     }];
     [_watchTimer invalidate];
