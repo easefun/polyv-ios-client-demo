@@ -51,7 +51,7 @@
     [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         if(data!=nil){

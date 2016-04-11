@@ -170,8 +170,10 @@
      [self.videoPlayer configObserver];
      __weak typeof(self)weakSelf = self;
      [self.videoPlayer setDimissCompleteBlock:^{
-            [weakSelf.videoPlayer stop];
-            weakSelf.videoPlayer = nil;
+         [weakSelf.videoPlayer stop];
+         [weakSelf.videoPlayer cancel];
+         [weakSelf.videoPlayer cancelObserver];
+         weakSelf.videoPlayer = nil;
      }];
      
      }
