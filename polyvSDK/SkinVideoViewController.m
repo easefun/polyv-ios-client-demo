@@ -90,15 +90,12 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     NSLog(@"cancel");
     _cancel = YES;
     [super cancel];
-<<<<<<< HEAD
 }
 - (void)dealloc
 {
     [self cancelObserver];
     [_watchTimer invalidate];
-    
-=======
-	[self cancelObserver];
+    	[self cancelObserver];
     [self stopBufferTimer];
     [self stopDurationTimer];
     [self stopCountWatchTime];
@@ -112,7 +109,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl removeFromSuperview];
     _pvVideo = nil;
     self.videoControl = nil;
->>>>>>> pr/5
 }
 
 
