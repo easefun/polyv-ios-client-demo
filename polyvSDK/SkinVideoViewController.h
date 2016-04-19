@@ -53,7 +53,7 @@ enum PvPlayMode {
 - (void)showInWindow;
 - (void)dismiss;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
-//- (void)enableDanmu:(BOOL)enable;
+- (void)enableDanmu:(BOOL)enable;
 - (void)enableTeaser:(BOOL)enable;
 - (void)keepNavigationBar:(BOOL)keep;
 - (void)setHeadTitle:(NSString*)headtitle;
@@ -70,4 +70,6 @@ enum PvPlayMode {
 
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString*)param1;
+// 发送跑马灯
+-(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration;
 @end

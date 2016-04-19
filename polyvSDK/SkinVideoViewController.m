@@ -17,6 +17,7 @@
 
 
 static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
+NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewControllerVidAvailable";
 
 @interface SkinVideoViewController ()<PvDanmuSendViewDelegate>
 
@@ -26,14 +27,14 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, assign) BOOL isFullscreenMode;
 @property (nonatomic, assign) BOOL keepNavigationBar;
 @property (nonatomic, assign) BOOL isBitRateViewShowing;
-@property (nonatomic, assign) CGRect originFrame;
+@property (assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
 @property (nonatomic, strong) NSTimer *bufferTimer;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, assign) BOOL teaserEnabled;
-//@property (nonatomic, strong) PVDanmuManager *danmuManager;
-//@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
+@property (nonatomic, strong) PVDanmuManager *danmuManager;
+@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
 
 @property (nonatomic, assign) NSString* headtitle;
 @property (nonatomic, assign) NSString* teaserURL;
@@ -46,8 +47,17 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 @property (nonatomic, assign) CGFloat curVoice;
 @property (nonatomic, assign) CGFloat curBrightness;
 
+@property (nonatomic, copy) NSString *vid;
+
 //@property (nonatomic, assign) PvGestureType gestureType;
 
+@end
+
+@interface SkinVideoViewController (RotateFullScreen)
+- (void)fullScreenAction:(UIButton *)sender;
+- (void)backButtonAction;
+- (void)addOrientationObserver;
+- (void)removeOrientationObserver;
 @end
 
 @implementation SkinVideoViewController{
@@ -101,7 +111,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
 }
 - (void)cancel{
-    NSLog(@"cancel");
+//    NSLog(@"cancel");
     _cancel = YES;
     [super cancel];
 	[self cancelObserver];
@@ -118,12 +128,17 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl removeFromSuperview];
     _pvVideo = nil;
     self.videoControl = nil;
+	self.videoContentURL = nil;
 }
 
 
 - (void)keepNavigationBar:(BOOL)keep{
     self.keepNavigationBar = keep;
     if (keep) {
+		CGRect frame = self.view.frame;
+		frame = CGRectMake(frame.origin.x, frame.origin.y - 20, frame.size.width, frame.size.height);
+		self.view.frame = frame;
+		self.originFrame = frame;
         [_navigationController setNavigationBarHidden:NO animated:NO];
         self.videoControl.backButton.hidden = YES;
     }
@@ -133,7 +148,10 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 {
     self = [super init];
     if (self) {
-        self.view.frame = frame;
+        frame = CGRectMake(frame.origin.x, frame.origin.y + 20, frame.size.width, frame.size.height);
+		[self setFrame:frame];
+		
+//		self.view.frame = frame;
         self.view.backgroundColor = [UIColor blackColor];
         self.controlStyle = MPMovieControlStyleNone;
         [self.view addSubview:self.videoControl];
@@ -142,8 +160,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
         [self configControlAction];
         self.videoControl.closeButton.hidden = YES;
         self.watchVideoTimeDuration = 0;
-        
-
+		self.originFrame = frame;
     }
     return self;
 }
@@ -226,25 +243,22 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl logoImageView];
 }
 
-/*
-- (void)enableDanmu:(BOOL)enable{
-    self.danmuEnabled  = enable;
-    if (!self.danmuManager) {
-        CGRect dmFrame;
 
+- (void)enableDanmu:(BOOL)enable{
+//	if
+    self.danmuEnabled  = enable;
+//    if (!self.danmuManager) {
+        CGRect dmFrame;
         dmFrame = self.view.bounds;
-        
-        self.danmuManager = [[PVDanmuManager alloc] initWithFrame:dmFrame withVid:[super getVid] inView:self.view underView:self.videoControl durationTime:1];
-        
-    }
+//		NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, self.vid, [super getVid]);
+        self.danmuManager = [[PVDanmuManager alloc] initWithFrame:dmFrame withVid:self.vid inView:self.view underView:self.videoControl durationTime:1];
+//    }
     if(self.danmuEnabled){
         [self.videoControl setDanmuButtonColor:[UIColor yellowColor]];
     }else{
         [self.videoControl setDanmuButtonColor:[UIColor whiteColor]];
     }
-    
-    
-}*/
+}
 - (void)enableTeaser:(BOOL)enable{
     self.teaserEnabled = enable;
     
@@ -270,6 +284,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 - (void)configObserver
 {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];
@@ -278,7 +293,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
 
-    
+	[self addOrientationObserver];
     
     
 }
@@ -295,19 +310,20 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)cancelObserver
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self removeOrientationObserver];
 }
 
 - (void)configControlAction
 {
     [self.videoControl.playButton addTarget:self action:@selector(playButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.backButton addTarget:self action:@selector(backButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.pauseButton addTarget:self action:@selector(pauseButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    //[self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    //[self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.shrinkScreenButton addTarget:self action:@selector(shrinkScreenButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoControl.shrinkScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
     [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
@@ -315,17 +331,15 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self monitorVideoPlayback];
 }
 -(void)setVid:(NSString *)vid{
-    
+	_vid = vid;
     [self setVid:vid level:0];
-
-    
 }
 - (void)setVid:(NSString*)vid level:(int)level{
 	__weak typeof(self)weakSelf = self;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
 		_pvVideo = [PolyvSettings getVideo:vid];
 		[weakSelf parseSubRip];
-		NSLog(@"vid = %@", weakSelf.getVid);
+//		NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
 		
 		dispatch_sync(dispatch_get_main_queue(), ^(void) {
 			if (_cancel) {
@@ -343,11 +357,17 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 					[super setVid:vid level:level];
 				}
 			}
-			[weakSelf stopCountWatchTime];
-			weakSelf.watchVideoTimeDuration = 0;
-			[weakSelf setEnableExam:weakSelf.enableExam];
+			[[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
 		});
 	});
+}
+
+- (void)vidAvailable{
+//	NSLog(@"%s - vid = %@", __FUNCTION__, self.vid);
+	[self stopCountWatchTime];
+	self.watchVideoTimeDuration = 0;
+	[self setEnableExam:self.enableExam];
+	
 }
 
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
@@ -568,7 +588,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
             {
                 errorstring = @"playback failed without any given reason";
             }
-            [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:[super getVid] error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
+            [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:self.vid error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
             
         }
         //NSLog(@"done");
@@ -616,27 +636,6 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 }
 
 
-
--(void)backButtonClick{
-    if (self.isFullscreenMode) {
-        [self shrinkScreenButtonClick];
-        
-        
-    }else{
-        if (_navigationController) {
-            [_navigationController popViewControllerAnimated:YES];
-        }else if(_parentViewController){
-
-
-            [_parentViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }
-        
-        
-    }
-
-
-    
-}
 - (void)playButtonClick
 {
     [self play];
@@ -650,7 +649,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     self.videoControl.playButton.hidden = NO;
     self.videoControl.pauseButton.hidden = YES;
 }
-/*
+
 - (void)sendDanmuButtonClick{
     if (self.danmuSendV != nil) {
         self.danmuSendV = nil;
@@ -677,7 +676,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     
 }
- */
+ 
 - (void)closeButtonClick
 {
     [self dismiss];
@@ -696,196 +695,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     
 }
--(BOOL)isIOS8{
-    NSString *ver = [[UIDevice currentDevice] systemVersion];
-    float ver_float = [ver floatValue];
-    if (ver_float>8 && ver_float<9) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-/*- (void)fullScreenButtonClick
-{
-    if (self.isFullscreenMode) {
-        return;
-    }
-    
-    
-    if (self.videoControl.showInWindowMode) {
-        self.originFrame = self.view.frame;
-        CGFloat height = [[UIScreen mainScreen] bounds].size.width;
-        CGFloat width = [[UIScreen mainScreen] bounds].size.height;
-        CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);;
-        [UIView animateWithDuration:0.3f animations:^{
-            self.frame = frame;
-            [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
-        } completion:^(BOOL finished) {
-            self.isFullscreenMode = YES;
-            self.videoControl.fullScreenButton.hidden = YES;
-            self.videoControl.shrinkScreenButton.hidden = NO;
-        }];
-    }else{
-        CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
-        //ios8翻转，弹幕键盘方向有问题，不需要弹幕可以去掉这行
-        if ([self isIOS8]) {
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
-        }
-        
-        self.originFrame = self.view.frame;
-        
-        [UIView animateWithDuration:duration animations:^{
-            [_parentViewController.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
-        } completion:^(BOOL finished) {
-            if (self.keepNavigationBar) {
-                [_navigationController setNavigationBarHidden:YES];
-                self.videoControl.backButton.hidden = NO;
-            }
-            _parentViewController.view.frame = _parentViewController.view.superview.bounds;
-            self.frame = self.view.superview.bounds;
-            self.view.frame =self.view.superview.bounds;
-            self.isFullscreenMode = YES;
-            [self.videoControl changeToFullsreen];
-            self.videoControl.fullScreenButton.hidden = YES;
-            self.videoControl.shrinkScreenButton.hidden = NO;
-            
-            if (self.danmuManager) {
-                [self.danmuManager resetDanmuWithFrame:self.view.frame];
-                [self.danmuManager initStart];
-            }
-            
-            if (self.danmuEnabled) {
-                self.videoControl.sendDanmuButton.hidden = NO;
-            }
-            if (self.fullscreenBlock) {
-                self.fullscreenBlock();
-            }
-            
-            
-        }];
-    }
-    
-}
-- (void)shrinkScreenButtonClick
-{
-    if (!self.isFullscreenMode) {
-        return;
-    }
-    
-    if (self.videoControl.showInWindowMode) {
-        [UIView animateWithDuration:0.3f animations:^{
-            [self.view setTransform:CGAffineTransformIdentity];
-            self.frame = self.originFrame;
-        } completion:^(BOOL finished) {
-            self.isFullscreenMode = NO;
-            self.videoControl.fullScreenButton.hidden = NO;
-            self.videoControl.shrinkScreenButton.hidden = YES;
-        }];
-    }else{
-        CGFloat duration = [[UIApplication sharedApplication] statusBarOrientationAnimationDuration];
-        
-        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
-        
-        
-        [UIView animateWithDuration:duration animations:^{
-            [_parentViewController.view setTransform:CGAffineTransformIdentity];
-        } completion:^(BOOL finished) {
-            if (self.keepNavigationBar) {
-                [_navigationController setNavigationBarHidden:NO];
-                self.videoControl.backButton.hidden = YES;
-            }else{
-                _parentViewController.view.frame = _parentViewController.view.superview.bounds;
-            }
-            
-            self.frame = self.originFrame;
-            self.view.frame = self.originFrame;
-            self.isFullscreenMode = NO;
-            [self.videoControl changeToSmallsreen];
-            self.videoControl.fullScreenButton.hidden = NO;
-            self.videoControl.shrinkScreenButton.hidden = YES;
-            if (self.danmuManager) {
-                [self.danmuManager resetDanmuWithFrame:self.view.frame];
-                [self.danmuManager initStart];
-            }
-            if (self.danmuEnabled) {
-                self.videoControl.sendDanmuButton.hidden = YES;
-            }
-            if (self.shrinkscreenBlock) {
-                self.shrinkscreenBlock();
-            }
-            
-        }];
-        
-    }
 
-}
-*/
-
-- (void)fullScreenButtonClick
-{
-    if (self.isFullscreenMode) {
-        return;
-    }
-    self.originFrame = self.view.frame;
-    CGFloat height = [[UIScreen mainScreen] bounds].size.width;
-    CGFloat width = [[UIScreen mainScreen] bounds].size.height;
-    CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        self.frame = frame;
-        [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
-    } completion:^(BOOL finished) {
-        
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        if (self.keepNavigationBar) {
-            [_navigationController setNavigationBarHidden:YES];
-            self.videoControl.backButton.hidden = NO;
-        }
-        //_parentViewController.view.frame = _parentViewController.view.superview.bounds;
-        
-        self.isFullscreenMode = YES;
-        [self.videoControl changeToFullsreen];
-        self.videoControl.fullScreenButton.hidden = YES;
-        self.videoControl.shrinkScreenButton.hidden = NO;
-       
-        if (self.fullscreenBlock) {
-            self.fullscreenBlock();
-        }
-
-    }];
-}
-- (void)shrinkScreenButtonClick
-{
-    if (!self.isFullscreenMode) {
-        return;
-    }
-    
-    [UIView animateWithDuration:0.3f animations:^{
-        [self.view setTransform:CGAffineTransformIdentity];
-        self.frame = self.originFrame;
-    } completion:^(BOOL finished) {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        if (self.keepNavigationBar) {
-            [_navigationController setNavigationBarHidden:NO];
-            self.videoControl.backButton.hidden = YES;
-        }else{
-            //_parentViewController.view.frame = _parentViewController.view.superview.bounds;
-        }
-        
-        
-        self.isFullscreenMode = NO;
-        [self.videoControl changeToSmallsreen];
-        self.videoControl.fullScreenButton.hidden = NO;
-        self.videoControl.shrinkScreenButton.hidden = YES;
-        
-        if (self.shrinkscreenBlock) {
-            self.shrinkscreenBlock();
-        }
-        
-    }];
-    
-}
 
 
 - (void)setProgressSliderMaxMinValues {
@@ -942,16 +752,16 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 	
 	
 	[self searchSubtitles];
-	/*if (self.danmuEnabled) {
-	 [_danmuManager rollDanmu:currentTime];
-	 }*/
+    if (self.danmuEnabled) {
+		[_danmuManager rollDanmu:currentTime];
+    }
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
 	if(self.enableExam){
 		PvExam * examShouldShow;
 		for(PvExam* exam in _videoExams){
 			if (exam.seconds<currentTime && ![[userDefaults stringForKey:[NSString stringWithFormat:@"exam_%@",exam.examId]] isEqualToString:@"Y"]) {
-				NSLog(@"%sYYY", __FUNCTION__);
+//				NSLog(@"%sYYY", __FUNCTION__);
 				examShouldShow = exam;
 				break;
 			}
@@ -959,7 +769,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 		}
 		//        PvExam*exam = [_videoExams objectForKey:[NSString stringWithFormat:@"%d",(int)currentTime]];
 		if (examShouldShow) {
-			NSLog(@"exam %@ at %f",examShouldShow.question, currentTime);
+//			NSLog(@"exam %@ at %f",examShouldShow.question, currentTime);
 			[self pause];
 			[self showExam:examShouldShow];
 			
@@ -1040,6 +850,7 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 
 - (void)setFrame:(CGRect)frame
 {
+	_frame = frame;
     [self.view setFrame:frame];
     [self.videoControl setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     [self.videoControl setNeedsLayout];
@@ -1058,13 +869,14 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     
     return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
 }
-/*
+
 - (void)sendDanmu:(PvDanmuSendView *)danmuSendV info:(NSString *)info {
     NSTimeInterval currentTime = [super currentPlaybackTime];
-    [self.danmuManager sendDanmu:[super getVid] msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
+//	NSLog(@"info = %@", info);
+    [self.danmuManager sendDanmu:self.vid msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
     [super play];
     
-    //[self.danmuManager rollDanmu:0];
+//    [self.danmuManager rollDanmu:0];
     //f=1 画框焦点
     [self.danmuManager insertDanmu:@{@"c":info, @"t":@"1", @"m":@"l",@"color":@"0xFFFFFF",@"f":@"1"}];
     [self.danmuManager resume:currentTime];
@@ -1076,9 +888,255 @@ static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [super play];
     [self.danmuManager resume:[super currentPlaybackTime]];
 }
-*/
+
+-(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration{
+//	NSLog(@"%s", __FUNCTION__);
+	CGFloat width = self.frame.size.width;
+	__block UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, 0, 0, 0)];
+	if (!font) {
+		font = [UIFont systemFontOfSize:13];
+	}
+	if (color) {
+		infoLabel.textColor = color;
+	}
+	infoLabel.font = font;
+	infoLabel.text = info;
+	[self.view addSubview:infoLabel];
+	[infoLabel sizeToFit];
+	[UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+						 infoLabel.transform = CGAffineTransformMakeTranslation(-width-infoLabel.bounds.size.width, 0);
+					 }completion:^(BOOL finished) {
+						 [infoLabel removeFromSuperview];
+						 infoLabel = nil;
+					 }
+	 ];
+}
+@end
 
 
+
+@implementation SkinVideoViewController (RotateFullScreen)
+// 在旋转前告知控制器调用
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+//	NSLog(@"%s - 准备旋转", __FUNCTION__);
+//	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) { // 竖屏（白背景）
+//		self.view.backgroundColor = [UIColor whiteColor];
+//	}else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) { // 横屏（黑背景）
+//		self.view.backgroundColor = [UIColor blackColor];
+//	}
+//}
+
+/// 旋转按钮事件
+- (void)fullScreenAction:(UIButton *)sender{
+//	NSLog(@"%s", __FUNCTION__);
+	
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
+	switch (interfaceOrientation) {
+			
+		case UIInterfaceOrientationPortraitUpsideDown:{ // 电池栏在下
+//			NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
+			[self interfaceOrientation:UIInterfaceOrientationPortrait];
+		}
+			break;
+		case UIInterfaceOrientationPortrait:{ // 电池栏在上
+//			NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
+			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+		}
+			break;
+		case UIInterfaceOrientationLandscapeLeft:{ // 电池栏在右
+//			NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
+			[self interfaceOrientation:UIInterfaceOrientationPortrait];
+		}
+			break;
+		case UIInterfaceOrientationLandscapeRight:{ // 电池栏在左
+//			NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
+			[self interfaceOrientation:UIInterfaceOrientationPortrait];
+		}
+			break;
+			
+		default:
+			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+			break;
+	}
+	
+//	if (self.videoControl.showInWindowMode) {
+//		if (self.fullscreen) {
+//			[self shrinkScreenStyle];
+//		}else{
+//			[self fullScreenStyle];
+//		}
+//	}
+	
+}
+
+
+
+/// 强制转屏
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation{
+	// arc下
+	if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+		SEL selector = NSSelectorFromString(@"setOrientation:");
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+		[invocation setSelector:selector];
+		[invocation setTarget:[UIDevice currentDevice]];
+		int val = orientation;
+		[invocation setArgument:&val atIndex:2];
+		[invocation invoke];
+	}
+	/*
+	 
+	 // 直接调用这个方法通不过apple上架审核
+	 [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+	 
+	 */
+}
+
+// 返回按钮事件
+- (void)backButtonAction{
+	if (self.isFullscreenMode) { // 全屏模式
+		[self fullScreenAction:self.videoControl.shrinkScreenButton];
+	}else{ // 非全屏模式
+		if (_navigationController) {
+//			NSLog(@"导航控制器");
+			[_navigationController popViewControllerAnimated:YES];
+			[_navigationController setNavigationBarHidden:NO animated:YES];
+		}else if(_parentViewController){
+//			NSLog(@"present 控制器");
+			[_parentViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+		}
+	}
+}
+
+- (void)addOrientationObserver{
+	UIDevice *device = [UIDevice currentDevice];
+	[device beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification  object:device];
+//	NSLog(@"%s", __FUNCTION__);
+}
+
+- (void)removeOrientationObserver{
+	UIDevice *device = [UIDevice currentDevice];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:device];
+}
+
+- (void)orientationChanged:(NSNotification *)note{
+//	NSLog(@"%s", __FUNCTION__);
+//	if (!self.videoControl.showInWindowMode) {
+		UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+		if (orientation == UIInterfaceOrientationPortrait && self.isFullscreenMode) {
+//			NSLog(@"竖屏");
+			[self shrinkScreenStyle];
+		}else if((orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) && !self.isFullscreenMode){
+//			NSLog(@"横屏");
+			[self fullScreenStyle];
+		}else if(!self.isFullscreenMode){
+//			[self fullScreenStyle];
+		}
+//	}
+}
+
+/// 全屏样式
+- (void)fullScreenStyle{
+	if (self.videoControl.showInWindowMode) { // 窗口模式
+		__block UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+//		NSLog(@"show in window");
+//		return;
+//		self.originFrame = self.view.frame;
+		CGFloat height = [[UIScreen mainScreen] bounds].size.width;
+		CGFloat width = [[UIScreen mainScreen] bounds].size.height;
+		CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
+		
+		[UIView animateWithDuration:0.3f animations:^{
+			self.frame = frame;
+			self.view.frame = frame;
+			
+			if (orientation == UIInterfaceOrientationLandscapeLeft) {
+				[self.view setTransform:CGAffineTransformIdentity];
+				[self.view setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+			}else if (orientation == UIInterfaceOrientationLandscapeRight){
+				[self.view setTransform:CGAffineTransformIdentity];
+				[self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+			}
+			
+			
+		} completion:^(BOOL finished) {
+			self.isFullscreenMode = YES;
+			self.videoControl.fullScreenButton.hidden = YES;
+			self.videoControl.shrinkScreenButton.hidden = NO;
+		}];
+	}else{ // 视图模式
+//		NSLog(@"视图模式");
+//		self.originFrame = self.view.frame;
+		_parentViewController.view.frame = _parentViewController.view.superview.bounds;
+//		self.frame = self.view.superview.bounds;
+//		self.view.frame =self.view.superview.bounds;
+		CGRect frame = _parentViewController.view.frame;
+		self.frame = self.view.frame = frame;
+		self.isFullscreenMode = YES;
+		[self.videoControl changeToFullsreen];
+		if (self.keepNavigationBar) {
+			[_navigationController setNavigationBarHidden:YES];
+			self.videoControl.backButton.hidden = NO;
+		}
+		self.videoControl.fullScreenButton.hidden = YES;
+		self.videoControl.shrinkScreenButton.hidden = NO;
+		
+		if (self.danmuEnabled) {
+			if (self.danmuManager) {
+				[self.danmuManager resetDanmuWithFrame:self.view.frame];
+				[self.danmuManager initStart];
+			}
+			self.videoControl.sendDanmuButton.hidden = NO;
+		}
+		if (self.fullscreenBlock) {
+			self.fullscreenBlock();
+		}
+	}
+}
+
+/// 非全屏样式
+- (void)shrinkScreenStyle{
+	if (self.videoControl.showInWindowMode) {
+//		NSLog(@"show in window");
+//		return;
+		[UIView animateWithDuration:0.3f animations:^{
+			[self.view setTransform:CGAffineTransformIdentity];
+			self.frame = self.originFrame;
+		} completion:^(BOOL finished) {
+			self.isFullscreenMode = NO;
+			self.videoControl.fullScreenButton.hidden = NO;
+			self.videoControl.shrinkScreenButton.hidden = YES;
+		}];
+	}else{
+//		NSLog(@"%s - show in view", __FUNCTION__);
+		[self.danmuSendV backAction];
+		if (self.keepNavigationBar) {
+			[_navigationController setNavigationBarHidden:NO];
+			self.videoControl.backButton.hidden = YES;
+		}else{
+			_parentViewController.view.frame = _parentViewController.view.superview.bounds;
+		}
+		
+		self.frame = self.originFrame;
+//		NSLog(@"self.originFrame = %@", NSStringFromCGRect(self.originFrame));
+		self.view.frame = self.originFrame;
+		self.isFullscreenMode = NO;
+		[self.videoControl changeToSmallsreen];
+		self.videoControl.fullScreenButton.hidden = NO;
+		self.videoControl.shrinkScreenButton.hidden = YES;
+		if (self.danmuManager) {
+			[self.danmuManager resetDanmuWithFrame:self.view.frame];
+			[self.danmuManager initStart];
+		}
+		if (self.danmuEnabled) {
+			self.videoControl.sendDanmuButton.hidden = YES;
+		}
+		if (self.shrinkscreenBlock) {
+			self.shrinkscreenBlock();
+		}
+	}
+}
 
 @end
 

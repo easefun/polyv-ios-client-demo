@@ -19,31 +19,6 @@
 
 @implementation DetailViewController2
 
-/*- (BOOL)shouldAutorotate {
- return NO;
- }
- 
- - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
- return UIInterfaceOrientationPortrait;
- }
- */
-
-
--(BOOL)shouldAutorotate{
-    return NO;
-}
--(NSInteger)supportedInterfaceOrientations{
-    
-    return UIInterfaceOrientationPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    //return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-    //return YES;
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-    
-}
 
 -(void)moviePlayBackDidFinish:(NSNotification *)notification{
     NSLog(@"finished");
@@ -114,17 +89,19 @@
     }
     
     
-    [self.view addSubview:self.videoPlayer.view];
-    //[self.videoPlayer setParentViewController:self];
-    //需要保留导航栏
-    [self.videoPlayer keepNavigationBar:YES];
-    [self.videoPlayer setHeadTitle:self.video.title];
-    //开启片头播放
-    //[self.videoPlayer enableTeaser:YES];
-    [self.videoPlayer setNavigationController:self.navigationController];
-    [self.videoPlayer setVid:self.video.vid];
-    //直接跳到上一次播放位置
-    //[self.videoPlayer setWatchStartTime:380];
+	[self.view addSubview:self.videoPlayer.view];
+	[self.videoPlayer setParentViewController:self];
+	//需要保留导航栏
+	[self.videoPlayer keepNavigationBar:YES];
+	[self.videoPlayer setHeadTitle:self.video.title];
+	//开启片头播放
+	//[self.videoPlayer enableTeaser:YES];
+	[self.videoPlayer setNavigationController:self.navigationController];
+	[self.videoPlayer setVid:self.video.vid];
+	[self.videoPlayer enableDanmu:YES];
+	//直接跳到上一次播放位置
+	//[self.videoPlayer setWatchStartTime:380];
+	[self.videoPlayer play];
 	
 	// 问答开关
 	self.videoPlayer.enableExam = YES;

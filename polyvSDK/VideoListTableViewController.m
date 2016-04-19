@@ -33,7 +33,9 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
+	self.navigationController.navigationBarHidden = NO;
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
 
 
@@ -238,11 +240,11 @@
                                 @"Main" bundle:[NSBundle mainBundle]];
     
     //去除navigationBar
-    //DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
-    
+//    DetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController"];
+	
     //保留navigationBar
     DetailViewController2 *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"detailViewController2"];
-    
+	
     detailViewController.video = video;
     
     detailViewController.hidesBottomBarWhenPushed = YES;

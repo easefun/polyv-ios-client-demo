@@ -67,6 +67,8 @@
 		CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
+		E5008F311CC0946D006A42C6 /* pl-video-player-danmu.png in Resources */ = {isa = PBXBuildFile; fileRef = E5008F301CC0946D006A42C6 /* pl-video-player-danmu.png */; };
+		E5008F371CC09CEC006A42C6 /* RootViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5008F361CC09CEC006A42C6 /* RootViewViewController.m */; };
 		E546CCBF1CA3CE610033B052 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E546CCBE1CA3CE610033B052 /* libpolyvSDK.a */; };
 /* End PBXBuildFile section */
 
@@ -182,6 +184,9 @@
 		CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadDemoViewController.m; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CBF35D331B32B1E100E97C45 /* video-play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-play.png"; sourceTree = "<group>"; };
+		E5008F301CC0946D006A42C6 /* pl-video-player-danmu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-danmu.png"; sourceTree = "<group>"; };
+		E5008F351CC09CEC006A42C6 /* RootViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewViewController.h; sourceTree = "<group>"; };
+		E5008F361CC09CEC006A42C6 /* RootViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewViewController.m; sourceTree = "<group>"; };
 		E546CCBE1CA3CE610033B052 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -240,6 +245,7 @@
 				CB8E999E1B81778500CDD71A /* pl-video-player-point@3x.png */,
 				CB8E999F1B81778500CDD71A /* pl-video-player-shrinkscreen@2x.png */,
 				CB8E99A01B81778500CDD71A /* pl-video-player-shrinkscreen@3x.png */,
+				E5008F301CC0946D006A42C6 /* pl-video-player-danmu.png */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -301,6 +307,8 @@
 				CBA5D70A1C0BD47E00781EA5 /* libpolyvSDK */,
 				CB8E99881B80C4EA00CDD71A /* VideoListTableViewController.h */,
 				CB8E99891B80C4EA00CDD71A /* VideoListTableViewController.m */,
+				E5008F351CC09CEC006A42C6 /* RootViewViewController.h */,
+				E5008F361CC09CEC006A42C6 /* RootViewViewController.m */,
 				CB9BA7841BD9D0DE00352498 /* DetailViewController.h */,
 				CB9BA7851BD9D0DE00352498 /* DetailViewController.m */,
 				CB0F44E31C59E13700A6B13C /* DetailViewController2.h */,
@@ -449,7 +457,7 @@
 				ORGANIZATIONNAME = easefun;
 				TargetAttributes = {
 					CBA37117196E6549008E95ED = {
-						DevelopmentTeam = ETRBR9HA5V;
+						DevelopmentTeam = V7WL667MJM;
 					};
 					CBA37138196E6549008E95ED = {
 						TestTargetID = CBA37117196E6549008E95ED;
@@ -480,6 +488,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5008F311CC0946D006A42C6 /* pl-video-player-danmu.png in Resources */,
 				CB8E99A51B81778500CDD71A /* pl-video-player-pause@2x.png in Resources */,
 				CB8E99AA1B81778500CDD71A /* pl-video-player-point@3x.png in Resources */,
 				CB8E99A11B81778500CDD71A /* pl-video-player-close@2x.png in Resources */,
@@ -533,6 +542,7 @@
 				CB8E99CF1B81CA0900CDD71A /* FMDatabasePool.m in Sources */,
 				CB8E99D11B81CA0900CDD71A /* FMResultSet.m in Sources */,
 				CB8E99B01B81C3B800CDD71A /* FMDBHelper.m in Sources */,
+				E5008F371CC09CEC006A42C6 /* RootViewViewController.m in Sources */,
 				CB8E998A1B80C4EA00CDD71A /* VideoListTableViewController.m in Sources */,
 				CB8E99DF1B82E0C800CDD71A /* SkinVideoViewController.m in Sources */,
 				CB8E99D01B81CA0900CDD71A /* FMDatabaseQueue.m in Sources */,
@@ -686,6 +696,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
@@ -712,6 +723,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

@@ -18,52 +18,30 @@
 
 @implementation DetailViewController
 
-/*- (BOOL)shouldAutorotate {
-    return NO;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationPortrait;
-}
-*/
-
-
--(BOOL)shouldAutorotate{
-    return NO;
-}
--(NSInteger)supportedInterfaceOrientations{
-    
-    return UIInterfaceOrientationPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    //return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-    //return YES;
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-    
-}
 
 -(void)viewDidDisappear:(BOOL)animated {
-    self.isPresented = YES;
-    [self.videoPlayer stop];
-    [self.videoPlayer cancelObserver];
-    [super viewDidDisappear:animated];
+	self.isPresented = YES;
+	self.videoPlayer.contentURL = nil;
+	[self.videoPlayer stop];
+	[self.videoPlayer cancel];
+	[self.videoPlayer cancelObserver];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewDidDisappear:animated];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+	
     self.isPresented = NO;
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+//	[[UIApplication sharedApplication] setStatusBarHidden:YES];
     [self.videoPlayer configObserver];
-    
-    [self.videoPlayer play];
 	[super viewWillAppear:animated];
 }
 
 
 - (void)viewDidLoad {
-    
+    [super viewDidLoad];
     
     self.edgesForExtendedLayout=UIRectEdgeNone;
     
@@ -75,17 +53,19 @@
     UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
     
-    [self.view addSubview:self.videoPlayer.view];
+//    [self.view addSubview:self.videoPlayer.view];
+	CGSize playerSize = self.videoPlayer.frame.size;
+	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, playerSize.width, playerSize.height + 20)];
+	[self.view addSubview:contentView];
+	contentView.backgroundColor = [UIColor blackColor];
+	[contentView addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid];
-    [self.videoPlayer play];
     //直接跳到上一次播放位置
     //[self.videoPlayer setWatchStartTime:30];
-    
-    
-    
-    [super viewDidLoad];
+	
+	[self.videoPlayer rollInfo:@"info" font:[UIFont systemFontOfSize:10] color:[UIColor whiteColor] withDuration:3.0];
 }
 
 - (void)didReceiveMemoryWarning {
