@@ -69,6 +69,8 @@
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
 		E5008F311CC0946D006A42C6 /* pl-video-player-danmu.png in Resources */ = {isa = PBXBuildFile; fileRef = E5008F301CC0946D006A42C6 /* pl-video-player-danmu.png */; };
 		E5008F371CC09CEC006A42C6 /* RootViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5008F361CC09CEC006A42C6 /* RootViewViewController.m */; };
+		E50D16C51CC71522004585AB /* PLVSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D16C41CC71522004585AB /* PLVSlider.m */; };
+		E50D17571CC7B5B2004585AB /* PLVIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E50D17561CC7B5B2004585AB /* PLVIndicator.m */; };
 		E546CCBF1CA3CE610033B052 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E546CCBE1CA3CE610033B052 /* libpolyvSDK.a */; };
 /* End PBXBuildFile section */
 
@@ -187,6 +189,10 @@
 		E5008F301CC0946D006A42C6 /* pl-video-player-danmu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pl-video-player-danmu.png"; sourceTree = "<group>"; };
 		E5008F351CC09CEC006A42C6 /* RootViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewViewController.h; sourceTree = "<group>"; };
 		E5008F361CC09CEC006A42C6 /* RootViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewViewController.m; sourceTree = "<group>"; };
+		E50D16C31CC71522004585AB /* PLVSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVSlider.h; sourceTree = "<group>"; };
+		E50D16C41CC71522004585AB /* PLVSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVSlider.m; sourceTree = "<group>"; };
+		E50D17551CC7B5B2004585AB /* PLVIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVIndicator.h; sourceTree = "<group>"; };
+		E50D17561CC7B5B2004585AB /* PLVIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVIndicator.m; sourceTree = "<group>"; };
 		E546CCBE1CA3CE610033B052 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -317,6 +323,10 @@
 				CB8E99DC1B82E0C800CDD71A /* SkinVideoViewController.m */,
 				CB8E99DD1B82E0C800CDD71A /* SkinVideoViewControllerView.h */,
 				CB8E99DE1B82E0C800CDD71A /* SkinVideoViewControllerView.m */,
+				E50D16C31CC71522004585AB /* PLVSlider.h */,
+				E50D16C41CC71522004585AB /* PLVSlider.m */,
+				E50D17551CC7B5B2004585AB /* PLVIndicator.h */,
+				E50D17561CC7B5B2004585AB /* PLVIndicator.m */,
 				CB8E99C11B81CA0900CDD71A /* fmdb */,
 				CBBFEAAB199C9BC100D15255 /* UploadDemoViewController.h */,
 				CBBFEAAC199C9BC100D15255 /* UploadDemoViewController.m */,
@@ -537,11 +547,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E50D16C51CC71522004585AB /* PLVSlider.m in Sources */,
 				CB8E99E01B82E0C800CDD71A /* SkinVideoViewControllerView.m in Sources */,
 				CBA37132196E6549008E95ED /* ViewController.m in Sources */,
 				CB8E99CF1B81CA0900CDD71A /* FMDatabasePool.m in Sources */,
 				CB8E99D11B81CA0900CDD71A /* FMResultSet.m in Sources */,
 				CB8E99B01B81C3B800CDD71A /* FMDBHelper.m in Sources */,
+				E50D17571CC7B5B2004585AB /* PLVIndicator.m in Sources */,
 				E5008F371CC09CEC006A42C6 /* RootViewViewController.m in Sources */,
 				CB8E998A1B80C4EA00CDD71A /* VideoListTableViewController.m in Sources */,
 				CB8E99DF1B82E0C800CDD71A /* SkinVideoViewController.m in Sources */,

@@ -10,6 +10,7 @@
 #import "SkinVideoViewController.h"
 #import "PvVideo.h"
 #import "PolyvSettings.h"
+#import "PLVSlider.h"
 @interface DetailViewController2 ()
 
 @property (nonatomic, strong)  SkinVideoViewController*videoPlayer;
@@ -98,7 +99,7 @@
 	//[self.videoPlayer enableTeaser:YES];
 	[self.videoPlayer setNavigationController:self.navigationController];
 	[self.videoPlayer setVid:self.video.vid];
-	[self.videoPlayer enableDanmu:YES];
+//	[self.videoPlayer enableDanmu:YES];
 	//直接跳到上一次播放位置
 	//[self.videoPlayer setWatchStartTime:380];
 	[self.videoPlayer play];
@@ -106,11 +107,11 @@
 	// 问答开关
 	self.videoPlayer.enableExam = YES;
 	
-    [self.videoPlayer play];
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
-    
+	
+	
 
     
     [self.videoPlayer setFullscreenBlock:^{

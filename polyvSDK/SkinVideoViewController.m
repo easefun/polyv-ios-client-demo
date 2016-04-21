@@ -14,7 +14,7 @@
 #import "PvDanmuSendView.h"
 #import "PvReportManager.h"
 //#import "PvExamView.h"
-
+#define kPanPrecision 20
 
 static const CGFloat pVideoPlayerControllerAnimationTimeinterval = 0.3f;
 NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewControllerVidAvailable";
@@ -49,7 +49,18 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 
 @property (nonatomic, copy) NSString *vid;
 
+@property (nonatomic, assign) BOOL volumeEnable;
+
 //@property (nonatomic, assign) PvGestureType gestureType;
+
+// 枚举值，包含水平移动方向和垂直移动方向
+typedef NS_ENUM(NSInteger, panHandler){
+	panHandlerhorizontalPan, //横向移动
+	panHandlerverticalPan    //纵向移动
+};
+
+/** 定义一个实例变量，保存枚举值 */
+@property (nonatomic, assign) panHandler     panHandler;
 
 @end
 
@@ -58,6 +69,12 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 - (void)backButtonAction;
 - (void)addOrientationObserver;
 - (void)removeOrientationObserver;
+@end
+
+@interface SkinVideoViewController (Gesture)<UIGestureRecognizerDelegate>
+
+- (void)panHandler:(UIPanGestureRecognizer *)recognizer;
+
 @end
 
 @implementation SkinVideoViewController{
@@ -100,15 +117,12 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 }
 
 -(void)play{
-    
     [self.videoControl.indicatorView startAnimating];
     [super play];
 }
 -(void)stop{
     [self.videoControl.indicatorView stopAnimating];
     [super stop];
-
-    
 }
 - (void)cancel{
 //    NSLog(@"cancel");
@@ -320,15 +334,23 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
     [self.videoControl.pauseButton addTarget:self action:@selector(pauseButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.danmuButton addTarget:self action:@selector(danmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
+	[self.videoControl.rateButton addTarget:self action:@selector(rateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.videoControl.shrinkScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
-    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+//    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
+//    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
+//    [self.videoControl.progressSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+	[self.videoControl.slider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
+	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
+	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
+	
+	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
+	pan.delegate                = self;
+	[self.view addGestureRecognizer:pan];
 }
 -(void)setVid:(NSString *)vid{
 	_vid = vid;
@@ -387,6 +409,7 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
         self.videoControl.playButton.hidden = NO;
         [self stopDurationTimer];
         if (self.playbackState == MPMoviePlaybackStateStopped) {
+			NSLog(@"%s - MPMoviePlaybackStateStopped", __FUNCTION__);
             [self.videoControl animateShow];
             
         }
@@ -403,6 +426,7 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
+	
     if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
         [self setCurrentPlaybackTime:self.watchStartTime];
         self.watchStartTime = -1;
@@ -416,9 +440,12 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
         [self.videoControl.indicatorView stopAnimating];
         [self startCountWatchTime];
         _isPrepared = YES;
-        
-    }
-    
+		NSLog(@"MPMovieLoadStatePlaythroughOK");
+	}else{
+		NSLog(@"state = %@", @(self.loadState));
+		
+	}
+		
   
     
 }
@@ -551,16 +578,16 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
     
 }
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
-
+	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
          _pvPlayMode = PvVideoMode;
         [super setVid:_pvVideo.vid];
         [self.videoControl disableControl:NO];
-        self.videoControl.progressSlider.value = 0;
+		self.videoControl.slider.progressValue = 0;
         [self setTimeLabelValues:0 totalTime:0];
        
     }else{
-        self.videoControl.progressSlider.value = self.duration;
+		self.videoControl.slider.progressValue = self.duration;
         double totalTime = floor(self.duration);
         [self setTimeLabelValues:totalTime totalTime:totalTime];
         //====error report
@@ -672,9 +699,35 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
         [self enableDanmu:true];
         self.videoControl.sendDanmuButton.hidden=NO;
     }
-    
-    
-    
+}
+
+- (void)rateButtonClick:(UIButton *)sender{
+//	NSLog(@"%s", __FUNCTION__);
+	sender.layer.borderColor = [[UIColor redColor] CGColor];
+	[sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+	static int counter = 0;
+	counter ++;
+	switch (counter) {
+		case 1:{
+			[sender setTitle:@"1.25X" forState:UIControlStateNormal];
+			self.currentPlaybackRate = 1.25;
+		}break;
+		case 2:{
+			[sender setTitle:@"1.5X" forState:UIControlStateNormal];
+			self.currentPlaybackRate = 1.5;
+		}break;
+		case 3:{
+			[sender setTitle:@"2X" forState:UIControlStateNormal];
+			self.currentPlaybackRate = 2.0;
+		}break;
+		default:{
+			counter = 0;
+			sender.layer.borderColor = [[UIColor whiteColor] CGColor];
+			[sender setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+			[sender setTitle:@"1X" forState:UIControlStateNormal];
+			self.currentPlaybackRate = 1.0;
+		}break;
+	}
 }
  
 - (void)closeButtonClick
@@ -700,8 +753,10 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 
 - (void)setProgressSliderMaxMinValues {
     CGFloat duration = self.duration;
-    self.videoControl.progressSlider.minimumValue = 0.f;
-    self.videoControl.progressSlider.maximumValue = duration;
+//    self.videoControl.progressSlider.minimumValue = 0.f;
+//    self.videoControl.progressSlider.maximumValue = duration;
+	self.videoControl.slider.progressMinimumValue = .0f;
+	self.videoControl.slider.progressMaximumValue = duration;
 }
 
 - (void)progressSliderTouchBegan:(UISlider *)slider {
@@ -710,10 +765,10 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
-	// NSLog(@"end");
-	
-	[self play];
+	NSLog(@"%s", __FUNCTION__);
 	[self.videoControl autoFadeOutControlBar];
+	[self play];
+	[self.videoControl.indicatorView stopAnimating];
 }
 
 - (void)progressSliderValueChanged:(UISlider *)slider {
@@ -725,7 +780,6 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 }
 
 -(void)showExam:(PvExam*)exam{
-
     [self.videoControl.pvExamView setExam:exam];
     __weak typeof(self)weakSelf = self;
     self.videoControl.pvExamView.closedBlock = ^(int seekto) {
@@ -748,7 +802,8 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 	double currentTime = floor(self.currentPlaybackTime);
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
-	self.videoControl.progressSlider.value = ceil(currentTime);
+//	self.videoControl.progressSlider.value = ceil(currentTime);
+	self.videoControl.slider.progressValue = ceil(currentTime);
 	
 	
 	[self searchSubtitles];
@@ -786,19 +841,23 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 -(void)trackBuffer{
     CGFloat buffer = (CGFloat)self.playableDuration/self.duration;
     if (!isnan(buffer)) {
-        self.videoControl.progressView.progress = buffer;
+//        self.videoControl.progressView.progress = buffer;
+		self.videoControl.slider.loadValue = buffer;
     }
 }
 - (void)setTimeLabelValues:(double)currentTime totalTime:(double)totalTime {
-    double minutesElapsed = floor(currentTime / 60.0);
-    double secondsElapsed = fmod(currentTime, 60.0);
-    NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
-    
-    double minutesRemaining = floor(totalTime / 60.0);;
-    double secondsRemaining = floor(fmod(totalTime, 60.0));;
-    NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
-    
-    self.videoControl.timeLabel.text = [NSString stringWithFormat:@"%@/%@",timeElapsedString,timeRmainingString];
+    self.videoControl.timeLabel.text = [self getTimeLabelValues:currentTime totalTime:totalTime];
+}
+- (NSString *)getTimeLabelValues:(double)currentTime totalTime:(double)totalTime{
+	double minutesElapsed = floor(currentTime / 60.0);
+	double secondsElapsed = fmod(currentTime, 60.0);
+	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
+	
+	double minutesRemaining = floor(totalTime / 60.0);;
+	double secondsRemaining = floor(fmod(totalTime, 60.0));;
+	NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
+	
+	return [NSString stringWithFormat:@"%@/%@",timeElapsedString,timeRmainingString];
 }
 
 - (void)startDurationTimer
@@ -911,21 +970,17 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 					 }
 	 ];
 }
+
+- (void)dealloc{
+	NSLog(@"%s", __FUNCTION__);
+}
+
 @end
 
 
 
-@implementation SkinVideoViewController (RotateFullScreen)
-// 在旋转前告知控制器调用
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-//	NSLog(@"%s - 准备旋转", __FUNCTION__);
-//	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) { // 竖屏（白背景）
-//		self.view.backgroundColor = [UIColor whiteColor];
-//	}else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) { // 横屏（黑背景）
-//		self.view.backgroundColor = [UIColor blackColor];
-//	}
-//}
 
+@implementation SkinVideoViewController (RotateFullScreen)
 /// 旋转按钮事件
 - (void)fullScreenAction:(UIButton *)sender{
 //	NSLog(@"%s", __FUNCTION__);
@@ -1140,3 +1195,133 @@ NSString * const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewCont
 
 @end
 
+
+
+@implementation SkinVideoViewController (Gesture)
+
+#pragma mark - 平移手势方法
+
+- (void)panHandler:(UIPanGestureRecognizer *)recognizer{
+	CGPoint offset = [recognizer translationInView:recognizer.view];
+	
+	//根据在view上Pan的位置，确定是调音量还是亮度
+	CGPoint locationPoint = [recognizer locationInView:recognizer.view];
+	
+	// 我们要响应水平移动和垂直移动
+	// 根据上次和本次移动的位置，算出一个速率的point
+//	CGPoint veloctyPoint = [recognizer velocityInView:recognizer.view];
+	
+	// 判断是垂直移动还是水平移动
+	switch (recognizer.state) {
+		case UIGestureRecognizerStateBegan:{ // 开始移动
+			CGFloat x = fabs(offset.x);
+			CGFloat y = fabs(offset.y);
+			if (x > y) { // 水平移动
+				[self pauseButtonClick];
+				self.panHandler           = panHandlerhorizontalPan;
+
+			}
+			else if (x < y){ // 垂直移动
+				self.panHandler = panHandlerverticalPan;
+				if (locationPoint.x > self.frame.size.width / 2) {
+					self.volumeEnable = YES;
+				}else {
+					self.volumeEnable = NO;
+				}
+				
+			}
+			break;
+		}
+		case UIGestureRecognizerStateChanged:{
+			switch (self.panHandler) {
+				case panHandlerhorizontalPan:{
+					[self horizontalPan:offset.x];
+					break;
+				}
+				case panHandlerverticalPan:{
+					[self verticalPan:offset.y];
+					break;
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		case UIGestureRecognizerStateEnded:{ // 移动停止
+			switch (self.panHandler) {
+				case panHandlerhorizontalPan:{
+					[self setCurrentPlaybackTime:floor([self getMoveToTime:offset.x])];
+					[self play];
+					break;
+				}
+				case panHandlerverticalPan:{
+					// 垂直移动结束后，把状态改为不再控制音量
+					self.volumeEnable = NO;
+//					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//						self.horizontalLabel.hidden = YES;
+//					});
+					break;
+				}
+				default:
+					break;
+			}
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+#pragma mark - pan垂直移动的方法
+
+- (void)verticalPan:(CGFloat)value{
+	if (self.volumeEnable) {
+		CGFloat volume = [[MPMusicPlayerController applicationMusicPlayer] volume];
+		volume -= value / 10000;
+		[[MPMusicPlayerController applicationMusicPlayer] setVolume:volume];
+	}else {
+		[UIScreen mainScreen].brightness -= value / 10000;
+	}
+}
+
+#pragma mark - pan水平移动的方法
+- (CGFloat)getMoveToTime:(CGFloat)move{
+	CGFloat current = self.currentPlaybackTime;
+	CGFloat duration = self.duration;
+	CGFloat moveToValue = move / kPanPrecision + current;
+	if (moveToValue >= duration) {
+		moveToValue = duration;
+	}else if (moveToValue <= 0){
+		moveToValue = 0;
+	}
+	return moveToValue;
+}
+
+- (void)horizontalPan:(CGFloat)value{
+	double currentTime = floor([self getMoveToTime:value]);
+	double totalTime = floor(self.duration);
+	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	double minutesElapsed = floor(currentTime / 60.0);
+	double secondsElapsed = fmod(currentTime, 60.0);
+	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
+	if (currentTime <= 0.0 || currentTime >= totalTime) {
+		timeElapsedString = @"到头啦！";
+	}
+	if (value < 0) {
+		[self.videoControl.timeIndicator forward:NO time:timeElapsedString];
+	}
+	else if (value > 0){
+		[self.videoControl.timeIndicator forward:YES time:timeElapsedString];
+	}
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+	CGPoint point = [touch locationInView:self.view];
+	if ((point.y > self.frame.size.height-40)) {
+		return NO;
+	}
+	return YES;
+}
+
+@end

@@ -9,6 +9,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SubTitleLabel.h"
 
+
 static const CGFloat pVideoControlBarHeight = 50.0;
 static const CGFloat pVideoControlAnimationTimeinterval = 0.5;
 static const CGFloat pVideoControlTimeLabelFontSize = 10.0;
@@ -35,8 +36,9 @@ enum PvLogoLocation {
 @property (nonatomic, strong) UIButton *bitRateButton;
 @property (nonatomic, strong) UIButton *danmuButton;
 @property (nonatomic, strong) UIButton *sendDanmuButton;
-@property (nonatomic, strong) UISlider *progressSlider;
-@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, strong) PLVSlider *slider;
+@property (nonatomic, strong) PLVIndicator *timeIndicator;
+@property (nonatomic, strong) UIButton *rateButton;
 
 @property (nonatomic, strong) PvExamView *pvExamView;
 @property (nonatomic, strong) UIButton *closeButton;
@@ -75,6 +77,7 @@ enum PvLogoLocation {
 		[self.topBar addSubview:self.titleLabel];
 		[self.topBar addSubview:self.backButton];
 		[self.topBar addSubview:self.danmuButton];
+		[self.topBar addSubview:self.rateButton];
 		
 		[self.topBar addSubview:self.closeButton];
 		
@@ -90,8 +93,8 @@ enum PvLogoLocation {
 		[self.bottomBar addSubview:self.fullScreenButton];
 		[self.bottomBar addSubview:self.shrinkScreenButton];
 		self.shrinkScreenButton.hidden = YES;
-		[self.bottomBar addSubview:self.progressView];
-		[self.bottomBar addSubview:self.progressSlider];
+		[self.bottomBar addSubview:self.slider];
+		[self addSubview:self.timeIndicator];
 		
 		[self.bottomBar addSubview:self.timeLabel];
 		[self addSubview:self.indicatorView];
@@ -106,11 +109,6 @@ enum PvLogoLocation {
 		
 		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
 		[self addGestureRecognizer:tapGesture];
-		
-		
-		
-		
-		
 	}
 	return self;
 }
@@ -130,6 +128,7 @@ enum PvLogoLocation {
 	
 }
 
+#pragma mark - layoutSubviews
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -140,6 +139,11 @@ enum PvLogoLocation {
 	//NSLog(@"topBar: %@", NSStringFromCGRect(self.topBar.frame));
 	
 	self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
+	
+	self.rateButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.danmuButton.bounds) * 2 - CGRectGetWidth(self.rateButton.bounds) - 10 ,
+									   (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.rateButton.bounds))/2,
+									   CGRectGetWidth(self.rateButton.bounds),
+									   CGRectGetHeight(self.rateButton.bounds));
 	
 	
 	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
@@ -156,22 +160,17 @@ enum PvLogoLocation {
 	
 	
 	self.shrinkScreenButton.frame = self.fullScreenButton.frame;
-	self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.progressSlider.bounds));
-	//self.progressSlider.frame = CGRectMake(0, -17, CGRectGetWidth(self.bounds), CGRectGetHeight(self.progressSlider.bounds));
 	
-	self.progressView.frame = self.progressSlider.frame;
-	self.progressView.center = self.progressSlider.center;
-	
-//	CGFloat thumb = self.progressSlider.currentThumbImage.size.width / 2;
-//	CGRect pframe = self.progressView.frame;
-//	self.progressSlider.frame = CGRectMake(pframe.origin.x, pframe.origin.y, pframe.size.width + thumb, pframe.size.height);
-//	
-//	
+	self.slider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame),
+									  CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.slider.bounds)/2,
+									  CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame),
+									  CGRectGetHeight(self.slider.bounds));
 	
 	self.subtitleLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 	
-	self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.progressSlider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.progressSlider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
+	self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.slider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.slider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
 	self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+	self.timeIndicator.center = CGPointMake(self.center.x, self.center.y * .3);
 	//logo 位置
 	switch (_logoPosition) {
 		case PvLogoLocationTopLeft:
@@ -332,6 +331,7 @@ enum PvLogoLocation {
 	_danmuButton.hidden = NO;
 	_sendDanmuButton.hidden = YES;
 	self.isFullscreenMode = YES;
+	self.rateButton.hidden = NO;
 	
 }
 - (void)changeToSmallsreen{
@@ -340,6 +340,7 @@ enum PvLogoLocation {
 	_danmuButton.hidden = YES;
 	self.isFullscreenMode = NO;
 	self.sendDanmuButton.alpha = 0;
+	self.rateButton.hidden = YES;
 }
 
 
@@ -417,6 +418,21 @@ enum PvLogoLocation {
 	}
 	return _danmuButton;
 }
+- (UIButton *)rateButton{
+	if (!_rateButton) {
+		_rateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_rateButton setTitle:@"1X" forState:UIControlStateNormal];
+		_rateButton.titleLabel.font = [UIFont systemFontOfSize:14];
+		[_rateButton.layer setMasksToBounds:YES];
+		[_rateButton.layer setCornerRadius:3];
+		[_rateButton.layer setBorderWidth:1.0];
+		_rateButton.layer.borderColor = [[UIColor whiteColor] CGColor];
+		_rateButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+		_rateButton.bounds = CGRectMake(0, 0, 50, 30);
+		_rateButton.hidden = YES;
+	}
+	return _rateButton;
+}
 
 -(PvExamView*) pvExamView{
 	if (!_pvExamView) {
@@ -477,34 +493,55 @@ enum PvLogoLocation {
 	return _bitRateButton;
 }
 
-- (UISlider *)progressSlider
-{
-	if (!_progressSlider) {
-		_progressSlider = [[UISlider alloc] init];
-		[_progressSlider setThumbImage:[UIImage imageNamed:[self videoImageName:@"pl-video-player-point"]] forState:UIControlStateNormal];
-		//[_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
-		UIColor * playedColor = [[UIColor alloc] initWithHue:229 saturation:40 brightness:75 alpha:1];
-		[_progressSlider setMinimumTrackTintColor:playedColor];
-		
-		[_progressSlider setMaximumTrackTintColor:[UIColor clearColor]];//透明，以显示buffer
-		//[_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
-		_progressSlider.value = 0.f;
-		_progressSlider.continuous = NO;
+//- (UISlider *)progressSlider
+//{
+//	if (!_progressSlider) {
+//		_progressSlider = [[UISlider alloc] init];
+//		[_progressSlider setThumbImage:[UIImage imageNamed:[self videoImageName:@"pl-video-player-point"]] forState:UIControlStateNormal];
+//		//[_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
+//		UIColor * playedColor = [[UIColor alloc] initWithHue:229 saturation:40 brightness:75 alpha:1];
+////		[_progressSlider setMinimumTrackTintColor:playedColor];
+////		
+////		[_progressSlider setMaximumTrackTintColor:[UIColor clearColor]];//透明，以显示buffer
+//		
+////		[_progressSlider setMinimumTrackImage:[UIImage alloc] forState:UIControlStateNormal];
+////		[_progressSlider setMaximumTrackImage:[UIImage alloc] forState:UIControlStateNormal];
+////		[_progressSlider setMinimumTrackTintColor:playedColor];
+//		
+//		//[_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
+//		
+//		_progressSlider.minimumTrackTintColor = [UIColor whiteColor];
+//		_progressSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
+//		
+//		_progressSlider.value = 0.01f;
+//		_progressSlider.continuous = NO;
+//	}
+//	return _progressSlider;
+//}
+//-(UIProgressView*)progressView
+//{
+//	if (!_progressView) {
+//		_progressView=[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+//		_progressView.progress=0;
+//		_progressView.trackTintColor=[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+//		_progressView.progressTintColor=[UIColor grayColor];
+//	}
+//	return _progressView;
+//}
+- (PLVSlider *)slider{
+	if (!_slider) {
+		_slider = [[PLVSlider alloc] initWithFrame:CGRectMake(10, 10, 10, 10)];
+		_slider.thumbImage = [UIImage imageNamed:[self videoImageName:@"pl-video-player-point"]];
 	}
-	return _progressSlider;
+	return _slider;
 }
--(UIProgressView*)progressView
-{
-	if (!_progressView) {
-		_progressView=[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-		_progressView.progress=0;
-		_progressView.trackTintColor=[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-		_progressView.progressTintColor=[UIColor grayColor];
+
+- (PLVIndicator *)timeIndicator{
+	if (!_timeIndicator) {
+		_timeIndicator = [[PLVIndicator alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+		_timeIndicator.alpha = 0;
 	}
-	
-	return _progressView;
-	
-	
+	return _timeIndicator;
 }
 
 - (UIButton *)closeButton

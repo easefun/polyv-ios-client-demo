@@ -169,6 +169,10 @@
                                     <segue destination="24h-Mf-573" kind="modal" id="b0S-5o-9y8"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lvm-I2-D2C" customClass="PLVSlider">
+                                <rect key="frame" x="43" y="160" width="240" height="83"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -176,7 +180,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137" y="25"/>
+            <point key="canvasLocation" x="41" y="20"/>
         </scene>
         <!--Upload Demo View Controller-->
         <scene sceneID="EqW-xP-oqB">
