@@ -31,6 +31,7 @@
 @property (nonatomic, strong, readonly) UIButton *bitRateButton;
 @property (nonatomic, strong, readonly) UIButton *danmuButton;
 @property (nonatomic, strong, readonly) UIButton *rateButton;
+@property (nonatomic, strong, readonly) UIButton *snapshotButton;
 @property (nonatomic, strong, readonly) UIButton *sendDanmuButton;
 @property (nonatomic, strong, readonly) PvExamView *pvExamView;
 @property (nonatomic, assign) BOOL showInWindowMode;
@@ -39,6 +40,7 @@
 @property (nonatomic, assign) CGSize logoSize;
 @property (nonatomic, assign) UIImage* logoImage;
 @property (nonatomic, strong) UIImageView *logoImageView;
+@property (nonatomic, assign) BOOL enableSnapshot;
 
 
 - (void)animateHide;

@@ -39,6 +39,7 @@ enum PvLogoLocation {
 @property (nonatomic, strong) PLVSlider *slider;
 @property (nonatomic, strong) PLVIndicator *timeIndicator;
 @property (nonatomic, strong) UIButton *rateButton;
+@property (nonatomic, strong) UIButton *snapshotButton;
 
 @property (nonatomic, strong) PvExamView *pvExamView;
 @property (nonatomic, strong) UIButton *closeButton;
@@ -64,6 +65,7 @@ enum PvLogoLocation {
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
+	NSLog(@"%s", __FUNCTION__);
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.backgroundColor = [UIColor clearColor];
@@ -98,7 +100,11 @@ enum PvLogoLocation {
 		
 		[self.bottomBar addSubview:self.timeLabel];
 		[self addSubview:self.indicatorView];
+		[self addSubview:self.snapshotButton];
 		self.sendDanmuButton.hidden = YES;
+		self.snapshotButton.hidden = NO;
+		self.snapshotButton.alpha = 0;
+		
 		
 		
 		//editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
@@ -119,13 +125,13 @@ enum PvLogoLocation {
 		self.topBar.alpha = 0.0;
 		self.bottomBar.alpha = 0.0;
 		self.sendDanmuButton.alpha = 0.0;
+		self.snapshotButton.alpha = 0.0;
 	}else{
 		self.topBar.alpha = 1.0;
 		self.bottomBar.alpha = 1.0;
 		self.sendDanmuButton.alpha = 1.0;
+		self.snapshotButton.alpha = 1.0;
 	}
-	
-	
 }
 
 #pragma mark - layoutSubviews
@@ -147,6 +153,8 @@ enum PvLogoLocation {
 	
 	
 	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
+	self.snapshotButton.frame = CGRectMake(20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.snapshotButton.bounds))/2, CGRectGetWidth(self.snapshotButton.bounds), CGRectGetHeight(self.snapshotButton.bounds));
+//	self.snapshotButton.center = self.center;
 	
 	self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
 	self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - pVideoControlBarHeight, CGRectGetWidth(self.bounds), pVideoControlBarHeight);
@@ -190,6 +198,11 @@ enum PvLogoLocation {
 	//editContent.frame = self.sendDanmuButton.frame;
 	[self arrangeBitRateButtons];
 	
+//	NSLog(@"subviews = %@", self.subviews);
+}
+- (void)setEnableSnapshot:(BOOL)enableSnapshot{
+	_enableSnapshot = enableSnapshot;
+	self.snapshotButton.hidden = enableSnapshot;
 }
 - (void)setHeadTitle:(NSString*)headtitle{
 	[self.titleLabel setText:headtitle];
@@ -271,6 +284,7 @@ enum PvLogoLocation {
 		self.topBar.alpha = 0.0;
 		self.bottomBar.alpha = 0.0;
 		self.sendDanmuButton.alpha = 0.0;
+		self.snapshotButton.alpha = 0.0;
 	} completion:^(BOOL finished) {
 		self.isBarShowing = NO;
 		
@@ -288,8 +302,10 @@ enum PvLogoLocation {
 	[UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
 		self.topBar.alpha = 1.0;
 		self.bottomBar.alpha = 1.0;
-		self.sendDanmuButton.alpha = 1.0;
-		
+		if (_isFullscreenMode) {
+			self.sendDanmuButton.alpha = 1.0;
+			self.snapshotButton.alpha = 1.0;
+		}
 	} completion:^(BOOL finished) {
 		self.isBarShowing = YES;
 		[self autoFadeOutControlBar];
@@ -329,7 +345,8 @@ enum PvLogoLocation {
 	
 	_titleLabel.hidden = NO;
 	_danmuButton.hidden = NO;
-	_sendDanmuButton.hidden = YES;
+	_sendDanmuButton.hidden = NO;
+	self.snapshotButton.alpha = 1;
 	self.isFullscreenMode = YES;
 	self.rateButton.hidden = NO;
 	
@@ -340,6 +357,7 @@ enum PvLogoLocation {
 	_danmuButton.hidden = YES;
 	self.isFullscreenMode = NO;
 	self.sendDanmuButton.alpha = 0;
+	self.snapshotButton.alpha = 0;
 	self.rateButton.hidden = YES;
 }
 
@@ -446,21 +464,24 @@ enum PvLogoLocation {
 - (UIButton *)sendDanmuButton{
 	if (!_sendDanmuButton) {
 		_sendDanmuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		//        [_sendDanmuButton setTitle:@"弹" forState:UIControlStateNormal];
 		[_sendDanmuButton setImage:[UIImage imageNamed:@"pl-video-player-danmu.png"] forState:UIControlStateNormal];
 		_sendDanmuButton.contentMode = UIViewContentModeScaleAspectFit;
 		_sendDanmuButton.tintColor = [UIColor whiteColor];
-//		_sendDanmuButton.alpha = 0.7;
 		_sendDanmuButton.titleLabel.font = [UIFont systemFontOfSize:14];
-		//        [_sendDanmuButton.layer setMasksToBounds:YES];
-		//        [_sendDanmuButton.layer setCornerRadius:10];
-		//        [_sendDanmuButton.layer setBorderWidth:1.0];
-		//        _sendDanmuButton.layer.borderColor = [[UIColor whiteColor] CGColor];
-		//		[_sendDanmuButton sizeToFit];
 		_sendDanmuButton.bounds = CGRectMake(0, 0, 44, 44);
-		//_sendDanmuButton.hidden = YES;
 	}
 	return _sendDanmuButton;
+}
+
+- (UIButton *)snapshotButton{
+	if (!_snapshotButton) {
+		_snapshotButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_snapshotButton setImage:[UIImage imageNamed:@"pl-video-player-snapshot"] forState:UIControlStateNormal];
+		_snapshotButton.contentMode = UIViewContentModeScaleAspectFill;
+		_snapshotButton.frame = CGRectMake(0, 0, 44, 44);
+		_snapshotButton.hidden = YES;
+	}
+	return _snapshotButton;
 }
 
 - (UIButton *)fullScreenButton
