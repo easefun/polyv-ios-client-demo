@@ -46,11 +46,16 @@ enum PvPlayMode {
 @property int watchVideoTimeDuration;
 @property int watchStartTime;
 
+/// 问答开关，默认为关闭
+@property (nonatomic, assign) BOOL enableExam;
+/// 截图开关，默认为关闭
+@property (nonatomic, assign) BOOL enableSnapshot;
+
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInWindow;
 - (void)dismiss;
 - (void)setLocalMp4:(NSString*)vid level:(int)level __deprecated;
-//- (void)enableDanmu:(BOOL)enable;
+- (void)enableDanmu:(BOOL)enable;
 - (void)enableTeaser:(BOOL)enable;
 - (void)keepNavigationBar:(BOOL)keep;
 - (void)setHeadTitle:(NSString*)headtitle;
@@ -67,4 +72,6 @@ enum PvPlayMode {
 
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString*)param1;
+// 发送跑马灯
+-(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration;
 @end

@@ -82,6 +82,7 @@
         
     }
     [self.tableView reloadData];
+	[super viewDidAppear:animated];
 }
 - (void)viewDidLoad {
     

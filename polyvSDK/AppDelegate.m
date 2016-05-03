@@ -80,35 +80,32 @@
 
 @end
 
-
-//默认Portrait避免自动旋转
-@implementation UITabBarController (PolyvDemo)
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
-        return YES;
-    return NO;
-}
--(BOOL)shouldAutorotate{
-    return NO;
-}
-
-
-
-@end
-
-@implementation UINavigationController (PolyvDemo)
--(BOOL)shouldAutorotate{
-    return NO;
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if(toInterfaceOrientation == UIDeviceOrientationPortrait){
-        return YES;
-    }
-    
-    return NO;
-}
-
-
-
-@end
+//
+////默认Portrait避免自动旋转
+//@implementation UITabBarController (PolyvDemo)
+//
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+//    if(toInterfaceOrientation == UIDeviceOrientationPortrait)
+//        return YES;
+//    return NO;
+//}
+//-(BOOL)shouldAutorotate{
+//    return NO;
+//}
+//
+//
+//
+//@end
+//
+//@implementation UINavigationController (PolyvDemo)
+//-(BOOL)shouldAutorotate{
+//    return NO;
+//}
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+//    if(toInterfaceOrientation == UIDeviceOrientationPortrait){
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
+//@end

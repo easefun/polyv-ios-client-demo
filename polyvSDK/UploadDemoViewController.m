@@ -17,7 +17,7 @@
 
 #define PLVRemoteURLDefaultsKey @"PLVRemoteURL"
 
-@interface UploadDemoViewController ()
+@interface UploadDemoViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     @property (strong, nonatomic) ALAssetsLibrary* assetsLibrary;
     @property (nonatomic, strong) SkinVideoViewController *videoPlayer;
     @property NSString*vid;
