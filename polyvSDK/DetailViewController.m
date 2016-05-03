@@ -30,7 +30,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-	
+	[self.videoPlayer configObserver];
     self.isPresented = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];

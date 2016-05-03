@@ -168,18 +168,38 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[self setFrame:frame];
 		
 //		self.view.frame = frame;
+		[self resetIfNeed];
         self.view.backgroundColor = [UIColor blackColor];
         self.controlStyle = MPMovieControlStyleNone;
         [self.view addSubview:self.videoControl];
         self.videoControl.frame = self.view.bounds;
-        [self configControlAction];
         self.videoControl.closeButton.hidden = YES;
-        self.watchVideoTimeDuration = 0;
 		self.originFrame = frame;
-		[self configObserver];
+		[self configControlAction];
+//		[self configObserver];
     }
     return self;
 }
+
+- (void)resetIfNeed{
+	if (_durationTimer) {
+		_durationTimer = nil;
+	}
+	if (_watchTimer) {
+		_watchTimer = nil;
+	}
+	if (_bufferTimer) {
+		_bufferTimer = nil;
+	}
+	if (_stallTimer) {
+		_stallTimer = nil;
+	}
+	if (self.videoControl) {
+		self.videoControl = nil;
+	}
+	self.watchVideoTimeDuration = 0;
+}
+
 
 #pragma mark - Override Method
 
@@ -302,6 +322,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 											   object:self];
 	
 	[self addOrientationObserver];
+//	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
+//	pan.delegate                = self;
+//	[self.view addGestureRecognizer:pan];
 }
 
 -(void)videoInfoLoaded{
@@ -338,10 +361,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.snapshotButton addTarget:self action:@selector(snapshot) forControlEvents:UIControlEventTouchUpInside];
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
-	
-	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
-	pan.delegate                = self;
-	[self.view addGestureRecognizer:pan];
 }
 
 -(void)setVid:(NSString *)vid{
@@ -889,6 +908,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 {
     if (!_videoControl) {
         _videoControl = [[SkinVideoViewControllerView alloc] init];
+		_videoControl.translatesAutoresizingMaskIntoConstraints = YES;
     }
     return _videoControl;
 }
@@ -1177,6 +1197,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}
 	}
 }
+
 
 @end
 

@@ -124,6 +124,7 @@
         <scene sceneID="ctK-LQ-XsA">
             <objects>
                 <tabBarController id="Ykz-V1-jlL" customClass="RootViewViewController" sceneMemberID="viewController">
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="BaW-50-xnK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -176,7 +177,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="41" y="20"/>
+            <point key="canvasLocation" x="137" y="25"/>
         </scene>
         <!--Upload Demo View Controller-->
         <scene sceneID="EqW-xP-oqB">
