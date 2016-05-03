@@ -30,12 +30,7 @@
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
-    self.isPresented = YES;
-    self.videoPlayer.contentURL = nil;
-    [self.videoPlayer stop];
-    [self.videoPlayer cancel];
-    [self.videoPlayer cancelObserver];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.videoPlayer pause];
     [super viewDidDisappear:animated];
 }
 
@@ -65,8 +60,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     self.isPresented = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [self.videoPlayer configObserver];
-    
+	
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(moviePlayBackDidFinish:)
                                                  name:MPMoviePlayerPlaybackDidFinishNotification
@@ -112,18 +106,15 @@
     
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
 	
-	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(nextVC)];
 
     
     [self.videoPlayer setFullscreenBlock:^{
-        NSLog(@"should hide toolbox in this viewcontroller if needed");
+//        NSLog(@"should hide toolbox in this viewcontroller if needed");
     }];
     [self.videoPlayer setShrinkscreenBlock:^{
-        NSLog(@"show toolbox back if needed");
+//        NSLog(@"show toolbox back if needed");
     }];
-    
-    
-    //[self showConfirmationAlert];
 
     
     
@@ -131,9 +122,25 @@
     [super viewDidLoad];
 }
 
+- (void)nextVC{
+	UIViewController *newVC = [[UIViewController alloc] init];
+	newVC.view.backgroundColor = [UIColor grayColor];
+	newVC.title = @"测试切换新控制器";
+	[self.navigationController pushViewController:newVC animated:YES];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc{
+	self.isPresented = YES;
+	self.videoPlayer.contentURL = nil;
+	[self.videoPlayer stop];
+	[self.videoPlayer cancel];
+	[self.videoPlayer cancelObserver];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /*

@@ -1,6 +1,6 @@
 //
 //  PLVSlider.m
-//  YDSlider
+//  polyvSDK
 //
 //  Created by LinBq on 16/4/19.
 //  Copyright © 2016年 POLV. All rights reserved.
@@ -122,11 +122,6 @@
 	_target = target;
 	_action = action;
 	[_slider addTarget:target action:action forControlEvents:controlEvents];
-	[_slider addTarget:self action:@selector(progressValueChanged:) forControlEvents:controlEvents];
-}
-
-- (void)progressValueChanged:(UISlider* )slider {
-	objc_msgSend(_target, _action, self);
 }
 
 @end

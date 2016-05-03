@@ -1,6 +1,6 @@
 //
 //  PLVSlider.h
-//  YDSlider
+//  polyvSDK
 //
 //  Created by LinBq on 16/4/19.
 //  Copyright © 2016年 POLV. All rights reserved.
@@ -14,6 +14,4 @@
 @property (nonatomic, strong) UIImage* thumbImage;
 @property (nonatomic, assign) CGFloat progressMaximumValue;
 @property (nonatomic, assign) CGFloat progressMinimumValue;
-
-- (void)progressValueChanged:(UISlider* )slider;
 @end

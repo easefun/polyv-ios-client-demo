@@ -48,6 +48,8 @@ enum PvPlayMode {
 
 /// 问答开关，默认为关闭
 @property (nonatomic, assign) BOOL enableExam;
+/// 截图开关，默认为关闭
+@property (nonatomic, assign) BOOL enableSnapshot;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInWindow;

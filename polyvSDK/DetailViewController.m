@@ -35,7 +35,6 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 //	[[UIApplication sharedApplication] setStatusBarHidden:YES];
-    [self.videoPlayer configObserver];
 	[super viewWillAppear:animated];
 }
 

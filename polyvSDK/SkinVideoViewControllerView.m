@@ -65,7 +65,7 @@ enum PvLogoLocation {
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-	NSLog(@"%s", __FUNCTION__);
+//	NSLog(@"%s", __FUNCTION__);
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.backgroundColor = [UIColor clearColor];
@@ -104,9 +104,7 @@ enum PvLogoLocation {
 		self.sendDanmuButton.hidden = YES;
 		self.snapshotButton.hidden = NO;
 		self.snapshotButton.alpha = 0;
-		
-		
-		
+
 		//editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
 		//[self addSubview:editContent];
 		
@@ -514,41 +512,6 @@ enum PvLogoLocation {
 	return _bitRateButton;
 }
 
-//- (UISlider *)progressSlider
-//{
-//	if (!_progressSlider) {
-//		_progressSlider = [[UISlider alloc] init];
-//		[_progressSlider setThumbImage:[UIImage imageNamed:[self videoImageName:@"pl-video-player-point"]] forState:UIControlStateNormal];
-//		//[_progressSlider setMinimumTrackTintColor:[UIColor whiteColor]];
-//		UIColor * playedColor = [[UIColor alloc] initWithHue:229 saturation:40 brightness:75 alpha:1];
-////		[_progressSlider setMinimumTrackTintColor:playedColor];
-////		
-////		[_progressSlider setMaximumTrackTintColor:[UIColor clearColor]];//透明，以显示buffer
-//		
-////		[_progressSlider setMinimumTrackImage:[UIImage alloc] forState:UIControlStateNormal];
-////		[_progressSlider setMaximumTrackImage:[UIImage alloc] forState:UIControlStateNormal];
-////		[_progressSlider setMinimumTrackTintColor:playedColor];
-//		
-//		//[_progressSlider setMaximumTrackTintColor:[UIColor lightGrayColor]];
-//		
-//		_progressSlider.minimumTrackTintColor = [UIColor whiteColor];
-//		_progressSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
-//		
-//		_progressSlider.value = 0.01f;
-//		_progressSlider.continuous = NO;
-//	}
-//	return _progressSlider;
-//}
-//-(UIProgressView*)progressView
-//{
-//	if (!_progressView) {
-//		_progressView=[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-//		_progressView.progress=0;
-//		_progressView.trackTintColor=[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-//		_progressView.progressTintColor=[UIColor grayColor];
-//	}
-//	return _progressView;
-//}
 - (PLVSlider *)slider{
 	if (!_slider) {
 		_slider = [[PLVSlider alloc] initWithFrame:CGRectMake(10, 10, 10, 10)];
