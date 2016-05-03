@@ -37,7 +37,7 @@ enum PvLogoLocation {
 @property (nonatomic, strong) UIButton *danmuButton;
 @property (nonatomic, strong) UIButton *sendDanmuButton;
 @property (nonatomic, strong) PLVSlider *slider;
-@property (nonatomic, strong) PLVIndicator *timeIndicator;
+@property (nonatomic, strong) PLVIndicator *indicator;
 @property (nonatomic, strong) UIButton *rateButton;
 @property (nonatomic, strong) UIButton *snapshotButton;
 
@@ -96,7 +96,7 @@ enum PvLogoLocation {
 		[self.bottomBar addSubview:self.shrinkScreenButton];
 		self.shrinkScreenButton.hidden = YES;
 		[self.bottomBar addSubview:self.slider];
-		[self addSubview:self.timeIndicator];
+		[self addSubview:self.indicator];
 		
 		[self.bottomBar addSubview:self.timeLabel];
 		[self addSubview:self.indicatorView];
@@ -176,7 +176,7 @@ enum PvLogoLocation {
 	
 	self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.slider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.slider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
 	self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-	self.timeIndicator.center = CGPointMake(self.center.x, self.center.y * .3);
+	self.indicator.center = CGPointMake(self.center.x, self.center.y * .5);
 	//logo 位置
 	switch (_logoPosition) {
 		case PvLogoLocationTopLeft:
@@ -520,12 +520,12 @@ enum PvLogoLocation {
 	return _slider;
 }
 
-- (PLVIndicator *)timeIndicator{
-	if (!_timeIndicator) {
-		_timeIndicator = [[PLVIndicator alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
-		_timeIndicator.alpha = 0;
+- (PLVIndicator *)indicator{
+	if (!_indicator) {
+		_indicator = [[PLVIndicator alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+		_indicator.alpha = 0;
 	}
-	return _timeIndicator;
+	return _indicator;
 }
 
 - (UIButton *)closeButton
