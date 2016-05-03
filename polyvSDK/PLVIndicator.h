@@ -10,5 +10,5 @@
 
 @interface PLVIndicator : UIView
 - (void)forward:(BOOL)isForward time:(NSString *)content;
-
+- (void)showMessage:(NSString *)message;
 @end

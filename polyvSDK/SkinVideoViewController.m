@@ -322,9 +322,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 											   object:self];
 	
 	[self addOrientationObserver];
-//	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
-//	pan.delegate                = self;
-//	[self.view addGestureRecognizer:pan];
+	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
+	pan.delegate                = self;
+	[self.view addGestureRecognizer:pan];
 }
 
 -(void)videoInfoLoaded{
@@ -791,7 +791,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)didReceiveImage:(NSNotification *)notification{
-	NSLog(@"notification = %@", notification);
+//	NSLog(@"notification = %@", notification);
 	UIImage *image =[notification.userInfo objectForKey: @"MPMoviePlayerThumbnailImageKey"];
 //	NSLog(@"image = %@", image);
 	UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
@@ -800,8 +800,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 -  (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
 	if (error == nil) {
 		NSLog(@"截图保存成功");
+		[self.videoControl.indicator showMessage:@"保存成功"];
 	} else {
 		NSLog(@"截图保存失败");
+		[self.videoControl.indicator showMessage:@"保存失败"];
 	}
 }
 
@@ -1314,10 +1316,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 		timeElapsedString = @"到头啦！";
 	}
 	if (value < 0) {
-		[self.videoControl.timeIndicator forward:NO time:timeElapsedString];
+		[self.videoControl.indicator forward:NO time:timeElapsedString];
 	}
 	else if (value > 0){
-		[self.videoControl.timeIndicator forward:YES time:timeElapsedString];
+		[self.videoControl.indicator forward:YES time:timeElapsedString];
 	}
 }
 

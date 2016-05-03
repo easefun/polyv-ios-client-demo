@@ -23,7 +23,7 @@
 @property (nonatomic, strong, readonly) UIButton *fullScreenButton;
 @property (nonatomic, strong, readonly) UIButton *shrinkScreenButton;
 @property (nonatomic, strong, readonly) PLVSlider *slider;
-@property (nonatomic, strong, readonly) PLVIndicator *timeIndicator;
+@property (nonatomic, strong, readonly) PLVIndicator *indicator;
 @property (nonatomic, strong, readonly) UIButton *closeButton;
 @property (nonatomic, strong, readonly) UILabel *timeLabel;
 @property (nonatomic, strong, readonly) UILabel *subtitleLabel;

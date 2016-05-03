@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *contentView;
 @property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UILabel *messageView;
 
 @end
 @implementation PLVIndicator
@@ -54,6 +55,15 @@
 	return _containerView;
 }
 
+- (UILabel *)messageView{
+	if (!_messageView) {
+		_messageView = [[UILabel alloc] init];
+		_messageView.textAlignment = NSTextAlignmentCenter;
+		_messageView.textColor = [UIColor whiteColor];
+	}
+	return _messageView;
+}
+
 - (void)setIsForward:(BOOL)isForward{
 	if (_isForward == isForward) return;
 	_isForward = isForward;
@@ -69,6 +79,7 @@
 		self.userInteractionEnabled = NO;
 		self.clipsToBounds = YES;
 		[self addSubview:self.containerView];
+		[self addSubview:self.messageView];
 		[self setUpSubView];
 	}
 	return self;
@@ -86,6 +97,7 @@
 	}
 	CGSize boundSize = self.frame.size;
 	self.containerView.center = CGPointMake(boundSize.width/2, boundSize.height/2);
+	[self.messageView sizeThatFits:self.frame.size];
 }
 
 - (void)layoutSubviews{
@@ -94,8 +106,23 @@
 }
 
 - (void)forward:(BOOL)isForward time:(NSString *)content{
+	if (self.containerView.hidden) {
+		self.containerView.hidden = NO;
+		self.messageView.hidden = YES;
+	}
 	self.contentView.text = content;
 	self.isForward = isForward;
+	self.alpha = 1;
+	[UIView animateWithDuration:1 delay:1 options:0 animations:^{
+		self.alpha = 0;
+	} completion:nil];
+}
+
+- (void)showMessage:(NSString *)message{
+	self.containerView.hidden = YES;
+	self.messageView.hidden = NO;
+	self.messageView.text = message;
+	self.messageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
 	self.alpha = 1;
 	[UIView animateWithDuration:1 delay:1 options:0 animations:^{
 		self.alpha = 0;
