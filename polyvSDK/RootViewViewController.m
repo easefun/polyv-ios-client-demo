@@ -51,11 +51,14 @@
 
 // 支持哪些转屏方向
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-	UINavigationController *nav = self.viewControllers[self.selectedIndex];
-	if ([nav.topViewController isMemberOfClass:[DetailViewController2 class]] || [nav.topViewController isMemberOfClass:[DetailViewController class]]) {
-		return UIInterfaceOrientationMaskAllButUpsideDown;
-	}else { // 其他页面支持转屏方向
-		return UIInterfaceOrientationMaskPortrait;
+	UIViewController *vc = self.viewControllers[self.selectedIndex];
+	if ([vc isMemberOfClass:[UINavigationController class]]){
+		UINavigationController *nav = (UINavigationController *)vc;
+		if ([nav.topViewController isMemberOfClass:[DetailViewController2 class]] || [nav.topViewController isMemberOfClass:[DetailViewController class]]) {
+			return UIInterfaceOrientationMaskAllButUpsideDown;
+		}else { // 其他页面支持转屏方向
+			return UIInterfaceOrientationMaskPortrait;
+		}
 	}
 	return UIInterfaceOrientationMaskPortrait;
 }
