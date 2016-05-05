@@ -36,8 +36,6 @@
 @implementation PLVSlider{
 	UISlider*       _slider;
 	UIProgressView* _progressView;
-	id              _target;
-	SEL             _action;
 }
 
 - (CGFloat)progressValue{
@@ -119,8 +117,6 @@
 }
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents {
-	_target = target;
-	_action = action;
 	[_slider addTarget:target action:action forControlEvents:controlEvents];
 }
 
