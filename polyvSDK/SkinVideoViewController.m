@@ -1101,6 +1101,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 /// 全屏样式
 - (void)fullScreenStyle{
 	if (self.videoControl.showInWindowMode) { // 窗口模式
+		[UIApplication sharedApplication].statusBarHidden = YES;
 		__block UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 //		NSLog(@"show in window");
 //		return;
@@ -1165,6 +1166,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[UIView animateWithDuration:0.3f animations:^{
 			[self.view setTransform:CGAffineTransformIdentity];
 			self.frame = self.originFrame;
+			[UIApplication sharedApplication].statusBarHidden = NO;
 		} completion:^(BOOL finished) {
 			self.isFullscreenMode = NO;
 			self.videoControl.fullScreenButton.hidden = NO;
