@@ -33,8 +33,6 @@
    // _fmdb = [FMDBHelper sharedInstance];
    // _videolist = [_fmdb listDownloadVideo];
     
-    
-    
     if(started){
         for (NSString *aKey in [_downloaderDictionary allKeys]) {
             PvUrlSessionDownload*downloader=[_downloaderDictionary objectForKey:aKey];
@@ -53,13 +51,28 @@
     
 }
 
--(void)updateVideo:(NSString*)vid percent:(int)percent{
+-(void)updateVideo:(NSString*)vid percent:(float)percent{
     
     for (int i=0; i<_videolist.count; i++) {
         Video*video = [_videolist objectAtIndex:i];
         if ([video.vid isEqualToString:vid]) {
             video.percent = percent;
             //NSLog(@"upldate video percent: %@ %d",vid,percent);
+        }
+    }
+    [self.tableView reloadData];
+}
+
+-(void)updateVideo:(NSString*)vid rate:(long)rate {
+    
+    for (int i=0; i<_videolist.count; i++) {
+        Video*video = [_videolist objectAtIndex:i];
+        if ([video.vid isEqualToString:vid]) {
+            if (video.percent >= 100) {
+                video.rate = 0; //保证速率为0,可无此判断
+            }else {
+                video.rate = rate;
+            }
         }
     }
     [self.tableView reloadData];
@@ -137,7 +150,7 @@
         UILabel *label_percent =[[UILabel alloc] initWithFrame:CGRectMake(220, 10, 120, 20)] ;
         label_percent.tag = 103;
         label_percent.font = [UIFont systemFontOfSize:12];
-        label_percent.text = [NSString stringWithFormat:@"进度:%d%%",video.percent];
+        label_percent.text = [NSString stringWithFormat:@"%.1f%%, %ldkb/s",video.percent,video.rate];
         
         [cell.contentView addSubview:label_percent];
 
@@ -149,7 +162,7 @@
         label_title.text = video.title;
         
         UILabel *label_percent =(UILabel*)[cell viewWithTag:103];
-        label_percent.text = [NSString stringWithFormat:@"进度:%d%%",video.percent];
+        label_percent.text = [NSString stringWithFormat:@"%.1f%%, %ldkb/s",video.percent,video.rate];
         
         UILabel *label_filesize =(UILabel*)[cell viewWithTag:102];
         
@@ -242,12 +255,17 @@
      [[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self updateVideo:vid percent:[aPercent intValue]];
-        NSLog(@"dataDownloadAtPercent%@",aPercent);
+        [self updateVideo:vid percent:[aPercent floatValue]];
+        //NSLog(@"dataDownloadAtPercent%@",aPercent);
 
      });
-    
-
 }
+- (void) dataDownloadAtRate:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid rate:(NSNumber *)aRate {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateVideo:vid rate:[aRate longLongValue]];
+    });
+}
+
 
 @end

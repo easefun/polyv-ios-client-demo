@@ -21,6 +21,7 @@
 @synthesize df;
 @synthesize seed;
 @synthesize percent;
+@synthesize rate;
 @synthesize status;
 
 
