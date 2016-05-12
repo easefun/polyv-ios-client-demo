@@ -50,32 +50,34 @@
  
     
 }
-
 -(void)updateVideo:(NSString*)vid percent:(float)percent{
     
-    for (int i=0; i<_videolist.count; i++) {
-        Video*video = [_videolist objectAtIndex:i];
+    for (int i=0; i<_videolist.count; ++i) {
+        Video *video = [_videolist objectAtIndex:i];
         if ([video.vid isEqualToString:vid]) {
             video.percent = percent;
-            //NSLog(@"upldate video percent: %@ %d",vid,percent);
+            // 只更新改变的当前cell, 资源优化
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            break;
         }
     }
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 -(void)updateVideo:(NSString*)vid rate:(long)rate {
     
-    for (int i=0; i<_videolist.count; i++) {
-        Video*video = [_videolist objectAtIndex:i];
+    for (int i=0; i<_videolist.count; ++i) {
+        Video *video = [_videolist objectAtIndex:i];
         if ([video.vid isEqualToString:vid]) {
-            if (video.percent >= 100) {
-                video.rate = 0; //保证速率为0,可无此判断
-            }else {
-                video.rate = rate;
-            }
+            
+            video.rate = rate;
+            
+            // 更新一行cell
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            break;
         }
     }
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
