@@ -21,7 +21,8 @@
 @property int df;
 @property int seed;
 @property int status;
-@property int percent;
+@property float percent;
+@property long rate;
 
 - (id)initWithVid:(NSString*)_vid;
 @end
