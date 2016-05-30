@@ -176,6 +176,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         self.videoControl.closeButton.hidden = YES;
 		self.originFrame = frame;
 		[self configControlAction];
+        self.autoplay = YES;
 //		[self configObserver];
     }
     return self;
@@ -208,7 +209,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 {
     [self stop];
     [super setContentURL:contentURL];
-    [self play];
+    if(self.autoplay){
+        [self play];
+        
+    }
+    self.autoplay = YES;
 }
 
 - (void)setNavigationController:(UINavigationController*)navigationController{
@@ -309,7 +314,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)configObserver
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];      // 视频状态改变通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];
@@ -364,6 +369,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 -(void)setVid:(NSString *)vid{
+
 	_vid = vid;
     [self setVid:vid level:0];
 }
@@ -390,7 +396,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 					[super setVid:vid level:level];
 				}
 			}
+
 			[[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
+
 		});
 	});
 }
@@ -428,12 +436,15 @@ typedef NS_ENUM(NSInteger, panHandler){
     }
 }
 
+//
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
 	[self syncPlayButtonState];
     if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+        //NSLog(@"%f",self.watchStartTime);
         [self setCurrentPlaybackTime:self.watchStartTime];
-        self.watchStartTime = -1;
+        
+        //self.watchStartTime = -1;
     }
     
     if (self.loadState & MPMovieLoadStateStalled) {
@@ -444,6 +455,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         [self.videoControl.indicatorView stopAnimating];
         [self startCountWatchTime];
         _isPrepared = YES;
+        
 //		NSLog(@"MPMovieLoadStatePlaythroughOK");
 	}else{
 //		NSLog(@"state = %@", @(self.loadState));
@@ -588,7 +600,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 //	NSLog(@"%s", __FUNCTION__);
-	[self pauseButtonClick];
+    
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
          _pvPlayMode = PvVideoMode;
@@ -641,7 +653,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
-    _position = [super currentPlaybackTime];
+    self.watchStartTime = [super currentPlaybackTime];
     switch (button.tag) {
         case 0:
             [super switchLevel:0];
@@ -674,6 +686,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)playButtonClick
 {
+    if (self.playButtonClickBlock) {
+        self.playButtonClickBlock();
+    }
+    
     [self play];
     self.videoControl.playButton.hidden = YES;
     self.videoControl.pauseButton.hidden = NO;
@@ -681,6 +697,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)pauseButtonClick
 {
+    if (self.pauseButtonClickBlock) {
+        self.pauseButtonClickBlock();
+    }
     [self pause];
     self.videoControl.playButton.hidden = NO;
     self.videoControl.pauseButton.hidden = YES;
@@ -990,6 +1009,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)dealloc{
+
 	NSLog(@"%s", __FUNCTION__);
 }
 
@@ -1101,6 +1121,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 /// 全屏样式
 - (void)fullScreenStyle{
 	if (self.videoControl.showInWindowMode) { // 窗口模式
+		[UIApplication sharedApplication].statusBarHidden = YES;
 		__block UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 //		NSLog(@"show in window");
 //		return;
@@ -1165,6 +1186,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[UIView animateWithDuration:0.3f animations:^{
 			[self.view setTransform:CGAffineTransformIdentity];
 			self.frame = self.originFrame;
+			[UIApplication sharedApplication].statusBarHidden = NO;
 		} completion:^(BOOL finished) {
 			self.isFullscreenMode = NO;
 			self.videoControl.fullScreenButton.hidden = NO;

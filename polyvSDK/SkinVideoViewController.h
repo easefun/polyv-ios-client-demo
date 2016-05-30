@@ -42,9 +42,12 @@ enum PvPlayMode {
 @property (nonatomic, copy)void(^dimissCompleteBlock)(void);
 @property (nonatomic, copy)void(^fullscreenBlock)(void);
 @property (nonatomic, copy)void(^shrinkscreenBlock)(void);
+@property (nonatomic, copy)void(^playButtonClickBlock)(void);
+@property (nonatomic, copy)void(^pauseButtonClickBlock)(void);
 @property (nonatomic, assign) CGRect frame;
 @property int watchVideoTimeDuration;
-@property int watchStartTime;
+@property NSTimeInterval watchStartTime;
+@property BOOL autoplay;
 
 /// 问答开关，默认为关闭
 @property (nonatomic, assign) BOOL enableExam;
@@ -64,6 +67,8 @@ enum PvPlayMode {
 -(void)stop;
 - (void)setVid:(NSString*)vid;
 - (void)setVid:(NSString*)vid level:(int)level;
+
+
 //设置播放器logo
 -(void)setLogo:(UIImage*)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha;
 - (void)configObserver;
