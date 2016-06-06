@@ -176,6 +176,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         self.videoControl.closeButton.hidden = YES;
 		self.originFrame = frame;
 		[self configControlAction];
+        self.autoplay = YES;
 //		[self configObserver];
     }
     return self;
@@ -208,7 +209,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 {
     [self stop];
     [super setContentURL:contentURL];
-    [self play];
+    if(self.autoplay){
+        [self play];
+        
+    }
+    self.autoplay = YES;
 }
 
 - (void)setNavigationController:(UINavigationController*)navigationController{
@@ -390,7 +395,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 					[super setVid:vid level:level];
 				}
 			}
+
 			[[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
+
 		});
 	});
 }
@@ -430,9 +437,13 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
-	[self syncPlayButtonState];
-    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+
+    [self syncPlayButtonState];
+    
+    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
+        //NSLog(@"%f",self.watchStartTime);
         [self setCurrentPlaybackTime:self.watchStartTime];
+        
         self.watchStartTime = -1;
     }
     
@@ -444,6 +455,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         [self.videoControl.indicatorView stopAnimating];
         [self startCountWatchTime];
         _isPrepared = YES;
+        
 //		NSLog(@"MPMovieLoadStatePlaythroughOK");
 	}else{
 //		NSLog(@"state = %@", @(self.loadState));
@@ -451,13 +463,19 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)syncPlayButtonState{
-	if (self.loadState == MPMovieLoadStatePlaythroughOK && self.playbackState == MPMoviePlaybackStatePlaying && self.playbackState) {
-		self.videoControl.playButton.hidden = NO;
-		self.videoControl.pauseButton.hidden = YES;
-	}else{
-		self.videoControl.playButton.hidden = YES;
-		self.videoControl.pauseButton.hidden = NO;
-	}
+    
+    if (self.loadState & MPMovieLoadStatePlayable
+        && self.loadState & MPMovieLoadStatePlayable
+        && self.playbackState == MPMoviePlaybackStatePlaying
+        && self.playbackState)
+    {
+        self.videoControl.playButton.hidden = YES;
+        self.videoControl.pauseButton.hidden = NO;
+    }else
+    {
+        self.videoControl.playButton.hidden = NO;
+        self.videoControl.pauseButton.hidden = YES;
+    }
 }
 
 -(void)searchSubtitles{
@@ -588,7 +606,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 //	NSLog(@"%s", __FUNCTION__);
-	[self pauseButtonClick];
+    
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
          _pvPlayMode = PvVideoMode;
@@ -641,7 +659,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
-    _position = [super currentPlaybackTime];
+    self.watchStartTime = [super currentPlaybackTime];
     switch (button.tag) {
         case 0:
             [super switchLevel:0];
@@ -674,6 +692,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)playButtonClick
 {
+    if (self.playButtonClickBlock) {
+        self.playButtonClickBlock();
+    }
+    
     [self play];
     self.videoControl.playButton.hidden = YES;
     self.videoControl.pauseButton.hidden = NO;
@@ -681,6 +703,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)pauseButtonClick
 {
+    if (self.pauseButtonClickBlock) {
+        self.pauseButtonClickBlock();
+    }
     [self pause];
     self.videoControl.playButton.hidden = NO;
     self.videoControl.pauseButton.hidden = YES;
@@ -990,6 +1015,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)dealloc{
+
 	NSLog(@"%s", __FUNCTION__);
 }
 

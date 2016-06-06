@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 #import "PolyvSettings.h"
-#import "DetailViewController.h"
+//#import "DetailViewController.h"
 #import "PolyvUtil.h"
 
 
