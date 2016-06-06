@@ -463,12 +463,18 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)syncPlayButtonState{
-	if (self.loadState == MPMovieLoadStatePlaythroughOK && self.playbackState == MPMoviePlaybackStatePlaying && self.playbackState) {
+    
+    if (self.loadState & MPMovieLoadStatePlayable
+        && self.loadState & MPMovieLoadStatePlayable
+        && self.playbackState == MPMoviePlaybackStatePlaying
+        && self.playbackState)
+    {
+        self.videoControl.playButton.hidden = YES;
+		self.videoControl.pauseButton.hidden = NO;
+	}else
+    {
 		self.videoControl.playButton.hidden = NO;
 		self.videoControl.pauseButton.hidden = YES;
-	}else{
-		self.videoControl.playButton.hidden = YES;
-		self.videoControl.pauseButton.hidden = NO;
 	}
 }
 
