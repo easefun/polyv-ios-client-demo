@@ -100,18 +100,18 @@
 	[self.videoPlayer enableDanmu:YES];
     //直接跳到上一次播放位置
     //[self.videoPlayer setWatchStartTime:380];
-    [self.videoPlayer play];
-    //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     
+    [self.videoPlayer setAutoplay:YES];     // 设置是否自动播放,默认为YES
+    
+    
+    //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
     
-
-    
     [self.videoPlayer setFullscreenBlock:^{
-//        NSLog(@"should hide toolbox in this viewcontroller if needed");
+        //NSLog(@"should hide toolbox in this viewcontroller if needed");
     }];
     [self.videoPlayer setShrinkscreenBlock:^{
-//        NSLog(@"show toolbox back if needed");
+        //NSLog(@"show toolbox back if needed");
     }];
     
     
