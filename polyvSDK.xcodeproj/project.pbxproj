@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		67674E341CF3040000E4CA87 /* PLVMoviePlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67674E331CF3040000E4CA87 /* PLVMoviePlayerController.m */; };
 		CB0F44E51C59E13700A6B13C /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0F44E41C59E13700A6B13C /* DetailViewController2.m */; };
 		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
 		CB30D6CC1C745306001092BE /* SubTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB30D6CB1C745306001092BE /* SubTitleLabel.m */; };
@@ -89,7 +88,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		67674E331CF3040000E4CA87 /* PLVMoviePlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVMoviePlayerController.m; sourceTree = "<group>"; };
 		CB0F44D81C5765CB00A6B13C /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
 		CB0F44E31C59E13700A6B13C /* DetailViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
 		CB0F44E41C59E13700A6B13C /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
@@ -384,7 +382,6 @@
 				CBA5D70E1C0BD47E00781EA5 /* PLVData.h */,
 				CBA5D70F1C0BD47E00781EA5 /* PLVKit.h */,
 				CBA5D7101C0BD47E00781EA5 /* PLVMoviePlayerController.h */,
-				67674E331CF3040000E4CA87 /* PLVMoviePlayerController.m */,
 				CBA5D7111C0BD47E00781EA5 /* PLVResumableUpload.h */,
 				CBA5D7121C0BD47E00781EA5 /* PolyvSettings.h */,
 				CBA5D7131C0BD47E00781EA5 /* PolyvUtil.h */,
@@ -582,7 +579,6 @@
 				CB8E99871B80C3CC00CDD71A /* Video.m in Sources */,
 				CB30D6CC1C745306001092BE /* SubTitleLabel.m in Sources */,
 				CBBFEAAD199C9BC100D15255 /* UploadDemoViewController.m in Sources */,
-				67674E341CF3040000E4CA87 /* PLVMoviePlayerController.m in Sources */,
 				CB0F44E51C59E13700A6B13C /* DetailViewController2.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 			);
