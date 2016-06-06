@@ -78,6 +78,7 @@
 
 
 - (void)viewDidLoad {
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     CGFloat width = self.view.bounds.size.width;
     
@@ -90,35 +91,43 @@
     
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
-    //需要保留导航栏
+    
+    // 需要保留导航栏
     [self.videoPlayer keepNavigationBar:YES];
     [self.videoPlayer setHeadTitle:self.video.title];
-    //开启片头播放
+    // 开启片头播放
     //[self.videoPlayer enableTeaser:YES];
+    
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid];
 	[self.videoPlayer enableDanmu:YES];
+    
+    [self.videoPlayer setAutoplay:YES];      // 设置是否自动播放,默认为YES
+    
     //直接跳到上一次播放位置
     //[self.videoPlayer setWatchStartTime:380];
-    [self.videoPlayer play];
-    //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
+    //[self.videoPlayer play];
     
+    //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
     
 
+    [self.videoPlayer setPlayButtonClickBlock:^{
+        NSLog(@"user click play button");
+    }];
+    [self.videoPlayer setPauseButtonClickBlock:^{
+        NSLog(@"user click pause button");
+    }];
+    
     
     [self.videoPlayer setFullscreenBlock:^{
-//        NSLog(@"should hide toolbox in this viewcontroller if needed");
+        //NSLog(@"should hide toolbox in this viewcontroller if needed");
     }];
     [self.videoPlayer setShrinkscreenBlock:^{
-//        NSLog(@"show toolbox back if needed");
+        //NSLog(@"show toolbox back if needed");
     }];
     
-    
     //[self showConfirmationAlert];
-
-    
-    
     
     [super viewDidLoad];
 }
