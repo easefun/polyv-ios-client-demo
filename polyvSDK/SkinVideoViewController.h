@@ -47,7 +47,8 @@ enum PvPlayMode {
 @property (nonatomic, assign) CGRect frame;
 @property int watchVideoTimeDuration;
 @property NSTimeInterval watchStartTime;
-@property BOOL autoplay;
+@property (nonatomic ,assign)BOOL autoplay;        // auto play video. 如果设置为NO, 初始化视频时将不会自动开始播放，默认为YES
+@property (nonatomic, assign)BOOL autoContinue;    // 继续上一次的视频。如果设置为YES,视频将从上次播放停止的位置继续播放
 
 /// 问答开关，默认为关闭
 @property (nonatomic, assign) BOOL enableExam;
@@ -64,9 +65,10 @@ enum PvPlayMode {
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;
 - (void)setParentViewController:(UIViewController*)viewController;
--(void)stop;
+- (void)stop;
 - (void)setVid:(NSString*)vid;
 - (void)setVid:(NSString*)vid level:(int)level;
+
 
 
 //设置播放器logo
@@ -79,4 +81,7 @@ enum PvPlayMode {
 - (void)setParam1:(NSString*)param1;
 // 发送跑马灯
 -(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration;
+
+- (void)setAutoContinue:(BOOL)autoContinue;
+
 @end

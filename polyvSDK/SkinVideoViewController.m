@@ -249,6 +249,21 @@ typedef NS_ENUM(NSInteger, panHandler){
     self.param1 = param1;
 }
 
+
+- (void)setAutoContinue:(BOOL)autoContinue {
+
+    if (autoContinue) {
+        NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"];
+        if (dict) {
+            NSNumber *startTime = [dict objectForKey:_vid];
+            if (startTime) {
+                [self setWatchStartTime:startTime.doubleValue];
+            }
+        }
+    }
+}
+
+
 #pragma mark - Public Method
 
 - (void)showInWindow
@@ -626,6 +641,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         MPMovieFinishReason reason = [resultValue intValue];
         
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
+            [self stop];
             NSLog(@"观看完毕");
         }else{
             NSLog(@"没有看完视频");

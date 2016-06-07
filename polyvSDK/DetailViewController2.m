@@ -29,12 +29,25 @@
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
+    
+    // 记录本视频播放时间
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[userDefaults dictionaryForKey:@"dict"]];
+    if (self.videoPlayer.playbackState == MPMoviePlaybackStateStopped) {
+        [mDict removeObjectForKey:self.video.vid];
+    }else {
+        [mDict setValue:@(self.videoPlayer.currentPlaybackTime) forKey:self.video.vid];
+    }
+    [userDefaults setObject:mDict forKey:@"dict"];
+    [userDefaults synchronize];
+    
     self.isPresented = YES;
     self.videoPlayer.contentURL = nil;
     [self.videoPlayer stop];
     [self.videoPlayer cancel];
     [self.videoPlayer cancelObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+ 
     [super viewDidDisappear:animated];
 }
 
@@ -96,16 +109,21 @@
     [self.videoPlayer keepNavigationBar:YES];
     [self.videoPlayer setHeadTitle:self.video.title];
     // 开启片头播放
-    //[self.videoPlayer enableTeaser:YES];
-    
+    [self.videoPlayer enableTeaser:YES];
     [self.videoPlayer setNavigationController:self.navigationController];
+    
     [self.videoPlayer setVid:self.video.vid];
-	[self.videoPlayer enableDanmu:YES];
+    
+    
+    [self.videoPlayer setAutoContinue:YES];     // 自动续播, 是否继续上次观看的位置
+
+    
+    [self.videoPlayer enableDanmu:YES];
     
     [self.videoPlayer setAutoplay:YES];      // 设置是否自动播放,默认为YES
     
     //直接跳到上一次播放位置
-    //[self.videoPlayer setWatchStartTime:380];
+    
     //[self.videoPlayer play];
     
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
@@ -128,6 +146,10 @@
     }];
     
     //[self showConfirmationAlert];
+    
+    
+    
+    
     
     [super viewDidLoad];
 }
