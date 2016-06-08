@@ -704,6 +704,8 @@ typedef NS_ENUM(NSInteger, panHandler){
         default:
             break;
     }
+    
+    self.videoControl.bitRateView.hidden = YES;
 }
 
 - (void)playButtonClick
