@@ -21,7 +21,7 @@
 
 
 -(void)moviePlayBackDidFinish:(NSNotification *)notification{
-    NSLog(@"finished");
+    //NSLog(@"finished");
 }
 
 -(void)movieLoadStateDidChange:(NSNotification *)notification{

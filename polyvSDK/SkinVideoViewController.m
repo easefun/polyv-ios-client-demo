@@ -91,6 +91,7 @@ typedef NS_ENUM(NSInteger, panHandler){
     BOOL _secondLoadTimeSent;
     BOOL _cancel;
 	BOOL _isSeeking;
+    BOOL _isSwitching;
     NSTimer *_watchTimer;
     
     PvVideo * _pvVideo;
@@ -431,6 +432,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
+    //NSLog(@"%s",__FUNCTION__);
 	[self syncPlayButtonState];
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
         [self.videoControl.indicatorView stopAnimating];
@@ -452,12 +454,14 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
-
+    //NSLog(@"%s",__FUNCTION__);
     [self syncPlayButtonState];
     
     if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
         //NSLog(@"%f",self.watchStartTime);
         [self setCurrentPlaybackTime:self.watchStartTime];
+
+        _isSwitching = NO;
         
         self.watchStartTime = -1;
     }
@@ -616,11 +620,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
-    
+    //NSLog(@"%s",__FUNCTION__);
 }
 
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
-//	NSLog(@"%s", __FUNCTION__);
+	//NSLog(@"%s", __FUNCTION__);
     
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
@@ -631,9 +635,9 @@ typedef NS_ENUM(NSInteger, panHandler){
         [self setTimeLabelValues:0 totalTime:0];
        
     }else{
-		self.videoControl.slider.progressValue = self.duration;
-        double totalTime = floor(self.duration);
-        [self setTimeLabelValues:totalTime totalTime:totalTime];
+		//self.videoControl.slider.progressValue = self.duration; // bug. 不是视频终止判定条件
+        //double totalTime = floor(self.duration);
+        //[self setTimeLabelValues:totalTime totalTime:totalTime];
         //====error report
         NSDictionary *notificationUserInfo = [notification userInfo];
         NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
@@ -641,6 +645,9 @@ typedef NS_ENUM(NSInteger, panHandler){
         MPMovieFinishReason reason = [resultValue intValue];
         
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
+            double totalTime = floor(self.duration);
+            [self setTimeLabelValues:totalTime totalTime:totalTime];
+            
             self.isWatchCompleted = YES;
             NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"]];
             [mDict removeObjectForKey:_vid];        // 播放完成remove掉之前的记录
@@ -680,7 +687,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
+    _isSwitching = YES;
+    self.videoControl.bitRateView.hidden = YES;
     self.watchStartTime = [super currentPlaybackTime];
+    
     switch (button.tag) {
         case 0:
             [super switchLevel:0];
@@ -709,8 +719,6 @@ typedef NS_ENUM(NSInteger, panHandler){
         default:
             break;
     }
-    
-    self.videoControl.bitRateView.hidden = YES;
 }
 
 - (void)playButtonClick
@@ -874,6 +882,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)monitorVideoPlayback
 {
 	if (_isSeeking) true;
+    if (_isSwitching) {
+        return;
+    }
     
 	double currentTime = floor(self.currentPlaybackTime);
 	double totalTime = floor(self.duration);
