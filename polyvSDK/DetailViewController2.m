@@ -29,17 +29,14 @@
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
-    
-    // 记录本视频播放时间
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[userDefaults dictionaryForKey:@"dict"]];
-    if (self.videoPlayer.playbackState == MPMoviePlaybackStateStopped) {
-        [mDict removeObjectForKey:self.video.vid];
-    }else {
+ 
+    // 记录本视频播放时间,记录播放进度需要执行此操作
+    NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[ [NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"]];
+    if (!self.videoPlayer.isWatchCompleted) {
         [mDict setValue:@(self.videoPlayer.currentPlaybackTime) forKey:self.video.vid];
+        [[NSUserDefaults standardUserDefaults] setObject:mDict forKey:@"dict"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    [userDefaults setObject:mDict forKey:@"dict"];
-    [userDefaults synchronize];
     
     self.isPresented = YES;
     self.videoPlayer.contentURL = nil;
@@ -137,6 +134,11 @@
         NSLog(@"user click pause button");
     }];
     
+    
+    [self.videoPlayer setWatchCompletedBlock:^{
+        
+        NSLog(@"user watching completed");
+    }];
     
     [self.videoPlayer setFullscreenBlock:^{
         //NSLog(@"should hide toolbox in this viewcontroller if needed");

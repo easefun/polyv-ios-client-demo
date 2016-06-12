@@ -641,10 +641,15 @@ typedef NS_ENUM(NSInteger, panHandler){
         MPMovieFinishReason reason = [resultValue intValue];
         
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
-            [self stop];
-            NSLog(@"观看完毕");
-        }else{
-            NSLog(@"没有看完视频");
+            self.isWatchCompleted = YES;
+            NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"]];
+            [mDict removeObjectForKey:_vid];        // 播放完成remove掉之前的记录
+            [[NSUserDefaults standardUserDefaults] setObject:mDict forKey:@"dict"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            if (self.watchCompletedBlock) {
+                self.watchCompletedBlock();
+            }
         }
         if (reason == MPMovieFinishReasonPlaybackError)
         {
@@ -868,7 +873,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)monitorVideoPlayback
 {
-	if (_isSeeking) YES;
+	if (_isSeeking) true;
+    
 	double currentTime = floor(self.currentPlaybackTime);
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
@@ -914,8 +920,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 	double secondsElapsed = fmod(currentTime, 60.0);
 	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
 	
-	double minutesRemaining = floor(totalTime / 60.0);;
-	double secondsRemaining = floor(fmod(totalTime, 60.0));;
+	double minutesRemaining = floor(totalTime / 60.0);
+	double secondsRemaining = floor(fmod(totalTime, 60.0));
 	NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
 	
 	return [NSString stringWithFormat:@"%@/%@",timeElapsedString,timeRmainingString];
