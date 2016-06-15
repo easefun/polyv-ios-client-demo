@@ -111,16 +111,13 @@
     
     [self.videoPlayer setVid:self.video.vid];
     
-    
-    [self.videoPlayer setAutoContinue:YES];     // 自动续播, 是否继续上次观看的位置
-
+    [self.videoPlayer setAutoContinue:YES];    // 自动续播, 是否继续上次观看的位置
     
     [self.videoPlayer enableDanmu:YES];
     
     [self.videoPlayer setAutoplay:YES];      // 设置是否自动播放,默认为YES
     
     //直接跳到上一次播放位置
-    
     //[self.videoPlayer play];
     
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
@@ -134,7 +131,7 @@
         NSLog(@"user click pause button");
     }];
     
-    
+    // 视频播放完成的回调代码块
     [self.videoPlayer setWatchCompletedBlock:^{
         
         NSLog(@"user watching completed");
@@ -150,10 +147,21 @@
     //[self showConfirmationAlert];
     
     
-    
+    // 跳转指定时间测试按钮
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    btn.center = self.view.center;
+    [btn setTitle:@"跳至20s" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.view addSubview:btn];
+    [btn addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     [super viewDidLoad];
+}
+
+- (void)btnClick {
+    
+    [self.videoPlayer setCurrentPlaybackTime:20.0];     // 跳至20s
 }
 
 - (void)didReceiveMemoryWarning {

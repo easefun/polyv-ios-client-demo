@@ -103,7 +103,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 @synthesize watchVideoTimeDuration;
-@synthesize watchStartTime;
+@synthesize watchStartTime = _watchStartTime;
 
 - (void)setEnableExam:(BOOL)enableExam{
 	_enableExam = enableExam;
@@ -259,6 +259,7 @@ typedef NS_ENUM(NSInteger, panHandler){
             NSNumber *startTime = [dict objectForKey:_vid];
             if (startTime) {
                 [self setWatchStartTime:startTime.doubleValue];
+                _isSwitching = YES;
             }
         }
     }
@@ -329,18 +330,19 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)configObserver
 {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(didReceiveImage:)
-												 name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-											   object:self];
+	[notificationCenter addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
+    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];      // 播放状态改变，可配合playbakcState属性获取具体状态
+    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];          // 媒体网络加载状态改变
+    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];    // 视频显示状态改变
+    [notificationCenter addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];                 // 确定了媒体播放时长后
+    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];           // 媒体播放完成或用户手动退出,具体原因通过MPMoviePlayerPlaybackDidFinishReasonUserInfoKey key值确定
+    [notificationCenter addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
+	[notificationCenter addObserver:self selector:@selector(didReceiveImage:)name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
+											   object:self];                // 缩略图请求完成之后
+    [notificationCenter addObserver:self selector:@selector(onMediaPlaybackIsPreparedToPlayDidChangeNotification) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:nil];    // 准好播放
+    
 	
 	[self addOrientationObserver];
 	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panHandler:)];
@@ -427,57 +429,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 		self.videoControl.enableSnapshot = NO;
 	}else{
 		self.videoControl.enableSnapshot = YES;
-	}
-}
-
-- (void)onMPMoviePlayerPlaybackStateDidChangeNotification
-{
-    //NSLog(@"%s",__FUNCTION__);
-	[self syncPlayButtonState];
-    if (self.playbackState == MPMoviePlaybackStatePlaying) {
-        [self.videoControl.indicatorView stopAnimating];
-        [self startDurationTimer];
-        [self starBufferTimer];
-        [self.videoControl autoFadeOutControlBar];
-
-        [self startCountWatchTime];
-        
-    } else{
-        [self stopDurationTimer];
-        if (self.playbackState == MPMoviePlaybackStateStopped) {
-//			NSLog(@"%s - MPMoviePlaybackStateStopped", __FUNCTION__);
-            [self.videoControl animateShow];
-        }
-        [self stopCountWatchTime];
-    }
-}
-
-- (void)onMPMoviePlayerLoadStateDidChangeNotification
-{
-    //NSLog(@"%s",__FUNCTION__);
-    [self syncPlayButtonState];
-    
-    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
-        //NSLog(@"%f",self.watchStartTime);
-        [self setCurrentPlaybackTime:self.watchStartTime];
-
-        _isSwitching = NO;
-        
-        self.watchStartTime = -1;
-    }
-    
-    if (self.loadState & MPMovieLoadStateStalled) {
-        [self stopCountWatchTime];
-        [self.videoControl.indicatorView startAnimating];
-    }
-    if (self.loadState & MPMovieLoadStatePlaythroughOK) {
-        [self.videoControl.indicatorView stopAnimating];
-        [self startCountWatchTime];
-        _isPrepared = YES;
-        
-//		NSLog(@"MPMovieLoadStatePlaythroughOK");
-	}else{
-//		NSLog(@"state = %@", @(self.loadState));
 	}
 }
 
@@ -618,13 +569,71 @@ typedef NS_ENUM(NSInteger, panHandler){
     self.watchVideoTimeDuration++;
 }
 
+
+#pragma mark - Movie Player Notification methods
+
+// 视频显示信息改变
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
-    //NSLog(@"%s",__FUNCTION__);
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
 }
 
+// 播放状态改变
+- (void)onMPMoviePlayerPlaybackStateDidChangeNotification
+{
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    
+    [self syncPlayButtonState];
+    if (self.playbackState == MPMoviePlaybackStatePlaying) {
+        [self.videoControl.indicatorView stopAnimating];
+        [self startDurationTimer];
+        [self starBufferTimer];
+        [self.videoControl autoFadeOutControlBar];
+        
+        [self startCountWatchTime];
+        
+    } else{
+        [self stopDurationTimer];
+        if (self.playbackState == MPMoviePlaybackStateStopped) {
+            //			NSLog(@"%s - MPMoviePlaybackStateStopped", __FUNCTION__);
+            [self.videoControl animateShow];
+        }
+        [self stopCountWatchTime];
+    }
+}
+
+// 网络加载状态改变
+- (void)onMPMoviePlayerLoadStateDidChangeNotification
+{
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    
+    [self syncPlayButtonState];
+    //if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
+      //  [self setCurrentPlaybackTime:_watchStartTime];
+        //_isSwitching = NO;
+        
+        //self.watchStartTime = -1;
+    //}
+    
+    if (self.loadState & MPMovieLoadStateStalled) {
+        [self stopCountWatchTime];
+        [self.videoControl.indicatorView startAnimating];
+    }
+    if (self.loadState & MPMovieLoadStatePlaythroughOK) {
+        [self.videoControl.indicatorView stopAnimating];
+        [self startCountWatchTime];
+        _isPrepared = YES;
+        
+        //		NSLog(@"MPMovieLoadStatePlaythroughOK");
+    }else{
+        //		NSLog(@"state = %@", @(self.loadState));
+    }
+}
+
+// 播放完成或退出
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
-	//NSLog(@"%s", __FUNCTION__);
+    
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
@@ -685,11 +694,23 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self setProgressSliderMaxMinValues];
 }
 
+// 做好播放准备后
+- (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification
+{
+    if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
+       
+        [self setCurrentPlaybackTime:_watchStartTime];
+        _isSwitching = NO;
+    }
+}
+
+
+
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
     _isSwitching = YES;
+    _watchStartTime = [super currentPlaybackTime];
     self.videoControl.bitRateView.hidden = YES;
-    self.watchStartTime = [super currentPlaybackTime];
     
     switch (button.tag) {
         case 0:
@@ -765,7 +786,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)rateButtonClick:(UIButton *)sender{
-//	NSLog(@"%s", __FUNCTION__);
+
 	sender.layer.borderColor = [[UIColor redColor] CGColor];
 	[sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
 	static int counter = 0;

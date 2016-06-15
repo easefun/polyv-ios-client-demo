@@ -476,7 +476,7 @@
 				ORGANIZATIONNAME = easefun;
 				TargetAttributes = {
 					CBA37117196E6549008E95ED = {
-						DevelopmentTeam = 6L3YLXE653;
+						DevelopmentTeam = JQSZ9BW6H2;
 					};
 					CBA37138196E6549008E95ED = {
 						TestTargetID = CBA37117196E6549008E95ED;
