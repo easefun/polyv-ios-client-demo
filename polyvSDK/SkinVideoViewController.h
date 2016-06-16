@@ -86,4 +86,7 @@ enum PvPlayMode {
 
 - (void)setAutoContinue:(BOOL)autoContinue;
 
+// 监控播放器状态  刷新播放器状态(进度条、时间显示器等) 默认为自动调用
+- (void)monitorVideoPlayback;
+
 @end

@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, panHandler){
     BOOL _secondLoadTimeSent;
     BOOL _cancel;
 	BOOL _isSeeking;
-    BOOL _isSwitching;
+    BOOL _isSwitching;  // 切换码率中
     NSTimer *_watchTimer;
     
     PvVideo * _pvVideo;
@@ -250,17 +250,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     self.param1 = param1;
 }
 
-- (void)setWatchStartTime:(NSTimeInterval)watchStartTime {
-    _watchStartTime = watchStartTime;
-    
-    _isSwitching = YES;
-}
-
-- (NSTimeInterval)watchStartTime {
-
-    return _watchStartTime;
-}
-
 - (void)setAutoContinue:(BOOL)autoContinue {
 
     if (autoContinue) {
@@ -269,7 +258,6 @@ typedef NS_ENUM(NSInteger, panHandler){
             NSNumber *startTime = [dict objectForKey:_vid];
             if (startTime) {
                 [self setWatchStartTime:startTime.doubleValue];
-                //_isSwitching = YES;
             }
         }
     }
@@ -707,9 +695,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 做好播放准备后
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification
 {
-    if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
+    if (_watchStartTime > 0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
        
         [self setCurrentPlaybackTime:_watchStartTime];
+        _watchStartTime = -1;
         _isSwitching = NO;
     }
 }
@@ -720,6 +709,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 {
 
     self.watchStartTime = [super currentPlaybackTime];
+    _isSwitching = YES;         // 码率切换
     self.videoControl.bitRateView.hidden = YES;
     
     switch (button.tag) {
@@ -913,7 +903,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)monitorVideoPlayback
 {
 	if (_isSeeking) true;
-    if (_isSwitching) {
+    if (_isSwitching) {     // 正在切换码率，return出去
         return;
     }
     

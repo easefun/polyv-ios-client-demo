@@ -15,6 +15,8 @@
 @property (nonatomic, strong)  SkinVideoViewController*videoPlayer;
 
 @property (nonatomic, assign) NSString *currentVid;     // 存储当前的vid
+@property (nonatomic, assign) BOOL isShouldPause;
+
 
 @end
 
@@ -28,6 +30,17 @@
 
 -(void)movieLoadStateDidChange:(NSNotification *)notification{
     
+     //NSLog(@"LoadStateDidChange");
+}
+
+- (void)moviePlaybackIsPreparedToPlayDidChange:(NSNotification *)notification {
+    
+
+    if (_isShouldPause) {
+        [self.videoPlayer pause];
+        [self.videoPlayer monitorVideoPlayback];
+        _isShouldPause = NO;
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -86,6 +99,7 @@
                                              selector:@selector(movieLoadStateDidChange:)
                                                  name:MPMoviePlayerPlaybackStateDidChangeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlaybackIsPreparedToPlayDidChange:) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:nil];
 }
 
 
@@ -112,7 +126,7 @@
     
     [self.videoPlayer setVid:self.video.vid];
     
-    [self.videoPlayer setAutoContinue:YES];    // 自动续播, 是否继续上次观看的位置
+    //[self.videoPlayer setAutoContinue:YES];    // 自动续播, 是否继续上次观看的位置
     
     [self.videoPlayer enableDanmu:YES];
     
@@ -136,8 +150,16 @@
         NSLog(@"user click pause button");
     }];
     
+    
+    __weak typeof(self)weakSelf = self;
     // 视频播放完成的回调代码块
     [self.videoPlayer setWatchCompletedBlock:^{
+        
+        weakSelf.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";
+        [weakSelf.videoPlayer setVid:weakSelf.currentVid];
+        [weakSelf.videoPlayer setWatchStartTime:1000];
+        
+        _isShouldPause = YES;       //
         
         NSLog(@"user watching completed");
     }];
@@ -157,12 +179,12 @@
     [btn setTitle:@"跳至30s" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.view addSubview:btn];
-    [btn addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(seekBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     UIButton *video1 = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 150, 30)];
     [self.view addSubview:video1];
-    [video1 setTitle:@"视频1 10s播放" forState:UIControlStateNormal];
+    [video1 setTitle:@"视频1 20s播放" forState:UIControlStateNormal];
     video1.tag = 100;
     [video1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [video1 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -186,10 +208,10 @@
     [super viewDidLoad];
 }
 
-- (void)btnClick {
+- (void)seekBtnClick {
     
-    // **播放中使用-setCurrentPlaybackTime方法设置时间
-    //   初始设置起始时间使用-setWatchStartTime:方法
+    // 注意：1.续播用setWatchStartTime:跳到某个播放位置
+    //      2.主动点击seek到某个位置，用setCurrentPlaybackTime:(播放中)
     [self.videoPlayer setCurrentPlaybackTime:30.0];
     
     
@@ -202,13 +224,13 @@
     switch (button.tag) {
         case 100: {
             self.currentVid = @"sl8da4jjbx1c8baed8a48212d735d905_s";        // 加密
-            [self.videoPlayer setWatchStartTime:20.0];                      // 跳至10s
+            [self.videoPlayer setWatchStartTime:20.0];                      // 跳至20s
         }
             break;
             
         case 101: {
             self.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";        // 加密
-            [self.videoPlayer setWatchStartTime:30];                        // 跳至20s
+            [self.videoPlayer setWatchStartTime:30];                        // 跳至30s
             //[self.videoPlayer setAutoplay:NO];                            // 是否自动播放
         }
             break;
