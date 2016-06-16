@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong)  SkinVideoViewController*videoPlayer;
 
+@property (nonatomic, assign) NSString *currentVid;     // 存储当前的vid
+
 @end
 
 
@@ -98,7 +100,6 @@
         //self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, width, 100)];
     }
     
-    
     [self.view addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     
@@ -116,6 +117,10 @@
     [self.videoPlayer enableDanmu:YES];
     
     [self.videoPlayer setAutoplay:YES];      // 设置是否自动播放,默认为YES
+    
+    
+    //[self.videoPlayer setWatchStartTime:20];
+    
     
     //直接跳到上一次播放位置
     //[self.videoPlayer play];
@@ -148,12 +153,34 @@
     
     
     // 跳转指定时间测试按钮
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    btn.center = self.view.center;
-    [btn setTitle:@"跳至20s" forState:UIControlStateNormal];
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(200, 230, 120, 30)];
+    [btn setTitle:@"跳至30s" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.view addSubview:btn];
     [btn addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *video1 = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 150, 30)];
+    [self.view addSubview:video1];
+    [video1 setTitle:@"视频1 10s播放" forState:UIControlStateNormal];
+    video1.tag = 100;
+    [video1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [video1 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    UIButton *video2 = [[UIButton alloc] initWithFrame:CGRectMake(20, 280, 150, 30)];
+    [self.view addSubview:video2];
+    video2.tag = 101;
+    [video2 setTitle:@"视频2 30s播放" forState:UIControlStateNormal];
+    [video2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [video2 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
+   
+    UIButton *video3 = [[UIButton alloc] initWithFrame:CGRectMake(20, 330, 150, 30)];
+    [self.view addSubview:video3];
+    video3.tag = 102;
+    [video3 setTitle:@"视频3 40s播放" forState:UIControlStateNormal];
+    [video3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [video3 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [super viewDidLoad];
@@ -161,8 +188,47 @@
 
 - (void)btnClick {
     
-    [self.videoPlayer setCurrentPlaybackTime:20.0];     // 跳至20s
+    // **播放中使用-setCurrentPlaybackTime方法设置时间
+    //   初始设置起始时间使用-setWatchStartTime:方法
+    [self.videoPlayer setCurrentPlaybackTime:30.0];
+    
+    
+    //[self.videoPlayer play];   // 播放视频，如果设置setAutoplay为NO,须调用此方法
 }
+
+
+- (void)switchVideo:(UIButton *)button {
+    
+    switch (button.tag) {
+        case 100: {
+            self.currentVid = @"sl8da4jjbx1c8baed8a48212d735d905_s";        // 加密
+            [self.videoPlayer setWatchStartTime:20.0];                      // 跳至10s
+        }
+            break;
+            
+        case 101: {
+            self.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";        // 加密
+            [self.videoPlayer setWatchStartTime:30];                        // 跳至20s
+            //[self.videoPlayer setAutoplay:NO];                            // 是否自动播放
+        }
+            break;
+            
+        case 102: {
+            //[self.videoPlayer setAutoplay:YES];  // 如果之前设置自动播放为NO，此处须重新设置YES进行自动播放
+            self.currentVid = @"sl8da4jjbx1db751c1820f564192800a_s";        // 非加密
+            [self.videoPlayer setWatchStartTime:40];                        // 跳至40s
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self.videoPlayer setVid:self.currentVid];
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

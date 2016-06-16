@@ -250,6 +250,16 @@ typedef NS_ENUM(NSInteger, panHandler){
     self.param1 = param1;
 }
 
+- (void)setWatchStartTime:(NSTimeInterval)watchStartTime {
+    _watchStartTime = watchStartTime;
+    
+    _isSwitching = YES;
+}
+
+- (NSTimeInterval)watchStartTime {
+
+    return _watchStartTime;
+}
 
 - (void)setAutoContinue:(BOOL)autoContinue {
 
@@ -259,7 +269,7 @@ typedef NS_ENUM(NSInteger, panHandler){
             NSNumber *startTime = [dict objectForKey:_vid];
             if (startTime) {
                 [self setWatchStartTime:startTime.doubleValue];
-                _isSwitching = YES;
+                //_isSwitching = YES;
             }
         }
     }
@@ -708,8 +718,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
-    _isSwitching = YES;
-    _watchStartTime = [super currentPlaybackTime];
+
+    self.watchStartTime = [super currentPlaybackTime];
     self.videoControl.bitRateView.hidden = YES;
     
     switch (button.tag) {
