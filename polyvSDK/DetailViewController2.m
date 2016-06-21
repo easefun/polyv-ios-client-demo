@@ -35,12 +35,12 @@
 
 - (void)moviePlaybackIsPreparedToPlayDidChange:(NSNotification *)notification {
     
-
+    /* 演示代码示例
     if (_isShouldPause) {
         [self.videoPlayer pause];
         [self.videoPlayer monitorVideoPlayback];
         _isShouldPause = NO;
-    }
+    } */
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -104,6 +104,7 @@
 
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     CGFloat width = self.view.bounds.size.width;
@@ -126,15 +127,19 @@
     
     [self.videoPlayer setVid:self.video.vid];
     
-    //[self.videoPlayer setAutoContinue:YES];    // 自动续播, 是否继续上次观看的位置
+    //[self.videoPlayer setAutoContinue:YES];           // 自动续播, 是否继续上次观看的位置
     
-    [self.videoPlayer enableDanmu:YES];
+    [self.videoPlayer enableDanmu:YES];                 // 开启弹幕
     
-    [self.videoPlayer setAutoplay:YES];      // 设置是否自动播放,默认为YES
+    [self.videoPlayer setAutoplay:YES];                 // 设置是否自动播放,默认为YES
+    
+    //[self.videoPlayer setEnableDanmuDisplay:NO];      // 不显示弹幕按钮
+    //[self.videoPlayer setEnableRateDisplay:NO];       // 不显示播放速率按钮
     
     
     //[self.videoPlayer setWatchStartTime:20];
     
+    //[self showConfirmationAlert];
     
     //直接跳到上一次播放位置
     //[self.videoPlayer play];
@@ -143,6 +148,10 @@
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
     
 
+    /**
+     *  ---- 回调代码块 ----
+     */
+    
     [self.videoPlayer setPlayButtonClickBlock:^{
         NSLog(@"user click play button");
     }];
@@ -150,19 +159,7 @@
         NSLog(@"user click pause button");
     }];
     
-    
-    __weak typeof(self)weakSelf = self;
-    // 视频播放完成的回调代码块
-    [self.videoPlayer setWatchCompletedBlock:^{
-        
-        weakSelf.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";
-        [weakSelf.videoPlayer setVid:weakSelf.currentVid];
-        [weakSelf.videoPlayer setWatchStartTime:1000];
-        
-        _isShouldPause = YES;       //
-        
-        NSLog(@"user watching completed");
-    }];
+    //__weak typeof(self)weakSelf = self;
     
     [self.videoPlayer setFullscreenBlock:^{
         //NSLog(@"should hide toolbox in this viewcontroller if needed");
@@ -171,8 +168,24 @@
         //NSLog(@"show toolbox back if needed");
     }];
     
-    //[self showConfirmationAlert];
+    // 视频播放完成的回调代码块
+    [self.videoPlayer setWatchCompletedBlock:^{
+        
+        // 此处为演示播放完视频之后自动续播的功能，配合MPMediaPlaybackIsPreparedToPlayDidChangeNotification通知
+        // 中的moviePlaybackIsPreparedToPlayDidChange方法使用
+        //weakSelf.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";
+        //[weakSelf.videoPlayer setVid:weakSelf.currentVid];
+        //[weakSelf.videoPlayer setWatchStartTime:1000];
+        //_isShouldPause = YES;       //
+        
+        NSLog(@"user watching completed");
+    }];
     
+    
+    
+    /**
+     *  ----- 以下按钮部分为测试视频跳转实例，如无需要可自行删除 ----
+     */
     
     // 跳转指定时间测试按钮
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(200, 230, 120, 30)];
@@ -181,14 +194,12 @@
     [self.view addSubview:btn];
     [btn addTarget:self action:@selector(seekBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
-    
     UIButton *video1 = [[UIButton alloc] initWithFrame:CGRectMake(20, 230, 150, 30)];
     [self.view addSubview:video1];
     [video1 setTitle:@"视频1 20s播放" forState:UIControlStateNormal];
     video1.tag = 100;
     [video1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [video1 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
-
     
     UIButton *video2 = [[UIButton alloc] initWithFrame:CGRectMake(20, 280, 150, 30)];
     [self.view addSubview:video2];
@@ -203,9 +214,6 @@
     [video3 setTitle:@"视频3 40s播放" forState:UIControlStateNormal];
     [video3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [video3 addTarget:self action:@selector(switchVideo:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [super viewDidLoad];
 }
 
 - (void)seekBtnClick {
@@ -213,7 +221,6 @@
     // 注意：1.续播用setWatchStartTime:跳到某个播放位置
     //      2.主动点击seek到某个位置，用setCurrentPlaybackTime:(播放中)
     [self.videoPlayer setCurrentPlaybackTime:30.0];
-    
     
     //[self.videoPlayer play];   // 播放视频，如果设置setAutoplay为NO,须调用此方法
 }

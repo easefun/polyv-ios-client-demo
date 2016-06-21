@@ -179,6 +179,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[self configControlAction];
         self.autoplay = YES;
 //		[self configObserver];
+        self.enableDanmuDisplay = YES;
+        self.enableRateDisplay  = YES;
     }
     return self;
 }
@@ -248,6 +250,14 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)setParam1:(NSString*)param1{
     self.param1 = param1;
+}
+
+- (void)setEnableDanmuDisplay:(BOOL)enableDanmuDisplay {
+    _enableDanmuDisplay = enableDanmuDisplay;
+    
+    if (!enableDanmuDisplay) {
+        [self enableDanmu:NO];
+    }
 }
 
 - (void)setAutoContinue:(BOOL)autoContinue {
@@ -656,10 +666,14 @@ typedef NS_ENUM(NSInteger, panHandler){
             [self setTimeLabelValues:totalTime totalTime:totalTime];
             
             self.isWatchCompleted = YES;
+            
             NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"]];
-            [mDict removeObjectForKey:_vid];        // 播放完成remove掉之前的记录
-            [[NSUserDefaults standardUserDefaults] setObject:mDict forKey:@"dict"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            if (_vid) {         // 此处判断，存在vid为空的情况
+                [mDict removeObjectForKey:_vid];        // 播放完成remove掉之前的记录
+                [[NSUserDefaults standardUserDefaults] setObject:mDict forKey:@"dict"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
             
             if (self.watchCompletedBlock) {
                 self.watchCompletedBlock();
@@ -1233,7 +1247,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 				[self.danmuManager initStart];
 			}
 			self.videoControl.sendDanmuButton.hidden = NO;
-		}
+        }
+        
+        self.videoControl.danmuButton.hidden = !self.enableDanmuDisplay;
+        self.videoControl.rateButton.hidden = !self.enableRateDisplay;
+ 
 		if (self.fullscreenBlock) {
 			self.fullscreenBlock();
 		}
