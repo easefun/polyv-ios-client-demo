@@ -56,7 +56,6 @@
         Video *video = [_videolist objectAtIndex:i];
         if ([video.vid isEqualToString:vid]) {
             video.percent = percent;
-            // 只更新改变的当前cell, 资源优化
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         }
@@ -71,8 +70,7 @@
         if ([video.vid isEqualToString:vid]) {
             
             video.rate = rate;
-            
-            // 更新一行cell
+
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             break;
         }

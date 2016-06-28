@@ -181,12 +181,14 @@
         NSLog(@"user watching completed");
     }];
     
-    
-    
-    /**
-     *  ----- 以下按钮部分为测试视频跳转实例，如无需要可自行删除 ----
-     */
-    
+  
+    //[self addTestButton];         // 测试
+}
+
+/**
+ *  ----- 以下按钮部分为测试视频跳转实例，如无需要可自行删除 ----
+ */
+- (void)addTestButton {
     // 跳转指定时间测试按钮
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(200, 230, 120, 30)];
     [btn setTitle:@"跳至30s" forState:UIControlStateNormal];
@@ -227,32 +229,27 @@
 
 
 - (void)switchVideo:(UIButton *)button {
-    
     switch (button.tag) {
         case 100: {
             self.currentVid = @"sl8da4jjbx1c8baed8a48212d735d905_s";        // 加密
             [self.videoPlayer setWatchStartTime:20.0];                      // 跳至20s
         }
             break;
-            
         case 101: {
             self.currentVid = @"sl8da4jjbxe69c6942a7a737819660de_s";        // 加密
             [self.videoPlayer setWatchStartTime:30];                        // 跳至30s
             //[self.videoPlayer setAutoplay:NO];                            // 是否自动播放
         }
             break;
-            
         case 102: {
             //[self.videoPlayer setAutoplay:YES];  // 如果之前设置自动播放为NO，此处须重新设置YES进行自动播放
             self.currentVid = @"sl8da4jjbx1db751c1820f564192800a_s";        // 非加密
             [self.videoPlayer setWatchStartTime:40];                        // 跳至40s
         }
             break;
-            
         default:
             break;
     }
-    
     [self.videoPlayer setVid:self.currentVid];
 }
 
