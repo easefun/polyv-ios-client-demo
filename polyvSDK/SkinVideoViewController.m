@@ -13,7 +13,7 @@
 #import "PVDanmuManager.h"
 #import "PvDanmuSendView.h"
 #import "PvReportManager.h"
-#import <AVFoundation/AVFoundation.h>
+#import "PolyvUtil.h"
 //#import "PvExamView.h"
 #define kPanPrecision 20
 
@@ -390,6 +390,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
 	[self.videoControl.snapshotButton addTarget:self action:@selector(snapshot) forControlEvents:UIControlEventTouchUpInside];
+	self.videoControl.enableSnapshot = YES;
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
 }
@@ -433,11 +434,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self stopCountWatchTime];
 	self.watchVideoTimeDuration = 0;
 	[self setEnableExam:self.enableExam];
-	if(!(_pvVideo.seed == 1 || _pvVideo.fullmp4 == 1) && !self.enableSnapshot){
-		self.videoControl.enableSnapshot = NO;
-	}else{
-		self.videoControl.enableSnapshot = YES;
-	}
+//	if(!(_pvVideo.seed == 1 || _pvVideo.fullmp4 == 1) && !self.enableSnapshot){
+//		self.videoControl.enableSnapshot = NO;
+//	}else{
+//		self.videoControl.enableSnapshot = YES;
+//	}
 }
 
 - (void)syncPlayButtonState{
@@ -877,15 +878,18 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)snapshot{
-	NSTimeInterval currentTime = self.currentPlaybackTime;
-	[self requestThumbnailImagesAtTimes:@[@(currentTime)] timeOption:MPMovieTimeOptionNearestKeyFrame];
-}
-
-- (void)didReceiveImage:(NSNotification *)notification{
-//	NSLog(@"notification = %@", notification);
-	UIImage *image =[notification.userInfo objectForKey: @"MPMoviePlayerThumbnailImageKey"];
-//	NSLog(@"image = %@", image);
-	UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+	int currentTime = (int)self.currentPlaybackTime;
+	NSString *sign = [NSString stringWithFormat:@"%@%d%dpolyvsnapshot", self.vid, [self getLevel], currentTime];
+	NSString *urlStr = [NSString stringWithFormat:@"http://go.polyv.net/snapshot/videoimage.php?vid=%@&level=%d&second=%d&sign=%@", self.vid, [self getLevel], currentTime, [PolyvUtil md5HexDigest:sign]];
+	NSURL *url = [NSURL URLWithString:urlStr];
+	
+	[[[NSURLSession sharedSession] downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		NSString *destinationPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:response.suggestedFilename];
+		[[NSFileManager defaultManager] moveItemAtPath:location.path toPath:destinationPath error:nil];
+		UIImage *image = [UIImage imageWithContentsOfFile:destinationPath];
+		
+		UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+	}] resume];
 }
 
 -  (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {

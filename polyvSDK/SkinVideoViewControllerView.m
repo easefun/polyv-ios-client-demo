@@ -200,7 +200,7 @@ enum PvLogoLocation {
 }
 - (void)setEnableSnapshot:(BOOL)enableSnapshot{
 	_enableSnapshot = enableSnapshot;
-	self.snapshotButton.hidden = enableSnapshot;
+	self.snapshotButton.hidden = !enableSnapshot;
 }
 - (void)setHeadTitle:(NSString*)headtitle{
 	[self.titleLabel setText:headtitle];
