@@ -475,9 +475,6 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = easefun;
 				TargetAttributes = {
-					CBA37117196E6549008E95ED = {
-						DevelopmentTeam = JQSZ9BW6H2;
-					};
 					CBA37138196E6549008E95ED = {
 						TestTargetID = CBA37117196E6549008E95ED;
 					};
@@ -720,7 +717,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK.ft;
+				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
@@ -747,7 +744,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK.ft;
+				PRODUCT_BUNDLE_IDENTIFIER = easefun.polyvSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
