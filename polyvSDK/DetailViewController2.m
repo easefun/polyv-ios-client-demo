@@ -132,6 +132,8 @@
     [self.videoPlayer enableDanmu:YES];                 // 开启弹幕
     
     [self.videoPlayer setAutoplay:YES];                 // 设置是否自动播放,默认为YES
+	
+	self.videoPlayer.enableSnapshot = YES;
     
     //[self.videoPlayer setEnableDanmuDisplay:NO];      // 不显示弹幕按钮
     //[self.videoPlayer setEnableRateDisplay:NO];       // 不显示播放速率按钮

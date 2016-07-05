@@ -65,7 +65,6 @@ enum PvLogoLocation {
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-//	NSLog(@"%s", __FUNCTION__);
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.backgroundColor = [UIColor clearColor];
@@ -102,7 +101,7 @@ enum PvLogoLocation {
 		[self addSubview:self.indicatorView];
 		[self addSubview:self.snapshotButton];
 		self.sendDanmuButton.hidden = YES;
-		self.snapshotButton.hidden = NO;
+		self.snapshotButton.hidden = YES;
 		self.snapshotButton.alpha = 0;
 
 		//editContent = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, 100, 20)];
@@ -140,7 +139,6 @@ enum PvLogoLocation {
 	
 	self.backButton.frame = CGRectMake(0, CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.backButton.bounds), CGRectGetHeight(self.backButton.bounds));
 	self.titleLabel.frame = CGRectMake(CGRectGetWidth(self.backButton.bounds), CGRectGetMinX(self.topBar.bounds), 300, CGRectGetHeight(self.topBar.bounds));
-	//NSLog(@"topBar: %@", NSStringFromCGRect(self.topBar.frame));
 	
 	self.danmuButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - CGRectGetWidth(self.danmuButton.bounds), (CGRectGetHeight(self.topBar.bounds) - CGRectGetHeight(self.danmuButton.bounds))/2, CGRectGetWidth(self.danmuButton.bounds), CGRectGetHeight(self.danmuButton.bounds));
 	
@@ -195,12 +193,11 @@ enum PvLogoLocation {
 	self.pvExamView.frame = self.frame;
 	//editContent.frame = self.sendDanmuButton.frame;
 	[self arrangeBitRateButtons];
-	
-//	NSLog(@"subviews = %@", self.subviews);
 }
 - (void)setEnableSnapshot:(BOOL)enableSnapshot{
 	_enableSnapshot = enableSnapshot;
-	self.snapshotButton.hidden = !enableSnapshot;
+	self.snapshotButton.hidden = YES;
+	self.snapshotButton.alpha = 0;
 }
 - (void)setHeadTitle:(NSString*)headtitle{
 	[self.titleLabel setText:headtitle];
@@ -297,12 +294,13 @@ enum PvLogoLocation {
 	if (self.isBarShowing) {
 		return;
 	}
+//	self.sendDanmuButton.hidden = self.snapshotButton.hidden = !_isFullscreenMode;
 	[UIView animateWithDuration:pVideoControlAnimationTimeinterval animations:^{
 		self.topBar.alpha = 1.0;
 		self.bottomBar.alpha = 1.0;
 		if (_isFullscreenMode) {
 			self.sendDanmuButton.alpha = 1.0;
-			self.snapshotButton.alpha = 1.0;
+			if(self.enableSnapshot) self.snapshotButton.alpha = 1.0;
 		}
 	} completion:^(BOOL finished) {
 		self.isBarShowing = YES;
@@ -344,7 +342,7 @@ enum PvLogoLocation {
 	_titleLabel.hidden = NO;
 	_danmuButton.hidden = NO;
 	_sendDanmuButton.hidden = NO;
-	self.snapshotButton.alpha = 1;
+	self.snapshotButton.hidden = NO;
 	self.isFullscreenMode = YES;
 	self.rateButton.hidden = NO;
 	

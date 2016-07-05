@@ -318,6 +318,11 @@ typedef NS_ENUM(NSInteger, panHandler){
     self.teaserEnabled = enable;
 }
 
+- (void)setEnableSnapshot:(BOOL)enableSnapshot{
+	_enableSnapshot = enableSnapshot;
+	self.videoControl.enableSnapshot = enableSnapshot;
+}
+
 - (void)dismiss
 {
     [self stopDurationTimer];
@@ -347,8 +352,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     [notificationCenter addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];                 // 确定了媒体播放时长后
     [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];           // 媒体播放完成或用户手动退出,具体原因通过MPMoviePlayerPlaybackDidFinishReasonUserInfoKey key值确定
     [notificationCenter addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
-	[notificationCenter addObserver:self selector:@selector(didReceiveImage:)name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-											   object:self];                // 缩略图请求完成之后
     [notificationCenter addObserver:self selector:@selector(onMediaPlaybackIsPreparedToPlayDidChangeNotification) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:nil];    // 准好播放
     
 	
@@ -390,7 +393,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
 	[self.videoControl.snapshotButton addTarget:self action:@selector(snapshot) forControlEvents:UIControlEventTouchUpInside];
-	self.videoControl.enableSnapshot = YES;
     [self setProgressSliderMaxMinValues];
     [self monitorVideoPlayback];
 }
@@ -434,11 +436,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self stopCountWatchTime];
 	self.watchVideoTimeDuration = 0;
 	[self setEnableExam:self.enableExam];
-//	if(!(_pvVideo.seed == 1 || _pvVideo.fullmp4 == 1) && !self.enableSnapshot){
-//		self.videoControl.enableSnapshot = NO;
-//	}else{
-//		self.videoControl.enableSnapshot = YES;
-//	}
 }
 
 - (void)syncPlayButtonState{
@@ -1132,14 +1129,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
 			break;
 	}
-	
-//	if (self.videoControl.showInWindowMode) {
-//		if (self.fullscreen) {
-//			[self shrinkScreenStyle];
-//		}else{
-//			[self fullScreenStyle];
-//		}
-//	}
 }
 
 
@@ -1230,11 +1219,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}];
 	}else{ // 视图模式
 //		NSLog(@"视图模式");
-//		self.originFrame = self.view.frame;
-		_parentViewController.view.frame = _parentViewController.view.superview.bounds;
-//		self.frame = self.view.superview.bounds;
-//		self.view.frame =self.view.superview.bounds;
-		CGRect frame = _parentViewController.view.frame;
+		CGRect frame = [UIScreen mainScreen].bounds;
 		self.frame = self.view.frame = frame;
 		self.isFullscreenMode = YES;
 		[self.videoControl changeToFullsreen];
@@ -1264,6 +1249,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 /// 非全屏样式
 - (void)shrinkScreenStyle{
+	self.videoControl.snapshotButton.hidden = YES;
 	if (self.videoControl.showInWindowMode) {
 //		NSLog(@"show in window");
 //		return;
@@ -1371,9 +1357,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 				case panHandlerverticalPan:{
 					// 垂直移动结束后，把状态改为不再控制音量
 					self.volumeEnable = NO;
-//					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//						self.horizontalLabel.hidden = YES;
-//					});
 					break;
 				}
 				default:
