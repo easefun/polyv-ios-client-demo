@@ -402,8 +402,32 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self setVid:vid level:0];
 }
 
-- (void)setVid:(NSString*)vid level:(int)level{
-	__weak typeof(self)weakSelf = self;
+- (void)setBitRateButtonDisplay:(int)level {
+    NSString *titlt = [NSString new];
+    switch (level) {
+        case 0:
+            titlt = @"自动";
+            break;
+        case 1:
+            titlt = @"流畅";
+            break;
+        case 2:
+            titlt = @"高清";
+            break;
+        case 3:
+            titlt = @"超清";
+            break;
+        default:
+            break;
+    }
+    [self.videoControl.bitRateButton setTitle:titlt forState:UIControlStateNormal];
+}
+
+- (void)setVid:(NSString*)vid level:(int)level {
+
+    [self setBitRateButtonDisplay:level];
+    
+    __weak typeof(self)weakSelf = self;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
 		_pvVideo = [PolyvSettings getVideo:vid];
 		[weakSelf parseSubRip];
@@ -581,13 +605,14 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 视频显示信息改变
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
-    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
 }
 
 // 播放状态改变
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
-    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+//    NSLog(@"videoInfo:%@",self.videoInfo);
+    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
     [self syncPlayButtonState];
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
@@ -611,15 +636,18 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 网络加载状态改变
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
-    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
     [self syncPlayButtonState];
-    //if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
-      //  [self setCurrentPlaybackTime:_watchStartTime];
-        //_isSwitching = NO;
-        
-        //self.watchStartTime = -1;
-    //}
+//    if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
+//        [self setCurrentPlaybackTime:_watchStartTime];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [self setCurrentPlaybackTime:_watchStartTime];
+//        });
+//        _isSwitching = NO;
+//        
+//        self.watchStartTime = -1;
+//    }
     
     if (self.loadState & MPMovieLoadStateStalled) {
         [self stopCountWatchTime];
@@ -639,7 +667,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 播放完成或退出
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
     
-    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
@@ -707,8 +735,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 做好播放准备后
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification
 {
+    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     if (_watchStartTime > 0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
-       
+
         [self setCurrentPlaybackTime:_watchStartTime];
         _watchStartTime = -1;
         _isSwitching = NO;
@@ -866,7 +895,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
-//	NSLog(@"%s", __FUNCTION__);
+	//NSLog(@"%s", __FUNCTION__);
 	[self.videoControl autoFadeOutControlBar];
 	[self setCurrentPlaybackTime:floor(slider.value)];
 	[self play];
