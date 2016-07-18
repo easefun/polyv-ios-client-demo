@@ -606,14 +606,13 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 视频显示信息改变
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification
 {
-    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
 }
 
 // 播放状态改变
 - (void)onMPMoviePlayerPlaybackStateDidChangeNotification
 {
-//    NSLog(@"videoInfo:%@",self.videoInfo);
-    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    //NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
     [self syncPlayButtonState];
     if (self.playbackState == MPMoviePlaybackStatePlaying) {
@@ -637,7 +636,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 网络加载状态改变
 - (void)onMPMoviePlayerLoadStateDidChangeNotification
 {
-    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    // NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
     [self syncPlayButtonState];
 //    if (_isSwitching && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
@@ -668,7 +667,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 播放完成或退出
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
     
-    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    // NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
@@ -736,7 +735,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 做好播放准备后
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification
 {
-    NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+    // NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
     if (_watchStartTime > 0 && _pvPlayMode == PvVideoMode && self.playbackState != MPMoviePlaybackStateStopped) {
 
         [self setCurrentPlaybackTime:_watchStartTime];
