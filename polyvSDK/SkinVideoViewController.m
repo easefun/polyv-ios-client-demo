@@ -589,6 +589,7 @@ typedef NS_ENUM(NSInteger, panHandler){
                                                  selector:@selector(watchTimer_tick:)
                                                  userInfo:nil
                                                   repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_watchTimer forMode:NSRunLoopCommonModes];
 }
 
 -(void)stopCountWatchTime{

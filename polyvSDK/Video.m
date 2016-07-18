@@ -27,8 +27,10 @@
 
 - (id)initWithVid:(NSString*)_vid {
     if (self = [super init]) {
+        self.vid = _vid;
+        
         NSDictionary*item = [PolyvSettings loadVideoJson:_vid];
-        //self.title = [item objectForKey:@"title"];
+        self.title = [item objectForKey:@"title"];
         self.duration = [item objectForKey:@"duration"];
         self.desc = [item objectForKey:@"duration"];
         self.piclink = [item objectForKey:@"first_image"];
