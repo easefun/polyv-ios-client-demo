@@ -144,24 +144,13 @@
     //[self showConfirmationAlert];
     
     //直接跳到上一次播放位置
-    //[self.videoPlayer play];
+    //[self.videoPlayer setWatchStartTime:380];
+    
+    [self.videoPlayer setAutoplay:YES];     // 设置是否自动播放,默认为YES
+    
     
     //UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
     //[self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
-    
-
-    /**
-     *  ---- 回调代码块 ----
-     */
-    
-    [self.videoPlayer setPlayButtonClickBlock:^{
-        NSLog(@"user click play button");
-    }];
-    [self.videoPlayer setPauseButtonClickBlock:^{
-        NSLog(@"user click pause button");
-    }];
-    
-    //__weak typeof(self)weakSelf = self;
     
     [self.videoPlayer setFullscreenBlock:^{
         //NSLog(@"should hide toolbox in this viewcontroller if needed");

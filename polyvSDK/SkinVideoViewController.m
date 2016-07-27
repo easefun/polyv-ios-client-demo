@@ -343,16 +343,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)configObserver
 {
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    
-	[notificationCenter addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
-    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];      // 播放状态改变，可配合playbakcState属性获取具体状态
-    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];          // 媒体网络加载状态改变
-    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];    // 视频显示状态改变
-    [notificationCenter addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];                 // 确定了媒体播放时长后
-    [notificationCenter addObserver:self selector:@selector(onMPMoviePlayerPlaybackDidFinishNotification:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];           // 媒体播放完成或用户手动退出,具体原因通过MPMoviePlayerPlaybackDidFinishReasonUserInfoKey key值确定
-    [notificationCenter addObserver:self selector:@selector(videoInfoLoaded) name:@"NotificationVideoInfoLoaded" object:nil];
-    [notificationCenter addObserver:self selector:@selector(onMediaPlaybackIsPreparedToPlayDidChangeNotification) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:nil];    // 准好播放
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(vidAvailable) name:PLVSkinVideoViewControllerVidAvailable object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerPlaybackStateDidChangeNotification) name:MPMoviePlayerPlaybackStateDidChangeNotification object:nil];      // 视频状态改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerLoadStateDidChangeNotification) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMoviePlayerReadyForDisplayDidChangeNotification) name:MPMoviePlayerReadyForDisplayDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMPMovieDurationAvailableNotification) name:MPMovieDurationAvailableNotification object:nil];
     
 	
 	[self addOrientationObserver];
@@ -419,54 +414,38 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 -(void)setVid:(NSString *)vid{
-    _vid = vid;
+
+	_vid = vid;
     [self setVid:vid level:0];
 }
 
-- (void)setVid:(NSString*)vid level:(int)level {
+- (void)setVid:(NSString*)vid level:(int)level{
+	__weak typeof(self)weakSelf = self;
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+		_pvVideo = [PolyvSettings getVideo:vid];
+		[weakSelf parseSubRip];
+//		NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
+		dispatch_sync(dispatch_get_main_queue(), ^(void) {
+			if (_cancel) {
+				return;
+			}
+			if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
+				_pvPlayMode = PvTeaserMode;
+				weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
+				[weakSelf.videoControl disableControl:YES];
+			}else{
+				[super stop];
+				if (level==0) {
+					[super setVid:vid];
+				}else{
+					[super setVid:vid level:level];
+				}
+			}
 
-    
-    int vLevel = [self isExistedTheLocalVideo:vid];
-    if ( vLevel ) {
-        NSLog(@"播放本地视频 level:%d",vLevel);
-        [super setVid:vid];
-        [self setBitRateButtonDisplay:vLevel];
-        [self.videoControl.bitRateButton setEnabled:NO];
-        
-    }else {
-        NSLog(@"播放在线视频 level:%d",level);
-        [self setBitRateButtonDisplay:level];
-        [self.videoControl.bitRateButton setEnabled:YES];
-        
-        __weak typeof(self)weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-            _pvVideo = [PolyvSettings getVideo:vid];
-            
-            [weakSelf parseSubRip];
-            //NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                if (_cancel) {
-                    return;
-                }
-                if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
-                    _pvPlayMode = PvTeaserMode;
-                    weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
-                    [weakSelf.videoControl disableControl:YES];
-                }else{
-                    [super stop];
-                    if (level==0) {
-                        [super setVid:vid];
-                    }else{
-                        [super setVid:vid level:level];
-                    }
-                }
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
-                
-            });
-        });
-    }
-    
+			[[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
+
+		});
+	});
 }
 
 - (void)vidAvailable{
@@ -476,7 +455,16 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self setEnableExam:self.enableExam];
 }
 
-- (void)syncPlayButtonState{
+//
+- (void)onMPMoviePlayerLoadStateDidChangeNotification
+{
+	[self syncPlayButtonState];
+    if (self.watchStartTime>0 && _pvPlayMode == PvVideoMode) {
+        //NSLog(@"%f",self.watchStartTime);
+        [self setCurrentPlaybackTime:self.watchStartTime];
+        
+        //self.watchStartTime = -1;
+    }
     
     if (self.loadState & MPMovieLoadStatePlayable
         && self.loadState & MPMovieLoadStatePlayable
@@ -490,6 +478,31 @@ typedef NS_ENUM(NSInteger, panHandler){
         self.videoControl.playButton.hidden = NO;
         self.videoControl.pauseButton.hidden = YES;
     }
+    if (self.loadState & MPMovieLoadStatePlaythroughOK) {
+        [self.videoControl.indicatorView stopAnimating];
+        [self startCountWatchTime];
+        _isPrepared = YES;
+        
+//		NSLog(@"MPMovieLoadStatePlaythroughOK");
+	}else{
+//		NSLog(@"state = %@", @(self.loadState));
+	}
+}
+
+- (void)syncPlayButtonState{
+    
+    if (self.loadState & MPMovieLoadStatePlayable
+        && self.loadState & MPMovieLoadStatePlayable
+        && self.playbackState == MPMoviePlaybackStatePlaying
+        && self.playbackState)
+    {
+        self.videoControl.playButton.hidden = YES;
+		self.videoControl.pauseButton.hidden = NO;
+	}else
+    {
+		self.videoControl.playButton.hidden = NO;
+		self.videoControl.pauseButton.hidden = YES;
+	}
 }
 
 -(void)searchSubtitles{
@@ -680,8 +693,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 // 播放完成或退出
 -(void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
-    
-    // NSLog(@"%s,%f",__FUNCTION__,self.currentPlaybackTime);
+//	NSLog(@"%s", __FUNCTION__);
     
 	[self.videoControl.indicatorView stopAnimating];
     if (_pvPlayMode == PvTeaserMode) {
@@ -762,11 +774,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)bitRateViewButtonClick:(UIButton *)button
 {
-
     self.watchStartTime = [super currentPlaybackTime];
-    _isSwitching = YES;         // 码率切换
-    self.videoControl.bitRateView.hidden = YES;
-    
     switch (button.tag) {
         case 0:
             [super switchLevel:0];
