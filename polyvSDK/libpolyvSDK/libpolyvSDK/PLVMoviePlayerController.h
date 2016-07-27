@@ -26,6 +26,9 @@
 /**播放器设置vid和播放的码率*/
 - (void)setVid:(NSString*)vid level:(int)level;
 
+/**获取当前视频在本地的码率, 本地无该视频则返回0*/
+- (int)isExistedTheLocalVideo:(NSString *)vid;
+
 /**获取当前视频的有多少个码率*/
 -(int)getLevel;
 

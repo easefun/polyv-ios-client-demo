@@ -397,11 +397,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self monitorVideoPlayback];
 }
 
--(void)setVid:(NSString *)vid{
-	_vid = vid;
-    [self setVid:vid level:0];
-}
-
 - (void)setBitRateButtonDisplay:(int)level {
     NSString *titlt = [NSString new];
     switch (level) {
@@ -423,36 +418,55 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self.videoControl.bitRateButton setTitle:titlt forState:UIControlStateNormal];
 }
 
+-(void)setVid:(NSString *)vid{
+    _vid = vid;
+    [self setVid:vid level:0];
+}
+
 - (void)setVid:(NSString*)vid level:(int)level {
 
-    [self setBitRateButtonDisplay:level];
     
-    __weak typeof(self)weakSelf = self;
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-		_pvVideo = [PolyvSettings getVideo:vid];
-		[weakSelf parseSubRip];
-//		NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
-		dispatch_sync(dispatch_get_main_queue(), ^(void) {
-			if (_cancel) {
-				return;
-			}
-			if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
-				_pvPlayMode = PvTeaserMode;
-				weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
-				[weakSelf.videoControl disableControl:YES];
-			}else{
-				[super stop];
-				if (level==0) {
-					[super setVid:vid];
-				}else{
-					[super setVid:vid level:level];
-				}
-			}
-
-			[[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
-
-		});
-	});
+    int vLevel = [self isExistedTheLocalVideo:vid];
+    if ( vLevel ) {
+        NSLog(@"播放本地视频 level:%d",vLevel);
+        [super setVid:vid];
+        [self setBitRateButtonDisplay:vLevel];
+        [self.videoControl.bitRateButton setEnabled:NO];
+        
+    }else {
+        NSLog(@"播放在线视频 level:%d",level);
+        [self setBitRateButtonDisplay:level];
+        [self.videoControl.bitRateButton setEnabled:YES];
+        
+        __weak typeof(self)weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+            _pvVideo = [PolyvSettings getVideo:vid];
+            
+            [weakSelf parseSubRip];
+            //NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
+            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+                if (_cancel) {
+                    return;
+                }
+                if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
+                    _pvPlayMode = PvTeaserMode;
+                    weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
+                    [weakSelf.videoControl disableControl:YES];
+                }else{
+                    [super stop];
+                    if (level==0) {
+                        [super setVid:vid];
+                    }else{
+                        [super setVid:vid level:level];
+                    }
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:PLVSkinVideoViewControllerVidAvailable object:self];
+                
+            });
+        });
+    }
+    
 }
 
 - (void)vidAvailable{
