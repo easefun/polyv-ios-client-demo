@@ -56,8 +56,8 @@
     self.isPresented = YES;
     self.videoPlayer.contentURL = nil;
     [self.videoPlayer stop];
-    [self.videoPlayer cancel];
-    [self.videoPlayer cancelObserver];
+    [self.videoPlayer cancel];    // cancel方法中调用了cancelObserver
+    //[self.videoPlayer cancelObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
  
     [super viewDidDisappear:animated];

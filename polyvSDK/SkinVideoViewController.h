@@ -88,6 +88,7 @@ enum PvPlayMode {
 // 发送跑马灯
 -(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration;
 
+// 自动续播,建议根据实际项目需求实现记录的存储
 - (void)setAutoContinue:(BOOL)autoContinue;
 
 // 监控播放器状态  刷新播放器状态(进度条、时间显示器等) 默认为自动调用

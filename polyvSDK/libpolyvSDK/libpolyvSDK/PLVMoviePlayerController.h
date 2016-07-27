@@ -35,6 +35,8 @@
 /**切换码率*/
 -(void)switchLevel:(int)level;
 
+
+// 继承本类的播放器在销毁前需要调用此方法
 -(void)cancel;
 
 -(id)initWithLocalMp4:(NSString*)vid level:(int)level __deprecated;

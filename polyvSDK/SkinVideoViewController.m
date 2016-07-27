@@ -80,8 +80,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 @implementation SkinVideoViewController{
     int _position;
-    UINavigationController* _navigationController;
-    UIViewController *_parentViewController;
+    __weak UINavigationController* _navigationController;
+    __weak UIViewController *_parentViewController;
     BOOL _isPrepared;
     
     NSTimer *_stallTimer;
@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, panHandler){
     NSDate* _secondLoadStartTime;
     BOOL _firstLoadTimeSent;
     BOOL _secondLoadTimeSent;
-    BOOL _cancel;
+    //BOOL _cancel;
 	BOOL _isSeeking;
     BOOL _isSwitching;  // 切换码率中
     NSTimer *_watchTimer;
@@ -128,24 +128,25 @@ typedef NS_ENUM(NSInteger, panHandler){
     [super stop];
 }
 - (void)cancel{
-//    NSLog(@"cancel");
-    _cancel = YES;
+    //_cancel = YES;
+    
     [super cancel];
 	[self cancelObserver];
+    
     [self stopBufferTimer];
     [self stopDurationTimer];
     [self stopCountWatchTime];
-    [_watchTimer invalidate];
-    [_bufferTimer invalidate];
     [_stallTimer invalidate];
-    _durationTimer = nil;
-    _watchTimer = nil;
-    _bufferTimer = nil;
-    _stallTimer = nil;
-    [self.videoControl removeFromSuperview];
-    _pvVideo = nil;
-    self.videoControl = nil;
-	self.videoContentURL = nil;
+    //[_watchTimer invalidate];
+    //[_bufferTimer invalidate];
+//    _durationTimer = nil;
+//    _watchTimer = nil;
+//    _bufferTimer = nil;
+//    _stallTimer = nil;
+//    [self.videoControl removeFromSuperview];
+//    _pvVideo = nil;
+//    self.videoControl = nil;
+//	self.videoContentURL = nil;
 }
 
 
@@ -169,7 +170,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[self setFrame:frame];
 		
 //		self.view.frame = frame;
-		[self resetIfNeed];
+		//[self resetIfNeed];
         self.view.backgroundColor = [UIColor blackColor];
         self.controlStyle = MPMovieControlStyleNone;
         [self.view addSubview:self.videoControl];
@@ -178,31 +179,31 @@ typedef NS_ENUM(NSInteger, panHandler){
 		self.originFrame = frame;
 		[self configControlAction];
         self.autoplay = YES;
-//		[self configObserver];
+		//[self configObserver];
         self.enableDanmuDisplay = YES;
         self.enableRateDisplay  = YES;
     }
     return self;
 }
 
-- (void)resetIfNeed{
-	if (_durationTimer) {
-		_durationTimer = nil;
-	}
-	if (_watchTimer) {
-		_watchTimer = nil;
-	}
-	if (_bufferTimer) {
-		_bufferTimer = nil;
-	}
-	if (_stallTimer) {
-		_stallTimer = nil;
-	}
-	if (self.videoControl) {
-		self.videoControl = nil;
-	}
-	self.watchVideoTimeDuration = 0;
-}
+//- (void)resetIfNeed{
+//	if (_durationTimer) {
+//		_durationTimer = nil;
+//	}
+//	if (_watchTimer) {
+//		_watchTimer = nil;
+//	}
+//	if (_bufferTimer) {
+//		_bufferTimer = nil;
+//	}
+//	if (_stallTimer) {
+//		_stallTimer = nil;
+//	}
+//	if (self.videoControl) {
+//		self.videoControl = nil;
+//	}
+//	self.watchVideoTimeDuration = 0;
+//}
 
 
 #pragma mark - Override Method
@@ -400,17 +401,13 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)setBitRateButtonDisplay:(int)level {
     NSString *titlt = [NSString new];
     switch (level) {
-        case 0:
-            titlt = @"自动";
+        case 0: titlt = @"自动";
             break;
-        case 1:
-            titlt = @"流畅";
+        case 1: titlt = @"流畅";
             break;
-        case 2:
-            titlt = @"高清";
+        case 2: titlt = @"高清";
             break;
-        case 3:
-            titlt = @"超清";
+        case 3: titlt = @"超清";
             break;
         default:
             break;
@@ -445,9 +442,9 @@ typedef NS_ENUM(NSInteger, panHandler){
             [weakSelf parseSubRip];
             //NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                if (_cancel) {
-                    return;
-                }
+                //if (_cancel) {
+                  //  return;
+                //}
                 if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
                     _pvPlayMode = PvTeaserMode;
                     weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
@@ -1193,12 +1190,14 @@ typedef NS_ENUM(NSInteger, panHandler){
 	if (self.isFullscreenMode) { // 全屏模式
 		[self fullScreenAction:self.videoControl.shrinkScreenButton];
 	}else{ // 非全屏模式
+        
+        [self cancel];          // 清除定时器等操作
 		if (_navigationController) {
-//			NSLog(@"导航控制器");
+			//NSLog(@"导航控制器");
 			[_navigationController popViewControllerAnimated:YES];
 			[_navigationController setNavigationBarHidden:NO animated:YES];
 		}else if(_parentViewController){
-//			NSLog(@"present 控制器");
+			//NSLog(@"present 控制器");
 			[_parentViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 		}
 	}

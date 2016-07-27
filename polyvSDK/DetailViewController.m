@@ -24,7 +24,7 @@
 	self.videoPlayer.contentURL = nil;
 	[self.videoPlayer stop];
 	[self.videoPlayer cancel];
-	[self.videoPlayer cancelObserver];
+	//[self.videoPlayer cancelObserver];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidDisappear:animated];
 }
