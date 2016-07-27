@@ -88,8 +88,9 @@
         
     }] resume];
     
-    /*Video * v = [[Video alloc]initWithVid:@""];
-    NSLog(@"%@",[v.allfilesize objectAtIndex:0]);*/
+    
+    /*Video *v = [[Video alloc] initWithVid:@"sl8da4jjbxc29d633ebb53ba79ded0f4_s"];
+    NSLog(@"%@",[v.allfilesize objectAtIndex:0]); */
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.

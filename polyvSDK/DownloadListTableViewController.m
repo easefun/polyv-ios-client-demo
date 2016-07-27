@@ -50,7 +50,6 @@
  
     
 }
-
 -(void)updateVideo:(NSString*)vid percent:(float)percent{
     
     for (int i=0; i<_videolist.count; ++i) {

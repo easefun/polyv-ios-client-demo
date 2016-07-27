@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 #import "PolyvSettings.h"
-#import "DetailViewController.h"
+//#import "DetailViewController.h"
 #import "PolyvUtil.h"
 
 
@@ -19,20 +19,26 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    // Override point for customization after application launch.
-
-   
+{
+    // 配置sdk加密串
+    // NSString *appKey1 = @"你的app sdk加密串";
+    NSString *appKey1 = @"iPGXfu3KLEOeCW4KXzkWGl1UYgrJP7hRxUfsJGldI6DEWJpYfhaXvMA+32YIYqAOocWd051v5XUAU17LoVlgZCSEVNkx11g7CxYadcFPYPozslnQhFjkxzzjOt7lUPsWF/CO2xt5xZemQCBkkSKLGA==";         // 本地
+    NSData *data = [appKey1 dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *config =[PolyvUtil decryptUserConfig:data];
+    [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+    [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
+    
+    // 配置sdk加密串示例(使用网络接口)
+    /*
     NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://demo.polyv.net/demo/appkey.php"]];
     NSArray*config =[PolyvUtil decryptUserConfig:data];
     if ([config count]!=4) {
         NSLog(@"加载token失败");
-        
     }else{
         [[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
         [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
     }
-   
-    
+     */
     
     return YES;
 }

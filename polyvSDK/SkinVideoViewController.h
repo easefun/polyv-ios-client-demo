@@ -64,7 +64,7 @@ enum PvPlayMode {
 - (void)setHeadTitle:(NSString*)headtitle;
 - (void)setNavigationController:(UINavigationController*)navigationController;
 - (void)setParentViewController:(UIViewController*)viewController;
--(void)stop;
+- (void)stop;
 - (void)setVid:(NSString*)vid;
 - (void)setVid:(NSString*)vid level:(int)level;
 
@@ -79,4 +79,10 @@ enum PvPlayMode {
 - (void)setParam1:(NSString*)param1;
 // 发送跑马灯
 -(void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration;
+
+- (void)setAutoContinue:(BOOL)autoContinue;
+
+// 监控播放器状态  刷新播放器状态(进度条、时间显示器等) 默认为自动调用
+- (void)monitorVideoPlayback;
+
 @end
