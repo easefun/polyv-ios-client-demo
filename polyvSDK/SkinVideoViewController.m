@@ -1025,10 +1025,13 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self.durationTimer invalidate];
 }
 
-- (void)starBufferTimer
-{
-    self.bufferTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(trackBuffer) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.durationTimer forMode:NSDefaultRunLoopMode];
+- (void)starBufferTimer {
+    
+    // 确保在同一对象下只被创建一次，否则可能造成内存泄漏的问题(其他如startDurationTimer方法中可参考修改，介于可能影响其他代码的可能性先不做修改)
+    if (!_bufferTimer) {
+        _bufferTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(trackBuffer) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_durationTimer forMode:NSDefaultRunLoopMode];
+    }
 }
 
 - (void)stopBufferTimer
