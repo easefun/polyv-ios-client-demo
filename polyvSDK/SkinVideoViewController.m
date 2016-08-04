@@ -89,7 +89,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     NSDate* _secondLoadStartTime;
     BOOL _firstLoadTimeSent;
     BOOL _secondLoadTimeSent;
-    //BOOL _cancel;
 	BOOL _isSeeking;
     BOOL _isSwitching;  // 切换码率中
     NSTimer *_watchTimer;
@@ -128,7 +127,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     [super stop];
 }
 - (void)cancel{
-    //_cancel = YES;
     
     [super cancel];
 	[self cancelObserver];
@@ -137,16 +135,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     [self stopDurationTimer];
     [self stopCountWatchTime];
     [_stallTimer invalidate];
-    //[_watchTimer invalidate];
-    //[_bufferTimer invalidate];
-//    _durationTimer = nil;
-//    _watchTimer = nil;
-//    _bufferTimer = nil;
-//    _stallTimer = nil;
-//    [self.videoControl removeFromSuperview];
-//    _pvVideo = nil;
-//    self.videoControl = nil;
-//	self.videoContentURL = nil;
 }
 
 
@@ -185,26 +173,6 @@ typedef NS_ENUM(NSInteger, panHandler){
     }
     return self;
 }
-
-//- (void)resetIfNeed{
-//	if (_durationTimer) {
-//		_durationTimer = nil;
-//	}
-//	if (_watchTimer) {
-//		_watchTimer = nil;
-//	}
-//	if (_bufferTimer) {
-//		_bufferTimer = nil;
-//	}
-//	if (_stallTimer) {
-//		_stallTimer = nil;
-//	}
-//	if (self.videoControl) {
-//		self.videoControl = nil;
-//	}
-//	self.watchVideoTimeDuration = 0;
-//}
-
 
 #pragma mark - Override Method
 
@@ -267,7 +235,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"dict"];
         if (dict) {
             NSNumber *startTime = [dict objectForKey:_vid];
-            if (startTime) {
+            if (startTime && startTime.integerValue > 0) {
                 [self setWatchStartTime:startTime.doubleValue];
             }
         }
@@ -442,9 +410,7 @@ typedef NS_ENUM(NSInteger, panHandler){
             [weakSelf parseSubRip];
             //NSLog(@"%s - vid = %@ - [super getVid] = %@", __FUNCTION__, weakSelf.vid, [super getVid]);
             dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                //if (_cancel) {
-                  //  return;
-                //}
+            
                 if (_pvVideo.teaser_url!=nil && [_pvVideo.teaser_url hasSuffix:@"mp4"] && weakSelf.teaserEnabled && _pvVideo.teaserShow) {
                     _pvPlayMode = PvTeaserMode;
                     weakSelf.contentURL = [NSURL URLWithString:_pvVideo.teaser_url];
@@ -689,7 +655,6 @@ typedef NS_ENUM(NSInteger, panHandler){
         [self setTimeLabelValues:0 totalTime:0];
        
     }else{
-		//self.videoControl.slider.progressValue = self.duration; // bug. 不是视频终止判定条件
         //double totalTime = floor(self.duration);
         //[self setTimeLabelValues:totalTime totalTime:totalTime];
         //====error report
@@ -699,6 +664,7 @@ typedef NS_ENUM(NSInteger, panHandler){
         MPMovieFinishReason reason = [resultValue intValue];
         
         if (fabs(self.duration-self.currentPlaybackTime) <1) {
+            self.videoControl.slider.progressValue = self.duration;
             double totalTime = floor(self.duration);
             [self setTimeLabelValues:totalTime totalTime:totalTime];
             

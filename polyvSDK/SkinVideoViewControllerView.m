@@ -200,7 +200,9 @@ enum PvLogoLocation {
 	self.snapshotButton.alpha = 0;
 }
 - (void)setHeadTitle:(NSString*)headtitle{
-	[self.titleLabel setText:headtitle];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.titleLabel setText:headtitle];
+    });
 }
 - (void)videoInfoLoaded:(NSDictionary*)videoInfo{
 	
