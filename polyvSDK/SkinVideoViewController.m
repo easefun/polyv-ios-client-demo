@@ -390,6 +390,18 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)setVid:(NSString*)vid level:(int)level {
 
+    if (![vid containsString:PolyvUserId]) {
+        NSString *warnningStr = @"视频vid和配置的sdk加密串没有对应同一个POLYV账号，请检查vid或重新配置加密串";
+        NSLog(@"%@",warnningStr);
+        // 弹窗提示
+        //UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:warnningStr preferredStyle:UIAlertControllerStyleAlert];
+        //[alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+        //if(_parentViewController) {
+          //      [_parentViewController presentViewController:alertController animated:YES completion:nil];
+        //}
+        
+        return;
+    }
     
     int vLevel = [self isExistedTheLocalVideo:vid];
     if ( vLevel ) {
