@@ -129,7 +129,7 @@
     
     //[self.videoPlayer setAutoContinue:YES];           // 自动续播, 是否继续上次观看的位置
     
-    [self.videoPlayer enableDanmu:YES];                 // 开启弹幕
+    [self.videoPlayer enableDanmu:YES];
     
     [self.videoPlayer setAutoplay:YES];                 // 设置是否自动播放,默认为YES
 	

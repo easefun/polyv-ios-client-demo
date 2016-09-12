@@ -38,8 +38,7 @@
     [singleTap setNumberOfTapsRequired:1];
     [self.urlTextView addGestureRecognizer:singleTap];
     
-    
-    
+    NSLog(@"推荐使用新上传SDK(https://github.com/easefun/polyv-ios-upload),使用CDN服务器提高上传速度和稳定性能。");
     
 }
 
