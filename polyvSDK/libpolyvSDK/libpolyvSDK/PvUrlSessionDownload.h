@@ -5,7 +5,7 @@
 @interface PvUrlSessionDownload : NSObject<NSURLSessionDataDelegate,NSURLSessionDownloadDelegate>
 
 @property (nonatomic, strong) NSDictionary *videoInfo;
-@property (nonatomic, copy)void(^completeBlock)(void);
+@property (nonatomic, copy)void(^completeBlock)(void);  // ***此代码块必须实现回调，具体参见demo中的使用
 
 
 @property int level;

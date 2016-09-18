@@ -11,6 +11,7 @@
 #import "Video.h"
 #import "SkinVideoViewController.h"
 #import "PolyvSettings.h"
+#import "AppDelegate.h"
 
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
@@ -88,8 +89,19 @@
         //只加入新增任务
         if ([_downloaderDictionary objectForKey:video.vid]==nil) {
             PvUrlSessionDownload* downloader = [[PvUrlSessionDownload alloc]initWithVid:video.vid level:video.level];
-            [_downloaderDictionary setObject:downloader forKey:video.vid];
             [downloader setDownloadDelegate:self];
+            // 后台下载时完成回调
+            [downloader setCompleteBlock:^{   
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                if (appDelegate.backgroundSessionCompletionHandler) {
+                    //need to copy the completion handler
+                    void (^handler)() = appDelegate.backgroundSessionCompletionHandler;
+                    appDelegate.backgroundSessionCompletionHandler = nil;
+                    handler();  //执行代码块
+                }
+            }];
+            
+            [_downloaderDictionary setObject:downloader forKey:video.vid];
         }
         
         

@@ -390,7 +390,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)setVid:(NSString*)vid level:(int)level {
 
-    if (![vid containsString:PolyvUserId]) {
+    if (![vid hasPrefix:PolyvUserId]) {
         NSString *warnningStr = @"视频vid和配置的sdk加密串没有对应同一个POLYV账号，请检查vid或重新配置加密串";
         NSLog(@"%@",warnningStr);
         // 弹窗提示
