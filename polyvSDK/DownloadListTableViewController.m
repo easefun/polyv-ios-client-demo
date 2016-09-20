@@ -7,17 +7,17 @@
 //
 
 #import "DownloadListTableViewController.h"
-#import "FMDBHelper.h"
-#import "Video.h"
-#import "SkinVideoViewController.h"
-#import "PolyvSettings.h"
+#import "FMDBHelper.h"///数据库处理
+#import "Video.h"///单个视频的信息
+#import "SkinVideoViewController.h"///播放器皮肤
+#import "PolyvSettings.h"///sdk设置API
 #import "AppDelegate.h"
 
 @interface DownloadListTableViewController (){
     NSMutableArray *_videolist;
     NSMutableDictionary *_downloaderDictionary;
     UIBarButtonItem *btnstart;
-    BOOL started;
+    BOOL started;///是否已经开始下载
     NSString* currentVid;
 }
 
@@ -26,8 +26,6 @@
 @end
 
 @implementation DownloadListTableViewController
-
-
 
 -(void)startAll{
     //从数据库列表获取下载任务
@@ -48,9 +46,9 @@
         [btnstart setTitle:@"全部停止"];
     }
     started = !started;
- 
-    
 }
+
+//更新下载百分比
 -(void)updateVideo:(NSString*)vid percent:(float)percent{
     
     for (int i=0; i<_videolist.count; ++i) {
@@ -64,6 +62,7 @@
     //[self.tableView reloadData];
 }
 
+//更新视频下载的速率
 -(void)updateVideo:(NSString*)vid rate:(long)rate {
     
     for (int i=0; i<_videolist.count; ++i) {
@@ -86,9 +85,11 @@
     _videolist = [[FMDBHelper sharedInstance]listDownloadVideo];
     for (int i=0;i<_videolist.count;  i++) {
         Video*video = [_videolist objectAtIndex:i];
-        //只加入新增任务
+        
+        //只加入新增下载任务
         if ([_downloaderDictionary objectForKey:video.vid]==nil) {
             PvUrlSessionDownload* downloader = [[PvUrlSessionDownload alloc]initWithVid:video.vid level:video.level];
+            //设置下载代理为自身，需要实现四个代理方法download delegate
             [downloader setDownloadDelegate:self];
             // 后台下载时完成回调
             [downloader setCompleteBlock:^{   
@@ -104,14 +105,13 @@
             [_downloaderDictionary setObject:downloader forKey:video.vid];
         }
         
-        
     }
     [self.tableView reloadData];
 	[super viewDidAppear:animated];
 }
+
 - (void)viewDidLoad {
     
-
     btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startAll)];
     self.navigationItem.rightBarButtonItem = btnstart;
    
@@ -120,22 +120,14 @@
     //_fmdb = [FMDBHelper sharedInstance];
     //_videolist = [_fmdb listDownloadVideo];
     
-    
     [super viewDidLoad];
 
 }
 
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [_videolist count];
 }
 
@@ -165,9 +157,6 @@
         label_percent.text = [NSString stringWithFormat:@"%.1f%%, %ldkb/s",video.percent,video.rate];
         
         [cell.contentView addSubview:label_percent];
-
-        
-        
         
     }else{
         UILabel *label_title = (UILabel*)[cell viewWithTag:101];
@@ -210,6 +199,8 @@
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+//删除视频
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Video *video = [_videolist objectAtIndex:indexPath.row];
@@ -224,8 +215,6 @@
 
     }
     
-    
-    
     //删除文件
     [PvUrlSessionDownload deleteVideo:video.vid level:video.level];
     
@@ -235,34 +224,41 @@
 
 }
 
-    
+//设置表格的编辑风格
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
 }
 
+//表格是否能被编辑
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
 }
 
-#pragma download delegate
+#pragma mark  download delegate
 
+//下载完成
 - (void) downloadDidFinished:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
     NSLog(@"finished %@",vid);
     
     [[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:[NSNumber numberWithInt:100]];
     [[FMDBHelper sharedInstance] updateDownloadStatic:vid status:1];
 
-   
 }
+
+//下载被停止
 - (void) dataDownloadStop:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid{
     
 }
+
+//下载失败
 - (void) dataDownloadFailed:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid reason:(NSString *) reason{
     [[FMDBHelper sharedInstance] updateDownloadStatic:vid status:-1];
      NSLog(@"dataDownloadFailed %@",vid);
 }
+
+//实时获取下载进度百分比
 - (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid percent: (NSNumber *) aPercent{
      [[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
     
@@ -272,12 +268,19 @@
 
      });
 }
+
+//实时获取下载速率
 - (void) dataDownloadAtRate:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid rate:(NSNumber *)aRate {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self updateVideo:vid rate:[aRate longLongValue]];
     });
+  
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
 
 @end
