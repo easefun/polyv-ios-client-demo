@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "DownloadDelegate.h"
-/**
- 旧版本的SDK下载API，不支持后台下载
- 
- */
 @interface VideoDownloader : NSObject
 
 - (instancetype)initWithVid:(NSString*)vid level:(int)level;
