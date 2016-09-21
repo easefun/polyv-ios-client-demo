@@ -59,7 +59,6 @@
             break;
         }
     }
-    //[self.tableView reloadData];
 }
 
 //更新视频下载的速率
@@ -68,14 +67,13 @@
     for (int i=0; i<_videolist.count; ++i) {
         Video *video = [_videolist objectAtIndex:i];
         if ([video.vid isEqualToString:vid]) {
-            
-            video.rate = rate;
-
-            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            if (video.rate != rate) {   //和之前速率不相等时更新cell
+                video.rate = rate;
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            }
             break;
         }
     }
-    //[self.tableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -269,7 +267,7 @@
      });
 }
 
-//实时获取下载速率
+//实时获取下载速率(下载开始之后此方法会一直被调用直到当前下载任务结束)
 - (void) dataDownloadAtRate:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid rate:(NSNumber *)aRate {
     
     dispatch_async(dispatch_get_main_queue(), ^{

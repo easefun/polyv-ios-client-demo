@@ -25,7 +25,7 @@
 /** 下载中调用的方法:获取下载百分比*/
 - (void) dataDownloadAtPercent:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid percent:(NSNumber *) aPercent;
 
-/** 下载中调用的方法:获取下载速率*/
+/** 下载中调用的方法:获取下载速率(下载开始之后此方法会一直被调用直到当前下载任务结束)*/
 - (void) dataDownloadAtRate:(PvUrlSessionDownload*)downloader withVid:(NSString *)vid rate:(NSNumber *)aRate;
 
 
