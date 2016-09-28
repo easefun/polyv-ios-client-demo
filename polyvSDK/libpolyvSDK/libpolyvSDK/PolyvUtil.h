@@ -28,4 +28,7 @@
 + (NSData *)AES128DecryptedDataWithKey:(NSString *)key iv:(Byte*)iv data:(NSData*)data;
 +(NSData*)loadDataFromURL:(NSURL*)url;
 + (NSArray *)decryptUserConfig:(NSData*)data;
+
+//+ (NSString *) localIPAddress;
++ (NSString*)hostIp;
 @end
