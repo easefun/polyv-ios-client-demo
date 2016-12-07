@@ -898,7 +898,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	int level = self.getLevel;
 	if (!level) level = [self isExistedTheLocalVideo:_vid];
 	NSString *sign = [NSString stringWithFormat:@"%@%d%dpolyvsnapshot", self.vid, level, currentTime];
-	NSString *urlStr = [NSString stringWithFormat:@"http://go.polyv.net/snapshot/videoimage.php?vid=%@&level=%d&second=%d&sign=%@", self.vid, level, currentTime, [PolyvUtil md5HexDigest:sign]];
+	NSString *urlStr = [NSString stringWithFormat:@"https://go.polyv.net/snapshot/videoimage.php?vid=%@&level=%d&second=%d&sign=%@", self.vid, level, currentTime, [PolyvUtil md5HexDigest:sign]];
 	NSURL *url = [NSURL URLWithString:urlStr];
 	
 	[[[NSURLSession sharedSession] downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {

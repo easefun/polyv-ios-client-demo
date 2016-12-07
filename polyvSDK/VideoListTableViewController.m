@@ -50,7 +50,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
-    [request setURL:[NSURL URLWithString:@"http://demo.polyv.net/data/video.js"]];
+    [request setURL:[NSURL URLWithString:@"https://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
     NSURLSession *session = [NSURLSession sharedSession];

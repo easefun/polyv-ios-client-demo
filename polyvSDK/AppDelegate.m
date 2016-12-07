@@ -30,7 +30,7 @@
     
     // 配置sdk加密串示例(使用网络接口)
     /*
-    NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://demo.polyv.net/demo/appkey.php"]];
+    NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://demo.polyv.net/demo/appkey.php"]];
     NSArray*config =[PolyvUtil decryptUserConfig:data];
     if ([config count]!=4) {
         NSLog(@"加载token失败");
