@@ -4,7 +4,9 @@ polyv-ios-client-demo
 
 ## ATS 支持
 
-保利威视点播 iOS SDK 现已全面支持 ATS（App Transport Security），所有 API 都已使用 HTTPS 请求。用户需使用最新版本 SDK，并__联系[保利威视](http://www.polyv.net/company/#contact)销售__完成 ATS 升级。
+保利威视点播 iOS SDK 现已全面支持 ATS（App Transport Security），所有 API 都已使用 HTTPS 请求。用户需使用最新版本 SDK，并__联系[保利威视](http://www.polyv.net/company/#contact)__完成 ATS 升级。
+
+__升级 ATS 前，请务必更新最新版本 SDK。__
 
 ## 新版本 SDK 使用
 
