@@ -905,8 +905,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 		NSString *destinationPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:response.suggestedFilename];
 		[[NSFileManager defaultManager] moveItemAtPath:location.path toPath:destinationPath error:nil];
 		UIImage *image = [UIImage imageWithContentsOfFile:destinationPath];
-		
-		UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+		if (image) {
+			UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+		}
 	}] resume];
 }
 
