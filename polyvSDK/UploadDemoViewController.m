@@ -31,14 +31,14 @@
     self.assetsLibrary = [[ALAssetsLibrary alloc] init];
     [self.imageOverlay setHidden:YES];
     [self.progressBar setProgress:.0];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{PLVRemoteURLDefaultsKey: @"http://upload.polyv.net:1080/files/"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{PLVRemoteURLDefaultsKey: @"https://upload.polyv.net:1081/files/"}];
 
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
     
     [singleTap setNumberOfTapsRequired:1];
     [self.urlTextView addGestureRecognizer:singleTap];
     
-    NSLog(@"推荐使用新上传SDK(https://github.com/easefun/polyv-ios-upload),使用CDN服务器提高上传速度和稳定性能。");
+    NSLog(@"新版本上传SDK(https://github.com/easefun/polyv-ios-upload),通过CDN服务器中转提高稳定能和上传速度");
     
 }
 
