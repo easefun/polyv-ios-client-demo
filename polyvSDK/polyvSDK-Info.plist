@@ -22,8 +22,8 @@
 			</dict>
 		</dict>
 		<!-- 全面升级 ATS 后，应去除以下配置 -->
-<!--		<key>NSAllowsArbitraryLoads</key>-->
-<!--		<true/>-->
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 	</dict>
 	
 	<key>CFBundleDevelopmentRegion</key>
