@@ -49,7 +49,7 @@
     [self.tableView setDelegate:self];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
+//    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20",PolyvReadtoken]]];
     [request setURL:[NSURL URLWithString:@"https://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
@@ -74,6 +74,7 @@
                     video.vid = [item objectForKey:@"vid"];
                     video.duration = [item objectForKey:@"duration"];
                     video.piclink = [item objectForKey:@"first_image"];
+					video.piclink = [video.piclink stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
                     video.df = [[item objectForKey:@"df"] intValue];
                     video.seed = [[item objectForKey:@"seed"] intValue];
                     video.allfilesize = [item objectForKey:@"filesize"];
