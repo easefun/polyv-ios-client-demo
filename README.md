@@ -36,7 +36,7 @@ polyv-ios-client-demo
 	</dict>
 ```
 
-若保利威视点播账号还没升级 ATS 支持，或项目中还有 HTTP 的请求，应保留以下配置：
+若您的项目中还有 HTTP 的请求，应保留以下配置：
 
 ```xml
 		<key>NSAllowsArbitraryLoads</key>
