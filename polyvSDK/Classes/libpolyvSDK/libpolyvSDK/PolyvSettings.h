@@ -19,11 +19,11 @@ extern BOOL mutilAccount;
 extern BOOL enableAirplay;
 
 typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
-	PLVLogLevelNone		= 0,
-	PLVLogLevelError	= 1 << 0,
-	PLVLogLevelWarn		= 1 << 1,
-	PLVLogLevelInfo		= 1 << 2,
-	PLVLogLevelDebug	= 1 << 3,
+	PLVLogLevelNone		= 0,		// 禁用日志输出
+	PLVLogLevelError	= 1 << 0,	// 只输出错误日志
+	PLVLogLevelWarn		= 1 << 1,	// 只输出警告日志
+	PLVLogLevelInfo		= 1 << 2,	// 只输出信息日志
+	PLVLogLevelDebug	= 1 << 3,	// 只输出调试日志
 	PLVLogLevelWithoutDebug = PLVLogLevelError | PLVLogLevelWarn | PLVLogLevelInfo,
 	PLVLogLevelAll		= 0xFFFFFFFF,
 };
