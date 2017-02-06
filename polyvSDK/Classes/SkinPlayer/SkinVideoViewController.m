@@ -257,7 +257,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[notificationCenter addObserver:self selector:@selector(onMediaPlaybackIsPreparedToPlayDidChangeNotification) name:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:nil];
 	
 	[notificationCenter addObserver:self selector:@selector(onMPMoviePlayerNowPlayingMovieDidChangeNotification) name:MPMoviePlayerNowPlayingMovieDidChangeNotification object:nil];
-
+	
 	[self addOrientationObserver];
 	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
 	pan.delegate                = self;
@@ -347,11 +347,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)play{
 	[self.videoControl.indicatorView startAnimating];
 	[super play];
-}
-
-- (void)stop{
-	[self.videoControl.indicatorView stopAnimating];
-	[super stop];
 }
 
 #pragma mark - 内部方法
@@ -633,7 +628,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl autoFadeOutControlBar];
 	[self setCurrentPlaybackTime:floor(slider.value)];
 	[self play];
-	[self.videoControl.indicatorView stopAnimating];
 	_isSeeking = NO;
 }
 
