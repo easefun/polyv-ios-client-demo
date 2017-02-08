@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--视频列表-->
@@ -362,12 +363,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cit-52-NKM">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="downloadItemCell" id="cit-52-NKM">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cit-52-NKM" id="0qN-DZ-ccb">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IIU-tu-fbo">
+                                            <rect key="frame" x="240" y="15" width="72" height="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="标题" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wq8-bS-hgk">
+                                            <rect key="frame" x="8" y="14" width="156" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大小" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="20o-u6-K8T">
+                                            <rect key="frame" x="164" y="15" width="72" height="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="IIU-tu-fbo" secondAttribute="trailing" id="3YL-KB-Ctq"/>
+                                        <constraint firstItem="wq8-bS-hgk" firstAttribute="width" secondItem="0qN-DZ-ccb" secondAttribute="width" multiplier="0.5" constant="-4" id="O3y-px-vD2"/>
+                                        <constraint firstItem="20o-u6-K8T" firstAttribute="centerY" secondItem="wq8-bS-hgk" secondAttribute="centerY" id="Xm7-61-cEh"/>
+                                        <constraint firstItem="IIU-tu-fbo" firstAttribute="leading" secondItem="20o-u6-K8T" secondAttribute="trailing" constant="4" id="b6V-s2-cTK"/>
+                                        <constraint firstItem="IIU-tu-fbo" firstAttribute="centerY" secondItem="wq8-bS-hgk" secondAttribute="centerY" id="gv6-go-pex"/>
+                                        <constraint firstItem="20o-u6-K8T" firstAttribute="leading" secondItem="wq8-bS-hgk" secondAttribute="trailing" id="iNN-Y2-Mg6"/>
+                                        <constraint firstItem="wq8-bS-hgk" firstAttribute="leading" secondItem="0qN-DZ-ccb" secondAttribute="leadingMargin" id="jes-PT-CM4"/>
+                                        <constraint firstItem="wq8-bS-hgk" firstAttribute="centerY" secondItem="0qN-DZ-ccb" secondAttribute="centerY" id="nTt-Wh-plG"/>
+                                        <constraint firstItem="IIU-tu-fbo" firstAttribute="width" secondItem="20o-u6-K8T" secondAttribute="width" id="zrc-n5-grf"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
