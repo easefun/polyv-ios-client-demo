@@ -246,16 +246,16 @@
 	NSLog(@"%@ 任务开始", vid);
 }
 
-//#pragma mark - 页面旋转
-//- (BOOL)shouldAutorotate {
-//	return NO;
-//}
-//
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-//	return UIInterfaceOrientationMaskPortrait;
-//}
-//
-//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-//	return UIInterfaceOrientationPortrait;
-//}
+#pragma mark - 页面旋转
+- (BOOL)shouldAutorotate {
+	return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+	return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+	return UIInterfaceOrientationPortrait;
+}
 @end
