@@ -42,3 +42,7 @@ polyv-ios-client-demo
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 ```
+
+## 特别说明
+
+__当使用 Xcode 8 或以上版本编译器时，需要把目录下的 `AdditionalLibrary` 文件夹拖入工程参与编译，否则会出现 `linker command failed` 错误。__
