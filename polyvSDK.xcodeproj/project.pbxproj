@@ -57,7 +57,6 @@
 		E5D2113D1CD8B72800F848CA /* radio_unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211211CD8B72800F848CA /* radio_unchecked@2x.png */; };
 		E5D4D8CE1E48097F004308F0 /* DownloadListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8811E48097F004308F0 /* DownloadListTableViewController.m */; };
 		E5D4D8CF1E48097F004308F0 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D4D8971E48097F004308F0 /* libpolyvSDK.a */; };
-		E5D4D8D01E48097F004308F0 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8981E48097F004308F0 /* README.md */; };
 		E5D4D8D11E48097F004308F0 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D89D1E48097F004308F0 /* FMDatabase.m */; };
 		E5D4D8D21E48097F004308F0 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D89F1E48097F004308F0 /* FMDatabaseAdditions.m */; };
 		E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8A11E48097F004308F0 /* FMDatabasePool.m */; };
@@ -649,7 +648,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5D4D8DE1E48097F004308F0 /* UITabBarController+Orientation.m in Sources */,
-				E5D4D8D01E48097F004308F0 /* README.md in Sources */,
 				E5D4D8DF1E48097F004308F0 /* Video.m in Sources */,
 				E5D4D8D61E48097F004308F0 /* FMDBHelper.m in Sources */,
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
@@ -799,15 +797,19 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = V7WL667MJM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/libpolyvSDK",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -828,14 +830,18 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = V7WL667MJM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/libpolyvSDK",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
