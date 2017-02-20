@@ -45,6 +45,8 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 @property (nonatomic, copy, getter=getDownloadDir) NSString *downloadDir;
 /// 日志输出级别，默认为 PLVLogLevelWithoutDebug
 @property (nonatomic, assign) PLVLogLevel logLevel;
+/// 是否开启 HttpDNS
+@property (nonatomic, assign) BOOL httpDNSEnable;
 
 /**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
 - (void)initVideoSettings:(NSString *)privateKey Readtoken:(NSString *)readtoken Writetoken:(NSString *)writetoken UserId:(NSString *)userId;
