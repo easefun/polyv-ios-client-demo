@@ -24,6 +24,12 @@
 		CBA37147196E6549008E95ED /* polyvSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA37146196E6549008E95ED /* polyvSDKTests.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
+		E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */; };
+		E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09861E5BE88F006FE206 /* UTDID.framework */; };
+		E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */; };
+		E54BCC241E5C147C00EB5F79 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */; };
+		E54BCC251E5C147C00EB5F79 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */; };
+		E54BCC261E5C147C00EB5F79 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC231E5C147C00EB5F79 /* UTDID.framework */; };
 		E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */; };
 		E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */; };
 		E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFED01E5A860D00C20418 /* libresolv.tbd */; };
@@ -91,6 +97,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E51C09901E5BE93B006FE206 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		CB6569201C561B8B00AC2EC8 /* pvlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pvlogo.png; sourceTree = "<group>"; };
@@ -112,6 +131,12 @@
 		CBA37146196E6549008E95ED /* polyvSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polyvSDKTests.m; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CBF35D331B32B1E100E97C45 /* video-play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-play.png"; sourceTree = "<group>"; };
+		E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudHttpDNS.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudHttpDNS.framework"; sourceTree = "<absolute>"; };
+		E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudUtils.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudUtils.framework"; sourceTree = "<absolute>"; };
+		E51C09861E5BE88F006FE206 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UTDID.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/UTDID.framework"; sourceTree = "<absolute>"; };
+		E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudHttpDNS.framework; sourceTree = "<group>"; };
+		E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudUtils.framework; sourceTree = "<group>"; };
+		E54BCC231E5C147C00EB5F79 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E5CBFED01E5A860D00C20418 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -220,13 +245,19 @@
 				E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */,
 				E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */,
 				E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */,
+				E54BCC241E5C147C00EB5F79 /* AlicloudHttpDNS.framework in Frameworks */,
+				E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */,
+				E54BCC261E5C147C00EB5F79 /* UTDID.framework in Frameworks */,
+				E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */,
 				CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */,
+				E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */,
 				E5D4D8CF1E48097F004308F0 /* libpolyvSDK.a in Frameworks */,
 				CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */,
 				CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */,
 				CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */,
 				CBA37120196E6549008E95ED /* UIKit.framework in Frameworks */,
 				CBA3711C196E6549008E95ED /* Foundation.framework in Frameworks */,
+				E54BCC251E5C147C00EB5F79 /* AlicloudUtils.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +351,16 @@
 				CBA37143196E6549008E95ED /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E54BCC201E5C147C00EB5F79 /* AdditionalLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */,
+				E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */,
+				E54BCC231E5C147C00EB5F79 /* UTDID.framework */,
+			);
+			path = AdditionalLibrary;
 			sourceTree = "<group>";
 		};
 		E5D211051CD8B72800F848CA /* Assets */ = {
@@ -419,6 +460,7 @@
 		E5D4D8991E48097F004308F0 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				E54BCC201E5C147C00EB5F79 /* AdditionalLibrary */,
 				E5D4D89A1E48097F004308F0 /* FMDB */,
 				E5D4D8A91E48097F004308F0 /* PLVControl */,
 			);
@@ -529,6 +571,7 @@
 				CBA37114196E6549008E95ED /* Sources */,
 				CBA37115196E6549008E95ED /* Frameworks */,
 				CBA37116196E6549008E95ED /* Resources */,
+				E51C09901E5BE93B006FE206 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -797,16 +840,20 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = V7WL667MJM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
+					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
@@ -830,15 +877,19 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = V7WL667MJM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
+					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
+					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
 				INFOPLIST_FILE = "polyvSDK/polyvSDK-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
