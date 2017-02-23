@@ -27,9 +27,6 @@
 		E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */; };
 		E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09861E5BE88F006FE206 /* UTDID.framework */; };
 		E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */; };
-		E54BCC241E5C147C00EB5F79 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */; };
-		E54BCC251E5C147C00EB5F79 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */; };
-		E54BCC261E5C147C00EB5F79 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54BCC231E5C147C00EB5F79 /* UTDID.framework */; };
 		E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */; };
 		E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */; };
 		E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFED01E5A860D00C20418 /* libresolv.tbd */; };
@@ -62,7 +59,6 @@
 		E5D2113C1CD8B72800F848CA /* radio_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211201CD8B72800F848CA /* radio_unchecked.png */; };
 		E5D2113D1CD8B72800F848CA /* radio_unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211211CD8B72800F848CA /* radio_unchecked@2x.png */; };
 		E5D4D8CE1E48097F004308F0 /* DownloadListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8811E48097F004308F0 /* DownloadListTableViewController.m */; };
-		E5D4D8CF1E48097F004308F0 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D4D8971E48097F004308F0 /* libpolyvSDK.a */; };
 		E5D4D8D11E48097F004308F0 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D89D1E48097F004308F0 /* FMDatabase.m */; };
 		E5D4D8D21E48097F004308F0 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D89F1E48097F004308F0 /* FMDatabaseAdditions.m */; };
 		E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8A11E48097F004308F0 /* FMDatabasePool.m */; };
@@ -85,6 +81,11 @@
 		E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8C91E48097F004308F0 /* DetailViewController.m */; };
 		E5D4D8E51E48097F004308F0 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8CB1E48097F004308F0 /* DetailViewController2.m */; };
 		E5D4D8E61E48097F004308F0 /* VideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8CD1E48097F004308F0 /* VideoListTableViewController.m */; };
+		E5F05B021E5ED85800A832CF /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */; };
+		E5F05B031E5ED85800A832CF /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */; };
+		E5F05B041E5ED85800A832CF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEB1E5ED85800A832CF /* UTDID.framework */; };
+		E5F05B051E5ED85800A832CF /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05B001E5ED85800A832CF /* libpolyvSDK.a */; };
+		E5F05B061E5ED85800A832CF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5F05B011E5ED85800A832CF /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,9 +135,6 @@
 		E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudHttpDNS.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudHttpDNS.framework"; sourceTree = "<absolute>"; };
 		E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudUtils.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudUtils.framework"; sourceTree = "<absolute>"; };
 		E51C09861E5BE88F006FE206 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UTDID.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/UTDID.framework"; sourceTree = "<absolute>"; };
-		E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudHttpDNS.framework; sourceTree = "<group>"; };
-		E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudUtils.framework; sourceTree = "<group>"; };
-		E54BCC231E5C147C00EB5F79 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E5CBFED01E5A860D00C20418 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -170,27 +168,6 @@
 		E5D211211CD8B72800F848CA /* radio_unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio_unchecked@2x.png"; sourceTree = "<group>"; };
 		E5D4D8801E48097F004308F0 /* DownloadListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadListTableViewController.h; sourceTree = "<group>"; };
 		E5D4D8811E48097F004308F0 /* DownloadListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadListTableViewController.m; sourceTree = "<group>"; };
-		E5D4D8841E48097F004308F0 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
-		E5D4D8851E48097F004308F0 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
-		E5D4D8861E48097F004308F0 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
-		E5D4D8871E48097F004308F0 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
-		E5D4D8881E48097F004308F0 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
-		E5D4D8891E48097F004308F0 /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
-		E5D4D88A1E48097F004308F0 /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
-		E5D4D88B1E48097F004308F0 /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
-		E5D4D88C1E48097F004308F0 /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
-		E5D4D88D1E48097F004308F0 /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
-		E5D4D88E1E48097F004308F0 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
-		E5D4D88F1E48097F004308F0 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
-		E5D4D8901E48097F004308F0 /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
-		E5D4D8911E48097F004308F0 /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
-		E5D4D8921E48097F004308F0 /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
-		E5D4D8931E48097F004308F0 /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
-		E5D4D8941E48097F004308F0 /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
-		E5D4D8951E48097F004308F0 /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
-		E5D4D8961E48097F004308F0 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
-		E5D4D8971E48097F004308F0 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
-		E5D4D8981E48097F004308F0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5D4D89C1E48097F004308F0 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		E5D4D89D1E48097F004308F0 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		E5D4D89E1E48097F004308F0 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -235,6 +212,30 @@
 		E5D4D8CB1E48097F004308F0 /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		E5D4D8CC1E48097F004308F0 /* VideoListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoListTableViewController.h; sourceTree = "<group>"; };
 		E5D4D8CD1E48097F004308F0 /* VideoListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoListTableViewController.m; sourceTree = "<group>"; };
+		E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudHttpDNS.framework; sourceTree = "<group>"; };
+		E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudUtils.framework; sourceTree = "<group>"; };
+		E5F05AEB1E5ED85800A832CF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		E5F05AED1E5ED85800A832CF /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
+		E5F05AEE1E5ED85800A832CF /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
+		E5F05AEF1E5ED85800A832CF /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
+		E5F05AF01E5ED85800A832CF /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
+		E5F05AF11E5ED85800A832CF /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
+		E5F05AF21E5ED85800A832CF /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
+		E5F05AF31E5ED85800A832CF /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
+		E5F05AF41E5ED85800A832CF /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
+		E5F05AF51E5ED85800A832CF /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
+		E5F05AF61E5ED85800A832CF /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
+		E5F05AF71E5ED85800A832CF /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
+		E5F05AF81E5ED85800A832CF /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
+		E5F05AF91E5ED85800A832CF /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
+		E5F05AFA1E5ED85800A832CF /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
+		E5F05AFB1E5ED85800A832CF /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
+		E5F05AFC1E5ED85800A832CF /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
+		E5F05AFD1E5ED85800A832CF /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
+		E5F05AFE1E5ED85800A832CF /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
+		E5F05AFF1E5ED85800A832CF /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
+		E5F05B001E5ED85800A832CF /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
+		E5F05B011E5ED85800A832CF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,19 +246,19 @@
 				E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */,
 				E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */,
 				E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */,
-				E54BCC241E5C147C00EB5F79 /* AlicloudHttpDNS.framework in Frameworks */,
 				E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */,
-				E54BCC261E5C147C00EB5F79 /* UTDID.framework in Frameworks */,
 				E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */,
 				CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */,
 				E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */,
-				E5D4D8CF1E48097F004308F0 /* libpolyvSDK.a in Frameworks */,
 				CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */,
+				E5F05B041E5ED85800A832CF /* UTDID.framework in Frameworks */,
 				CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */,
+				E5F05B031E5ED85800A832CF /* AlicloudUtils.framework in Frameworks */,
 				CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */,
 				CBA37120196E6549008E95ED /* UIKit.framework in Frameworks */,
+				E5F05B021E5ED85800A832CF /* AlicloudHttpDNS.framework in Frameworks */,
 				CBA3711C196E6549008E95ED /* Foundation.framework in Frameworks */,
-				E54BCC251E5C147C00EB5F79 /* AlicloudUtils.framework in Frameworks */,
+				E5F05B051E5ED85800A832CF /* libpolyvSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,16 +354,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E54BCC201E5C147C00EB5F79 /* AdditionalLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				E54BCC211E5C147C00EB5F79 /* AlicloudHttpDNS.framework */,
-				E54BCC221E5C147C00EB5F79 /* AlicloudUtils.framework */,
-				E54BCC231E5C147C00EB5F79 /* UTDID.framework */,
-			);
-			path = AdditionalLibrary;
-			sourceTree = "<group>";
-		};
 		E5D211051CD8B72800F848CA /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,7 +392,7 @@
 		E5D4D87E1E48097F004308F0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E5D4D8821E48097F004308F0 /* libpolyvSDK */,
+				E5F05AE71E5ED85800A832CF /* libpolyvSDK */,
 				E5D4D8991E48097F004308F0 /* Library */,
 				E5D4D8BD1E48097F004308F0 /* SkinPlayer */,
 				E5D4D8B01E48097F004308F0 /* Main */,
@@ -421,46 +412,9 @@
 			path = DownloadList;
 			sourceTree = "<group>";
 		};
-		E5D4D8821E48097F004308F0 /* libpolyvSDK */ = {
-			isa = PBXGroup;
-			children = (
-				E5D4D8831E48097F004308F0 /* libpolyvSDK */,
-				E5D4D8971E48097F004308F0 /* libpolyvSDK.a */,
-				E5D4D8981E48097F004308F0 /* README.md */,
-			);
-			path = libpolyvSDK;
-			sourceTree = "<group>";
-		};
-		E5D4D8831E48097F004308F0 /* libpolyvSDK */ = {
-			isa = PBXGroup;
-			children = (
-				E5D4D8841E48097F004308F0 /* PLVAssetData.h */,
-				E5D4D8851E48097F004308F0 /* PLVData.h */,
-				E5D4D8861E48097F004308F0 /* PLVKit.h */,
-				E5D4D8871E48097F004308F0 /* PLVMoviePlayerController.h */,
-				E5D4D8881E48097F004308F0 /* PLVResumableUpload.h */,
-				E5D4D8891E48097F004308F0 /* PolyvSettings.h */,
-				E5D4D88A1E48097F004308F0 /* PolyvUtil.h */,
-				E5D4D88B1E48097F004308F0 /* PvCachable.h */,
-				E5D4D88C1E48097F004308F0 /* PvCheckBox.h */,
-				E5D4D88D1E48097F004308F0 /* PVDanmuManager.h */,
-				E5D4D88E1E48097F004308F0 /* PvDanmuOperateView.h */,
-				E5D4D88F1E48097F004308F0 /* PvDanmuSendView.h */,
-				E5D4D8901E48097F004308F0 /* PvExam.h */,
-				E5D4D8911E48097F004308F0 /* PvExamView.h */,
-				E5D4D8921E48097F004308F0 /* PvRadioButton.h */,
-				E5D4D8931E48097F004308F0 /* PvReportManager.h */,
-				E5D4D8941E48097F004308F0 /* PvUrlSessionDownload.h */,
-				E5D4D8951E48097F004308F0 /* PvUrlSessionDownloadDelegate.h */,
-				E5D4D8961E48097F004308F0 /* PvVideo.h */,
-			);
-			path = libpolyvSDK;
-			sourceTree = "<group>";
-		};
 		E5D4D8991E48097F004308F0 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				E54BCC201E5C147C00EB5F79 /* AdditionalLibrary */,
 				E5D4D89A1E48097F004308F0 /* FMDB */,
 				E5D4D8A91E48097F004308F0 /* PLVControl */,
 			);
@@ -559,6 +513,53 @@
 				E5D4D8CD1E48097F004308F0 /* VideoListTableViewController.m */,
 			);
 			path = VideoList;
+			sourceTree = "<group>";
+		};
+		E5F05AE71E5ED85800A832CF /* libpolyvSDK */ = {
+			isa = PBXGroup;
+			children = (
+				E5F05AE81E5ED85800A832CF /* AdditionalLibrary */,
+				E5F05AEC1E5ED85800A832CF /* libpolyvSDK */,
+				E5F05B001E5ED85800A832CF /* libpolyvSDK.a */,
+				E5F05B011E5ED85800A832CF /* README.md */,
+			);
+			path = libpolyvSDK;
+			sourceTree = SOURCE_ROOT;
+		};
+		E5F05AE81E5ED85800A832CF /* AdditionalLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */,
+				E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */,
+				E5F05AEB1E5ED85800A832CF /* UTDID.framework */,
+			);
+			path = AdditionalLibrary;
+			sourceTree = "<group>";
+		};
+		E5F05AEC1E5ED85800A832CF /* libpolyvSDK */ = {
+			isa = PBXGroup;
+			children = (
+				E5F05AED1E5ED85800A832CF /* PLVAssetData.h */,
+				E5F05AEE1E5ED85800A832CF /* PLVData.h */,
+				E5F05AEF1E5ED85800A832CF /* PLVKit.h */,
+				E5F05AF01E5ED85800A832CF /* PLVMoviePlayerController.h */,
+				E5F05AF11E5ED85800A832CF /* PLVResumableUpload.h */,
+				E5F05AF21E5ED85800A832CF /* PolyvSettings.h */,
+				E5F05AF31E5ED85800A832CF /* PolyvUtil.h */,
+				E5F05AF41E5ED85800A832CF /* PvCachable.h */,
+				E5F05AF51E5ED85800A832CF /* PvCheckBox.h */,
+				E5F05AF61E5ED85800A832CF /* PVDanmuManager.h */,
+				E5F05AF71E5ED85800A832CF /* PvDanmuOperateView.h */,
+				E5F05AF81E5ED85800A832CF /* PvDanmuSendView.h */,
+				E5F05AF91E5ED85800A832CF /* PvExam.h */,
+				E5F05AFA1E5ED85800A832CF /* PvExamView.h */,
+				E5F05AFB1E5ED85800A832CF /* PvRadioButton.h */,
+				E5F05AFC1E5ED85800A832CF /* PvReportManager.h */,
+				E5F05AFD1E5ED85800A832CF /* PvUrlSessionDownload.h */,
+				E5F05AFE1E5ED85800A832CF /* PvUrlSessionDownloadDelegate.h */,
+				E5F05AFF1E5ED85800A832CF /* PvVideo.h */,
+			);
+			path = libpolyvSDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -696,6 +697,7 @@
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
 				E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */,
+				E5F05B061E5ED85800A832CF /* README.md in Sources */,
 				E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 				E5D4D8D41E48097F004308F0 /* FMDatabaseQueue.m in Sources */,
@@ -847,6 +849,7 @@
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
 					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
+					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
@@ -858,6 +861,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -884,6 +888,7 @@
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
 					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
+					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "polyvSDK/polyvSDK-Prefix.pch";
@@ -894,6 +899,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
 					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
+					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
