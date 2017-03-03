@@ -1,9 +1,12 @@
 polyv-ios-client-demo
 =====================
-参考 POLYV iOS SDK 集成指南 https://github.com/easefun/polyv-ios-sdk/wiki
 
-## API 文档
+## 参考文档
 
+### 集成指南
+[POLYV iOS SDK 集成指南](https://github.com/easefun/polyv-ios-sdk/wiki)
+
+### API
 - [v1.2.0](http://demo.polyv.net/polyv/ios/sdk/1.2.0/doc/index.html)
 
 ## ATS 支持
