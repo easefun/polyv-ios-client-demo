@@ -24,8 +24,8 @@
 		CBA37147196E6549008E95ED /* polyvSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA37146196E6549008E95ED /* polyvSDKTests.m */; };
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
-		E5A3D7091E691907005D1567 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3D7071E691907005D1567 /* libpolyvSDK.a */; };
-		E5A3D70A1E691907005D1567 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5A3D7081E691907005D1567 /* README.md */; };
+		E5A3D7951E691DB8005D1567 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3D7931E691DB8005D1567 /* libpolyvSDK.a */; };
+		E5A3D7961E691DB8005D1567 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5A3D7941E691DB8005D1567 /* README.md */; };
 		E5D211221CD8B72800F848CA /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211061CD8B72800F848CA /* checkbox_checked.png */; };
 		E5D211231CD8B72800F848CA /* checkbox_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211071CD8B72800F848CA /* checkbox_checked@2x.png */; };
 		E5D211241CD8B72800F848CA /* checkbox_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211081CD8B72800F848CA /* checkbox_unchecked.png */; };
@@ -110,27 +110,27 @@
 		CBA37146196E6549008E95ED /* polyvSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polyvSDKTests.m; sourceTree = "<group>"; };
 		CBC2333A1AEA326100B0228E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CBF35D331B32B1E100E97C45 /* video-play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video-play.png"; sourceTree = "<group>"; };
-		E5A3D6F41E691907005D1567 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
-		E5A3D6F51E691907005D1567 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
-		E5A3D6F61E691907005D1567 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
-		E5A3D6F71E691907005D1567 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
-		E5A3D6F81E691907005D1567 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
-		E5A3D6F91E691907005D1567 /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
-		E5A3D6FA1E691907005D1567 /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
-		E5A3D6FB1E691907005D1567 /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
-		E5A3D6FC1E691907005D1567 /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
-		E5A3D6FD1E691907005D1567 /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
-		E5A3D6FE1E691907005D1567 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
-		E5A3D6FF1E691907005D1567 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
-		E5A3D7001E691907005D1567 /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
-		E5A3D7011E691907005D1567 /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
-		E5A3D7021E691907005D1567 /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
-		E5A3D7031E691907005D1567 /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
-		E5A3D7041E691907005D1567 /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
-		E5A3D7051E691907005D1567 /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
-		E5A3D7061E691907005D1567 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
-		E5A3D7071E691907005D1567 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
-		E5A3D7081E691907005D1567 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5A3D7801E691DB8005D1567 /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
+		E5A3D7811E691DB8005D1567 /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
+		E5A3D7821E691DB8005D1567 /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
+		E5A3D7831E691DB8005D1567 /* PLVMoviePlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVMoviePlayerController.h; sourceTree = "<group>"; };
+		E5A3D7841E691DB8005D1567 /* PLVResumableUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVResumableUpload.h; sourceTree = "<group>"; };
+		E5A3D7851E691DB8005D1567 /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
+		E5A3D7861E691DB8005D1567 /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
+		E5A3D7871E691DB8005D1567 /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
+		E5A3D7881E691DB8005D1567 /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
+		E5A3D7891E691DB8005D1567 /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
+		E5A3D78A1E691DB8005D1567 /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
+		E5A3D78B1E691DB8005D1567 /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
+		E5A3D78C1E691DB8005D1567 /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
+		E5A3D78D1E691DB8005D1567 /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
+		E5A3D78E1E691DB8005D1567 /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
+		E5A3D78F1E691DB8005D1567 /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
+		E5A3D7901E691DB8005D1567 /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
+		E5A3D7911E691DB8005D1567 /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
+		E5A3D7921E691DB8005D1567 /* PvVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvVideo.h; sourceTree = "<group>"; };
+		E5A3D7931E691DB8005D1567 /* libpolyvSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpolyvSDK.a; sourceTree = "<group>"; };
+		E5A3D7941E691DB8005D1567 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5D211061CD8B72800F848CA /* checkbox_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_checked.png; sourceTree = "<group>"; };
 		E5D211071CD8B72800F848CA /* checkbox_checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_checked@2x.png"; sourceTree = "<group>"; };
 		E5D211081CD8B72800F848CA /* checkbox_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unchecked.png; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */,
-				E5A3D7091E691907005D1567 /* libpolyvSDK.a in Frameworks */,
+				E5A3D7951E691DB8005D1567 /* libpolyvSDK.a in Frameworks */,
 				CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */,
 				CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */,
 				CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */,
@@ -271,7 +271,6 @@
 		CBA37121196E6549008E95ED /* polyvSDK */ = {
 			isa = PBXGroup;
 			children = (
-				E5A3D6F21E691907005D1567 /* libpolyvSDK */,
 				E5D4D87E1E48097F004308F0 /* Classes */,
 				CBA37133196E6549008E95ED /* Images.xcassets */,
 				CBA37122196E6549008E95ED /* Supporting Files */,
@@ -312,38 +311,38 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E5A3D6F21E691907005D1567 /* libpolyvSDK */ = {
+		E5A3D77E1E691DB8005D1567 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
-				E5A3D6F31E691907005D1567 /* libpolyvSDK */,
-				E5A3D7071E691907005D1567 /* libpolyvSDK.a */,
-				E5A3D7081E691907005D1567 /* README.md */,
+				E5A3D77F1E691DB8005D1567 /* libpolyvSDK */,
+				E5A3D7931E691DB8005D1567 /* libpolyvSDK.a */,
+				E5A3D7941E691DB8005D1567 /* README.md */,
 			);
 			path = libpolyvSDK;
 			sourceTree = SOURCE_ROOT;
 		};
-		E5A3D6F31E691907005D1567 /* libpolyvSDK */ = {
+		E5A3D77F1E691DB8005D1567 /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
-				E5A3D6F41E691907005D1567 /* PLVAssetData.h */,
-				E5A3D6F51E691907005D1567 /* PLVData.h */,
-				E5A3D6F61E691907005D1567 /* PLVKit.h */,
-				E5A3D6F71E691907005D1567 /* PLVMoviePlayerController.h */,
-				E5A3D6F81E691907005D1567 /* PLVResumableUpload.h */,
-				E5A3D6F91E691907005D1567 /* PolyvSettings.h */,
-				E5A3D6FA1E691907005D1567 /* PolyvUtil.h */,
-				E5A3D6FB1E691907005D1567 /* PvCachable.h */,
-				E5A3D6FC1E691907005D1567 /* PvCheckBox.h */,
-				E5A3D6FD1E691907005D1567 /* PVDanmuManager.h */,
-				E5A3D6FE1E691907005D1567 /* PvDanmuOperateView.h */,
-				E5A3D6FF1E691907005D1567 /* PvDanmuSendView.h */,
-				E5A3D7001E691907005D1567 /* PvExam.h */,
-				E5A3D7011E691907005D1567 /* PvExamView.h */,
-				E5A3D7021E691907005D1567 /* PvRadioButton.h */,
-				E5A3D7031E691907005D1567 /* PvReportManager.h */,
-				E5A3D7041E691907005D1567 /* PvUrlSessionDownload.h */,
-				E5A3D7051E691907005D1567 /* PvUrlSessionDownloadDelegate.h */,
-				E5A3D7061E691907005D1567 /* PvVideo.h */,
+				E5A3D7801E691DB8005D1567 /* PLVAssetData.h */,
+				E5A3D7811E691DB8005D1567 /* PLVData.h */,
+				E5A3D7821E691DB8005D1567 /* PLVKit.h */,
+				E5A3D7831E691DB8005D1567 /* PLVMoviePlayerController.h */,
+				E5A3D7841E691DB8005D1567 /* PLVResumableUpload.h */,
+				E5A3D7851E691DB8005D1567 /* PolyvSettings.h */,
+				E5A3D7861E691DB8005D1567 /* PolyvUtil.h */,
+				E5A3D7871E691DB8005D1567 /* PvCachable.h */,
+				E5A3D7881E691DB8005D1567 /* PvCheckBox.h */,
+				E5A3D7891E691DB8005D1567 /* PVDanmuManager.h */,
+				E5A3D78A1E691DB8005D1567 /* PvDanmuOperateView.h */,
+				E5A3D78B1E691DB8005D1567 /* PvDanmuSendView.h */,
+				E5A3D78C1E691DB8005D1567 /* PvExam.h */,
+				E5A3D78D1E691DB8005D1567 /* PvExamView.h */,
+				E5A3D78E1E691DB8005D1567 /* PvRadioButton.h */,
+				E5A3D78F1E691DB8005D1567 /* PvReportManager.h */,
+				E5A3D7901E691DB8005D1567 /* PvUrlSessionDownload.h */,
+				E5A3D7911E691DB8005D1567 /* PvUrlSessionDownloadDelegate.h */,
+				E5A3D7921E691DB8005D1567 /* PvVideo.h */,
 			);
 			path = libpolyvSDK;
 			sourceTree = "<group>";
@@ -386,6 +385,7 @@
 		E5D4D87E1E48097F004308F0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E5A3D77E1E691DB8005D1567 /* libpolyvSDK */,
 				E5D4D8991E48097F004308F0 /* Library */,
 				E5D4D8BD1E48097F004308F0 /* SkinPlayer */,
 				E5D4D8B01E48097F004308F0 /* Main */,
@@ -642,7 +642,7 @@
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
 				E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */,
-				E5A3D70A1E691907005D1567 /* README.md in Sources */,
+				E5A3D7961E691DB8005D1567 /* README.md in Sources */,
 				E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 				E5D4D8D41E48097F004308F0 /* FMDatabaseQueue.m in Sources */,
@@ -795,8 +795,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/libpolyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -824,8 +822,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/libpolyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
