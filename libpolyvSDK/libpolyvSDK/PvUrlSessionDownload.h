@@ -31,6 +31,10 @@
  */
 - (instancetype)initWithVid:(NSString *)vid level:(int)level;
 
+/**
+ *  开始下载
+ */
+- (void)start;
 
 /**
  *  停止下载
@@ -45,9 +49,9 @@
 - (BOOL)isStoped;
 
 /**
- *  开始下载
+ *  取消下载会话
  */
-- (void)start;
+- (void)cleanSession;
 
 /**
  *  设置下载代理回调
@@ -72,16 +76,16 @@
 + (void)deleteVideo:(NSString *)vid level:(int)level;
 
 /**
+ *  删除所有下载文件
+ */
++ (void)cleanDownload;
+
+/**
  *  设置视频下载目录不备份到icloud
  *
  *  @return 设置是否成功
  */
-- (BOOL)addSkipBackupAttributeToDownloadedVideos;
-
-/**
- *  删除所有下载文件
- */
-- (void)cleanDownload;
++ (BOOL)addSkipBackupAttributeToDownloadedVideos;
 
 /**
  *  指定码率、vid 的视频是否已下载
@@ -92,10 +96,5 @@
  *  @return 该视频是否已存在
  */
 + (BOOL)isVideoExists:(NSString *)vid level:(int)level;
-
-/**
- *  取消下载会话
- */
-- (void)cleanSession;
 
 @end
