@@ -85,7 +85,6 @@
 		E5F05B031E5ED85800A832CF /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */; };
 		E5F05B041E5ED85800A832CF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEB1E5ED85800A832CF /* UTDID.framework */; };
 		E5F05B051E5ED85800A832CF /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05B001E5ED85800A832CF /* libpolyvSDK.a */; };
-		E5F05B061E5ED85800A832CF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5F05B011E5ED85800A832CF /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -697,7 +696,6 @@
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
 				E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */,
-				E5F05B061E5ED85800A832CF /* README.md in Sources */,
 				E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 				E5D4D8D41E48097F004308F0 /* FMDatabaseQueue.m in Sources */,
@@ -845,10 +843,6 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
-					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
 					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -860,7 +854,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -884,10 +877,6 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK/libpolyvSDK/AdditionalLibrary",
-					"$(PROJECT_DIR)/polyvSDK/Classes/Library/AdditionalLibrary",
 					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -898,7 +887,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/polyvSDK",
-					"$(PROJECT_DIR)/polyvSDK/Classes/libpolyvSDK",
 					"$(PROJECT_DIR)/libpolyvSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
