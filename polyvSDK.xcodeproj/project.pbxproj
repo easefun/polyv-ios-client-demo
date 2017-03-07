@@ -25,7 +25,6 @@
 		CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC2333A1AEA326100B0228E /* libz.dylib */; };
 		CBF35D341B32B1E100E97C45 /* video-play.png in Resources */ = {isa = PBXBuildFile; fileRef = CBF35D331B32B1E100E97C45 /* video-play.png */; };
 		E5A3D7951E691DB8005D1567 /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3D7931E691DB8005D1567 /* libpolyvSDK.a */; };
-		E5A3D7961E691DB8005D1567 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E5A3D7941E691DB8005D1567 /* README.md */; };
 		E5D211221CD8B72800F848CA /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211061CD8B72800F848CA /* checkbox_checked.png */; };
 		E5D211231CD8B72800F848CA /* checkbox_checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211071CD8B72800F848CA /* checkbox_checked@2x.png */; };
 		E5D211241CD8B72800F848CA /* checkbox_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = E5D211081CD8B72800F848CA /* checkbox_unchecked.png */; };
@@ -642,7 +641,6 @@
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
 				E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */,
-				E5A3D7961E691DB8005D1567 /* README.md in Sources */,
 				E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 				E5D4D8D41E48097F004308F0 /* FMDatabaseQueue.m in Sources */,
