@@ -107,7 +107,7 @@
 }
 
 - (void)viewDidLoad {
-	btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStyleBordered target:self action:@selector(startAll)];
+	btnstart = [[UIBarButtonItem alloc] initWithTitle:@"全部开始" style:UIBarButtonItemStylePlain target:self action:@selector(startAll)];
 	self.navigationItem.rightBarButtonItem = btnstart;
 	
 	[self.tableView setDataSource:self];

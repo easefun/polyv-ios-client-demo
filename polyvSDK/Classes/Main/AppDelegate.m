@@ -9,19 +9,18 @@
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 #import "PolyvSettings.h"
-//#import "DetailViewController.h"
 #import "PolyvUtil.h"
 
-
 @implementation AppDelegate
-
-
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// 配置下载目录
-	[[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+	[PolyvSettings.sharedInstance setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+	// 配置日志等级
+	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelAll];
+	// 开启 HttpDNS 功能
+	[PolyvSettings.sharedInstance setHttpDNSEnable:YES];
 	
     // 配置sdk加密串
 	// NSString *appKey = @"你的app sdk加密串";
@@ -29,9 +28,6 @@
 	// 使用默认加密秘钥和加密向量解密 sdk加密串
 	NSArray *config = [PolyvUtil decryptUserConfig:[appKey dataUsingEncoding:NSUTF8StringEncoding]];
     [[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
-
-	// 配置日志等级
-	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelAll];
 	
     // 配置sdk加密串示例(使用网络接口)
     /*

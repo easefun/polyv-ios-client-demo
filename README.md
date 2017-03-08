@@ -1,6 +1,9 @@
 polyv-ios-client-demo
 =====================
-参考polyv ios sdk集成指南 https://github.com/easefun/polyv-ios-sdk/wiki
+参考 POLYV iOS SDK 集成指南 https://github.com/easefun/polyv-ios-sdk/wiki
+
+#### API 文档
+- [v1.2.0](https://demo.polyv.net/polyv/ios/sdk/1.2.0/doc/index.html)
 
 ## ATS 支持
 
@@ -30,13 +33,13 @@ polyv-ios-client-demo
 				<false/>
 			</dict>
 		</dict>
-		<!-- 全面升级 ATS 后，应去除以下配置 -->
+		<!-- 项目还有 HTTP 请求，或开启 HttpDNS 功能，保留以下配置 -->
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 ```
 
-若您的项目中还有 HTTP 的请求，应保留以下配置：
+若您的项目还有 HTTP 请求，或开启 HttpDNS 功能，应保留以下配置：
 
 ```xml
 		<key>NSAllowsArbitraryLoads</key>
