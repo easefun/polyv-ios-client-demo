@@ -50,7 +50,6 @@
 
 //更新下载百分比
 - (void)updateVideo:(NSString *)vid percent:(float)percent{
-	
 	for (int i = 0; i < _videolist.count; ++i) {
 		Video *video = [_videolist objectAtIndex:i];
 		if ([video.vid isEqualToString:vid]) {
@@ -92,7 +91,6 @@
 			[downloader setCompleteBlock:^{
 				AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 				if (appDelegate.backgroundSessionCompletionHandler) {
-					//need to copy the completion handler
 					void (^handler)() = appDelegate.backgroundSessionCompletionHandler;
 					appDelegate.backgroundSessionCompletionHandler = nil;
 					handler();  //执行代码块
@@ -161,7 +159,6 @@
 	[self.videoPlayer setHeadTitle:video.title];
 	[self.videoPlayer showInWindow];
 	[self.videoPlayer setVid:video.vid level:0];
-	//[self.videoPlayer setCurrentPlaybackRate:1.5f];
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
