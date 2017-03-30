@@ -18,6 +18,11 @@ extern BOOL mutilAccount;
 /// 启用Airplay
 extern BOOL enableAirplay;
 
+// 后台下载会话完成通知名称及其userInfo键
+static NSString * const PLVBackgroundSessionUpdateNotification = @"PLVBackgroundSessionUpdateNotification";
+static NSString * const PLVSessionIdKey = @"sessionId";
+static NSString * const PLVBackgroundSessionCompletionHandlerKey = @"backgroundSessionCompletionHandler";
+
 typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 	PLVLogLevelNone		= 0,		// 禁用日志输出
 	PLVLogLevelError	= 1 << 0,	// 只输出错误日志

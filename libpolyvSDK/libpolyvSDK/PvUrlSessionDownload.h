@@ -14,12 +14,18 @@
 
 /// 视频元数据
 @property (nonatomic, strong) NSDictionary *videoInfo __deprecated;
-@property (nonatomic, copy) void(^completeBlock)(void);
 
 /// 当前码率
 @property (nonatomic, assign, readonly) int level;
+
 /// 设置下载是否使用后台会话
 @property (nonatomic, assign) BOOL backgroundMode;
+
+/// 后台下载会话标识符
+@property (nonatomic, copy, readonly) NSString *sessionId;
+
+/// 后台完成回调
+@property (nonatomic, copy) void(^completeBlock)(void);
 
 /**
  *  初始化下载器
