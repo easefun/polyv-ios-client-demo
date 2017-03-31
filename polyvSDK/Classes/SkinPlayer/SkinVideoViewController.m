@@ -1144,10 +1144,11 @@ typedef NS_ENUM(NSInteger, panHandler){
 		if (self.danmuEnabled) {
 			self.videoControl.sendDanmuButton.hidden = YES;
 		}
-		if (self.shrinkscreenBlock) {
+		
+	}
+	if (self.shrinkscreenBlock) {
 			self.shrinkscreenBlock();
 		}
-	}
 }
 
 
