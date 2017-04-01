@@ -1098,10 +1098,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 		
 		self.videoControl.danmuButton.hidden = !self.enableDanmuDisplay;
 		self.videoControl.rateButton.hidden = !self.enableRateDisplay;
-		
-		if (self.fullscreenBlock) {
-			self.fullscreenBlock();
-		}
+	}
+	if (self.fullscreenBlock) {
+		self.fullscreenBlock();
 	}
 }
 
@@ -1144,9 +1143,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 		if (self.danmuEnabled) {
 			self.videoControl.sendDanmuButton.hidden = YES;
 		}
-		if (self.shrinkscreenBlock) {
-			self.shrinkscreenBlock();
-		}
+	}
+	if (self.shrinkscreenBlock) {
+		self.shrinkscreenBlock();
 	}
 }
 

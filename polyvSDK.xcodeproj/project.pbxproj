@@ -27,6 +27,9 @@
 		E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */; };
 		E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09861E5BE88F006FE206 /* UTDID.framework */; };
 		E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */; };
+		E59536551E8FA6C000A8B405 /* UINavigationController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E595364F1E8FA6C000A8B405 /* UINavigationController+Orientation.m */; };
+		E59536561E8FA6C000A8B405 /* UITabBarController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E59536511E8FA6C000A8B405 /* UITabBarController+Orientation.m */; };
+		E59536571E8FA6C000A8B405 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = E59536541E8FA6C000A8B405 /* Video.m */; };
 		E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */; };
 		E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */; };
 		E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFED01E5A860D00C20418 /* libresolv.tbd */; };
@@ -71,9 +74,6 @@
 		E5D4D8DA1E48097F004308F0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8B21E48097F004308F0 /* AppDelegate.m */; };
 		E5D4D8DB1E48097F004308F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5D4D8B31E48097F004308F0 /* Main.storyboard */; };
 		E5D4D8DC1E48097F004308F0 /* RootViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8B61E48097F004308F0 /* RootViewViewController.m */; };
-		E5D4D8DD1E48097F004308F0 /* UINavigationController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8B81E48097F004308F0 /* UINavigationController+Orientation.m */; };
-		E5D4D8DE1E48097F004308F0 /* UITabBarController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8BA1E48097F004308F0 /* UITabBarController+Orientation.m */; };
-		E5D4D8DF1E48097F004308F0 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8BC1E48097F004308F0 /* Video.m */; };
 		E5D4D8E01E48097F004308F0 /* SkinVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8BF1E48097F004308F0 /* SkinVideoViewController.m */; };
 		E5D4D8E11E48097F004308F0 /* SkinVideoViewControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8C11E48097F004308F0 /* SkinVideoViewControllerView.m */; };
 		E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8C41E48097F004308F0 /* PolyvPlayerDemoViewController.m */; };
@@ -134,6 +134,12 @@
 		E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudHttpDNS.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudHttpDNS.framework"; sourceTree = "<absolute>"; };
 		E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudUtils.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudUtils.framework"; sourceTree = "<absolute>"; };
 		E51C09861E5BE88F006FE206 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UTDID.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/UTDID.framework"; sourceTree = "<absolute>"; };
+		E595364E1E8FA6C000A8B405 /* UINavigationController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Orientation.h"; sourceTree = "<group>"; };
+		E595364F1E8FA6C000A8B405 /* UINavigationController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Orientation.m"; sourceTree = "<group>"; };
+		E59536501E8FA6C000A8B405 /* UITabBarController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Orientation.h"; sourceTree = "<group>"; };
+		E59536511E8FA6C000A8B405 /* UITabBarController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Orientation.m"; sourceTree = "<group>"; };
+		E59536531E8FA6C000A8B405 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		E59536541E8FA6C000A8B405 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
 		E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E5CBFED01E5A860D00C20418 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -191,12 +197,6 @@
 		E5D4D8B41E48097F004308F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E5D4D8B51E48097F004308F0 /* RootViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewViewController.h; sourceTree = "<group>"; };
 		E5D4D8B61E48097F004308F0 /* RootViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewViewController.m; sourceTree = "<group>"; };
-		E5D4D8B71E48097F004308F0 /* UINavigationController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Orientation.h"; sourceTree = "<group>"; };
-		E5D4D8B81E48097F004308F0 /* UINavigationController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Orientation.m"; sourceTree = "<group>"; };
-		E5D4D8B91E48097F004308F0 /* UITabBarController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Orientation.h"; sourceTree = "<group>"; };
-		E5D4D8BA1E48097F004308F0 /* UITabBarController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Orientation.m"; sourceTree = "<group>"; };
-		E5D4D8BB1E48097F004308F0 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
-		E5D4D8BC1E48097F004308F0 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
 		E5D4D8BE1E48097F004308F0 /* SkinVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinVideoViewController.h; sourceTree = "<group>"; };
 		E5D4D8BF1E48097F004308F0 /* SkinVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinVideoViewController.m; sourceTree = "<group>"; };
 		E5D4D8C01E48097F004308F0 /* SkinVideoViewControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinVideoViewControllerView.h; sourceTree = "<group>"; };
@@ -353,6 +353,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E595364D1E8FA6C000A8B405 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				E595364E1E8FA6C000A8B405 /* UINavigationController+Orientation.h */,
+				E595364F1E8FA6C000A8B405 /* UINavigationController+Orientation.m */,
+				E59536501E8FA6C000A8B405 /* UITabBarController+Orientation.h */,
+				E59536511E8FA6C000A8B405 /* UITabBarController+Orientation.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		E59536521E8FA6C000A8B405 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E59536531E8FA6C000A8B405 /* Video.h */,
+				E59536541E8FA6C000A8B405 /* Video.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		E5D211051CD8B72800F848CA /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -469,12 +489,8 @@
 				E5D4D8B31E48097F004308F0 /* Main.storyboard */,
 				E5D4D8B51E48097F004308F0 /* RootViewViewController.h */,
 				E5D4D8B61E48097F004308F0 /* RootViewViewController.m */,
-				E5D4D8B71E48097F004308F0 /* UINavigationController+Orientation.h */,
-				E5D4D8B81E48097F004308F0 /* UINavigationController+Orientation.m */,
-				E5D4D8B91E48097F004308F0 /* UITabBarController+Orientation.h */,
-				E5D4D8BA1E48097F004308F0 /* UITabBarController+Orientation.m */,
-				E5D4D8BB1E48097F004308F0 /* Video.h */,
-				E5D4D8BC1E48097F004308F0 /* Video.m */,
+				E59536521E8FA6C000A8B405 /* Model */,
+				E595364D1E8FA6C000A8B405 /* Category */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -690,8 +706,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5D4D8DE1E48097F004308F0 /* UITabBarController+Orientation.m in Sources */,
-				E5D4D8DF1E48097F004308F0 /* Video.m in Sources */,
+				E59536561E8FA6C000A8B405 /* UITabBarController+Orientation.m in Sources */,
 				E5D4D8D61E48097F004308F0 /* FMDBHelper.m in Sources */,
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
@@ -706,13 +721,14 @@
 				E5D4D8D71E48097F004308F0 /* PLVIndicator.m in Sources */,
 				E5D4D8DC1E48097F004308F0 /* RootViewViewController.m in Sources */,
 				E5D4D8E31E48097F004308F0 /* UploadDemoViewController.m in Sources */,
+				E59536551E8FA6C000A8B405 /* UINavigationController+Orientation.m in Sources */,
 				E5D4D8D21E48097F004308F0 /* FMDatabaseAdditions.m in Sources */,
 				E5D4D8E11E48097F004308F0 /* SkinVideoViewControllerView.m in Sources */,
 				E5D4D8E61E48097F004308F0 /* VideoListTableViewController.m in Sources */,
-				E5D4D8DD1E48097F004308F0 /* UINavigationController+Orientation.m in Sources */,
 				E5D4D8E51E48097F004308F0 /* DetailViewController2.m in Sources */,
 				E5D4D8D81E48097F004308F0 /* PLVSlider.m in Sources */,
 				E5D4D8E01E48097F004308F0 /* SkinVideoViewController.m in Sources */,
+				E59536571E8FA6C000A8B405 /* Video.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
