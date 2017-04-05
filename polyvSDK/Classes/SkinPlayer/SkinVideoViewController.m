@@ -676,9 +676,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)syncPlayButtonState{
 	if (self.loadState & MPMovieLoadStatePlayable
-		&& self.loadState & MPMovieLoadStatePlayable
 		&& self.playbackState == MPMoviePlaybackStatePlaying
-		&& self.playbackState) {
+		&& self.playbackState) {//...so what happend here?
 		self.videoControl.playButton.hidden = YES;
 		self.videoControl.pauseButton.hidden = NO;
 	}else{
@@ -813,10 +812,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 -  (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
 	if (error == nil) {
 		if (LOG_INFO) NSLog(@"截图保存成功");
-		[self.videoControl.indicator showMessage:@"保存成功"];
+		[self.videoControl.indicator showMessage:@"截图保存成功"];
 	} else {
 		if (LOG_INFO) NSLog(@"截图保存失败");
-		[self.videoControl.indicator showMessage:@"保存失败"];
+		[self.videoControl.indicator showMessage:@"截图保存失败"];
 	}
 }
 
@@ -1272,10 +1271,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
 	CGPoint point = [touch locationInView:self.view];
-	if ((point.y > self.frame.size.height-40)) {
-		return NO;
-	}
-	return YES;
+    return !(point.y > self.frame.size.height-40);
 }
 
 @end
