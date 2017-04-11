@@ -189,6 +189,11 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 	self.snapshotButton.hidden = YES;
 	self.snapshotButton.alpha = 0;
 }
+- (void)setEnableDanmuButton:(BOOL)enableDanmuButton {
+    _enableDanmuButton = enableDanmuButton;
+    self.sendDanmuButton.hidden = YES;
+    self.sendDanmuButton.alpha = 0;
+}
 - (void)setHeadTitle:(NSString *)headtitle{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.titleLabel setText:headtitle];
@@ -280,7 +285,7 @@ static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 		self.topBar.alpha = 1.0;
 		self.bottomBar.alpha = 1.0;
 		if (_isFullscreenMode) {
-			self.sendDanmuButton.alpha = 1.0;
+			if (self.enableDanmuButton) self.sendDanmuButton.alpha = 1.0;
 			if(self.enableSnapshot) self.snapshotButton.alpha = 1.0;
 		}
 	} completion:^(BOOL finished) {
