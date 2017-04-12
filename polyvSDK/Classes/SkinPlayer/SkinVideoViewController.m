@@ -65,6 +65,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 @interface SkinVideoViewController (RotateFullScreen)
 - (void)fullScreenAction:(UIButton *)sender;
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation;
 - (void)backButtonAction;
 - (void)addOrientationObserver;
 - (void)removeOrientationObserver;
@@ -146,6 +147,14 @@ typedef NS_ENUM(NSInteger, panHandler){
 		[self enableDanmu:NO];
         
 	}
+}
+
+- (void)setFullscreen:(BOOL)fullscreen {
+    if (fullscreen) {
+        [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+    } else {
+        [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    }
 }
 
 #pragma mark - dealloc & init
