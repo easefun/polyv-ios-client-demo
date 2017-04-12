@@ -20,7 +20,7 @@
 	// 配置日志等级
 	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelAll];
 	// 开启 HttpDNS 功能
-	[PolyvSettings.sharedInstance setHttpDNSEnable:YES];
+	//[PolyvSettings.sharedInstance setHttpDNSEnable:YES];
 	
 	// 配置sdk加密串
 	// NSString *appKey = @"你的app sdk加密串";
