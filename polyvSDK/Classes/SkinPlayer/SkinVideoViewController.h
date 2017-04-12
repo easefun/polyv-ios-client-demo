@@ -73,6 +73,8 @@
 // 监控播放器状态  刷新播放器状态(进度条、时间显示器等) 默认为自动调用
 - (void)monitorVideoPlayback;
 
+- (void)setFullscreen:(BOOL)fullscreen;
+
 //额外参数，用来跟踪出错用户
 - (void)setParam1:(NSString *)param1;
 

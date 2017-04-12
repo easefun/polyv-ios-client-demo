@@ -65,6 +65,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 @interface SkinVideoViewController (RotateFullScreen)
 - (void)fullScreenAction:(UIButton *)sender;
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation;
 - (void)backButtonAction;
 - (void)addOrientationObserver;
 - (void)removeOrientationObserver;
@@ -144,7 +145,16 @@ typedef NS_ENUM(NSInteger, panHandler){
 	
 	if (!enableDanmuDisplay) {
 		[self enableDanmu:NO];
+        
 	}
+}
+
+- (void)setFullscreen:(BOOL)fullscreen {
+    if (fullscreen) {
+        [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+    } else {
+        [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    }
 }
 
 #pragma mark - dealloc & init
@@ -208,6 +218,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	CGRect dmFrame;
 	dmFrame = self.view.bounds;
 	self.danmuManager = [[PVDanmuManager alloc] initWithFrame:dmFrame withVid:self.vid inView:self.view underView:self.videoControl durationTime:1];
+    [self.videoControl setEnableDanmuButton:enable];
 	if(self.danmuEnabled){
 		[self.videoControl setDanmuButtonColor:[UIColor yellowColor]];
 	}else{

@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 @property (nonatomic, strong, readonly) UIButton *danmuButton;
 /// 发送弹幕按钮
 @property (nonatomic, strong, readonly) UIButton *sendDanmuButton;
+/// 启用发送弹幕按钮
+@property (nonatomic, assign) BOOL enableDanmuButton;
 /// 变速按钮
 @property (nonatomic, strong, readonly) UIButton *rateButton;
 /// 截图按钮
