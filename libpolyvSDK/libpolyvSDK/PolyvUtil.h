@@ -149,4 +149,11 @@
 + (NSString *)vidWithvideoPoolId:(NSString *)videoPoolId;
 /// 时间戳
 + (NSString *)timestamp;
+
+/// 创建不存在的目录
++ (void)createDirIfNeed:(NSString *)dir error:(NSError **)error;
+
+/// 创建路径对应的目录
++ (BOOL)createDirOfPath:(NSString *)filePath error:(NSError **)error;
+
 @end

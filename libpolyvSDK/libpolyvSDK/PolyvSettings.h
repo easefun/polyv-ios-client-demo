@@ -50,7 +50,7 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 @property (nonatomic, copy, getter=getDownloadDir) NSString *downloadDir;
 /// 日志输出级别，默认为 PLVLogLevelWithoutDebug
 @property (nonatomic, assign) PLVLogLevel logLevel;
-/// 是否开启 HttpDNS
+/// 是否开启 HttpDNS，开启后必须允许 http 访问
 @property (nonatomic, assign) BOOL httpDNSEnable;
 
 /**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
@@ -151,5 +151,12 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
  *  重新载入配置
  */
 - (void)reloadSettings;
+
+/**
+ *  获取 SDK 版本
+ *
+ *  @return SDK 版本
+ */
+- (NSString *)sdkVersion;
 
 @end

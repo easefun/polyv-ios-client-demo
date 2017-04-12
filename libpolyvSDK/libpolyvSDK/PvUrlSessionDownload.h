@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PvUrlSessionDownloadDelegate.h"
-
+#import "PvVideo.h"
 
 @interface PvUrlSessionDownload : NSObject
 
@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSDictionary *videoInfo __deprecated;
 
 /// 当前码率
-@property (nonatomic, assign, readonly) int level;
+@property (nonatomic, assign, readonly) PvLevel level;
 
 /// 设置下载是否使用后台会话
 @property (nonatomic, assign) BOOL backgroundMode;
@@ -34,8 +34,18 @@
  *  @param level 码率
  *
  *  @return PvUrlSessionDownload 对象
+  */
+- (instancetype)initWithVid:(NSString *)vid level:(PvLevel)level;
+
+/**
+ *  初始化下载器
+ *
+ *  @param video 视频模型
+ *  @param level 码率
+ *
+ *  @return PvUrlSessionDownload 对象
  */
-- (instancetype)initWithVid:(NSString *)vid level:(int)level;
+- (instancetype)initWithVideo:(PvVideo *)video level:(PvLevel)level;
 
 /**
  *  开始下载
