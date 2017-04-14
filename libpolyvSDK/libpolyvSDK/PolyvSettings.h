@@ -18,6 +18,11 @@ extern BOOL mutilAccount;
 /// 启用Airplay
 extern BOOL enableAirplay;
 
+// 后台下载会话完成通知名称及其userInfo键
+static NSString * const PLVBackgroundSessionUpdateNotification = @"PLVBackgroundSessionUpdateNotification";
+static NSString * const PLVSessionIdKey = @"sessionId";
+static NSString * const PLVBackgroundSessionCompletionHandlerKey = @"backgroundSessionCompletionHandler";
+
 typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 	PLVLogLevelNone		= 0,		// 禁用日志输出
 	PLVLogLevelError	= 1 << 0,	// 只输出错误日志
@@ -45,7 +50,7 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 @property (nonatomic, copy, getter=getDownloadDir) NSString *downloadDir;
 /// 日志输出级别，默认为 PLVLogLevelWithoutDebug
 @property (nonatomic, assign) PLVLogLevel logLevel;
-/// 是否开启 HttpDNS
+/// 是否开启 HttpDNS，开启后必须允许 http 访问
 @property (nonatomic, assign) BOOL httpDNSEnable;
 
 /**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
@@ -146,5 +151,12 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
  *  重新载入配置
  */
 - (void)reloadSettings;
+
+/**
+ *  获取 SDK 版本
+ *
+ *  @return SDK 版本
+ */
+- (NSString *)sdkVersion;
 
 @end

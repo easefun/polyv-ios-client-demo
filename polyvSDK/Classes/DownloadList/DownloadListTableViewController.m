@@ -11,7 +11,6 @@
 #import "Video.h"///单个视频的信息
 #import "SkinVideoViewController.h"///播放器皮肤
 #import "PolyvSettings.h"///sdk设置API
-#import "AppDelegate.h"
 
 @interface DownloadListTableViewController (){
 	NSMutableArray *_videolist;
@@ -87,16 +86,6 @@
 			PvUrlSessionDownload *downloader = [[PvUrlSessionDownload alloc] initWithVid:video.vid level:video.level];
 			//设置下载代理为自身，需要实现四个代理方法download delegate
 			[downloader setDownloadDelegate:self];
-			// 后台下载时完成回调
-			[downloader setCompleteBlock:^{
-				AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-				if (appDelegate.backgroundSessionCompletionHandler) {
-					void (^handler)() = appDelegate.backgroundSessionCompletionHandler;
-					appDelegate.backgroundSessionCompletionHandler = nil;
-					handler();  //执行代码块
-				}
-			}];
-			
 			[_downloaderDictionary setObject:downloader forKey:video.vid];
 		}
 	}
@@ -113,7 +102,21 @@
 	//_fmdb = [FMDBHelper sharedInstance];
 	//_videolist = [_fmdb listDownloadVideo];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(handleBackgroundSession:)
+												 name:PLVBackgroundSessionUpdateNotification
+											   object:nil];
+	
 	[super viewDidLoad];
+}
+
+- (void)handleBackgroundSession:(NSNotification *)notification {
+	// AppDelegate 执行 -application:handleEventsForBackgroundURLSession:completionHandler: 才把 block 属性赋值
+	for (PvUrlSessionDownload *downloader in _downloaderDictionary.allValues) {
+		if ([notification.userInfo[PLVSessionIdKey] isEqualToString:downloader.sessionId]) {
+			downloader.completeBlock = notification.userInfo[PLVBackgroundSessionCompletionHandlerKey];
+		}
+	}
 }
 
 #pragma mark - Table view data source

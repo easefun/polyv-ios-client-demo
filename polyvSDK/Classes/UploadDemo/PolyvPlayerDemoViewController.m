@@ -10,7 +10,7 @@
 #import "PLVMoviePlayerController.h"
 
 #import "PvUrlSessionDownload.h"
-#import "AppDelegate.h"
+#import "PolyvSettings.h"
 
 @interface PolyvPlayerDemoViewController (){
     PvUrlSessionDownload *_downloader;
@@ -37,15 +37,6 @@
 	
 	// 配置下载器
 	_downloader = [[PvUrlSessionDownload alloc] initWithVid:_vid level:1];
-	[_downloader setCompleteBlock:^{
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		if(appDelegate.backgroundSessionCompletionHandler){
-			// Need to copy the completion handler
-			void (^handler)() = appDelegate.backgroundSessionCompletionHandler;
-			appDelegate.backgroundSessionCompletionHandler = nil;
-			handler();
-		}
-	}];
 	
 	// 自动选择码率
 	self.videoPlayer = [[PLVMoviePlayerController alloc] initWithVid:_vid];
@@ -82,9 +73,20 @@
 											 selector:@selector(moviePlayBackDidFinish:)
 												 name:MPMoviePlayerPlaybackDidFinishNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(handleBackgroundSession:)
+												 name:PLVBackgroundSessionUpdateNotification
+											   object:nil];
+	
 	[super viewDidLoad];
 }
 
+- (void)handleBackgroundSession:(NSNotification *)notification {
+	// AppDelegate 执行 -application:handleEventsForBackgroundURLSession:completionHandler: 才把 block 属性赋值
+	if ([notification.userInfo[PLVSessionIdKey] isEqualToString:_downloader.sessionId]) {
+		_downloader.completeBlock = notification.userInfo[PLVBackgroundSessionCompletionHandlerKey];
+	}
+}
 #pragma mark - 按钮事件
 - (IBAction)closeAction:(id)sender {
 	[self.videoPlayer stop];

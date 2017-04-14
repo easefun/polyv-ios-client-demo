@@ -10,6 +10,11 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "PvVideo.h"
 
+typedef NS_ENUM(NSInteger, PLVRouteLine) {
+	PLVRouteLine01 = 1,
+	PLVRouteLine02
+};
+
 @class PLVMoviePlayerController;
 
 @protocol PLVMoviePlayerDelegate <NSObject>
@@ -44,6 +49,8 @@
 @property (nonatomic, assign) int stayTimeDuration;
 /// 片头开关
 @property (nonatomic, assign) BOOL teaserEnable;
+/// 路由线路
+@property (nonatomic, assign) PLVRouteLine routeLine;
 
 /**
  *  初始化播放器

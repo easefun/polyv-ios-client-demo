@@ -66,21 +66,18 @@
 			if ([videos isKindOfClass:[NSNull class]]) {
 				NSLog(@"----- 该账号暂无视频");
 			} else {
-				for(int i = 0;i < videos.count;i++){
+				NSMutableArray *tempArr = [NSMutableArray array];
+				for(int i = 0; i < videos.count; i++){
 					NSDictionary *item = [videos objectAtIndex:i];
-					Video *video = [[Video alloc] init];
-					video.title = [item objectForKey:@"title"];
-					video.desc = [item objectForKey:@"context"];
-					video.vid = [item objectForKey:@"vid"];
-					video.duration = [item objectForKey:@"duration"];
-					video.piclink = [item objectForKey:@"first_image"];
-					video.piclink = [video.piclink stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
-					video.df = [[item objectForKey:@"df"] intValue];
-					video.seed = [[item objectForKey:@"seed"] intValue];
-					video.allfilesize = [item objectForKey:@"filesize"];
-					
-					[_videolist addObject:video];
+					Video *video = [[Video alloc] initWithDict:item];
+					// 按顺序加入数组，加密在前，非加密在后
+					if (video.seed) {
+						[_videolist addObject:video];
+					}else{
+						[tempArr addObject:video];
+					}
 				}
+				[_videolist addObjectsFromArray:tempArr];
 				dispatch_async(dispatch_get_main_queue(), ^{
 					[self.tableView reloadData];
 				});

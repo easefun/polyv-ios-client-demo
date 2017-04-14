@@ -28,9 +28,8 @@ NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewContr
 @property (nonatomic, assign) double currentTime;
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
-@property (nonatomic, assign) BOOL isFullscreenMode;
 @property (nonatomic, assign) BOOL keepNavigationBar;
-@property (nonatomic, assign) BOOL isBitRateViewShowing;
+@property (nonatomic, assign) BOOL isSideViewShowing;
 @property (assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
 @property (nonatomic, strong) NSTimer *bufferTimer;
@@ -68,6 +67,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)backButtonAction;
 - (void)addOrientationObserver;
 - (void)removeOrientationObserver;
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation;
 @end
 
 @interface SkinVideoViewController (Gesture)<UIGestureRecognizerDelegate>
@@ -94,6 +94,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 	NSMutableArray *_videoExams;
 	NSMutableDictionary *_parsedSrt;
 }
+
+@dynamic fullscreen;
 
 #pragma mark - 存取器
 - (SkinVideoViewControllerView *)videoControl{
@@ -173,6 +175,27 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 #pragma mark - 外部方法
+- (void)fullscreen:(BOOL)enable{
+	//	UIButton *sender = fullscreen ? self.videoControl.fullScreenButton : self.videoControl.shrinkScreenButton;
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	if (enable) { // 即将全屏
+		if (orientation == UIInterfaceOrientationPortrait) {
+			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+		}
+	}else{
+		if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+			[self interfaceOrientation:UIInterfaceOrientationPortrait];
+		}
+	}
+//	if (orientation == UIInterfaceOrientationPortrait && enable) {
+//		[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//	}else if((orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) && !enable){
+//		[self interfaceOrientation:UIInterfaceOrientationPortrait];
+//	}else if(!enable){
+//		
+//	}
+}
+
 /// 窗口模式
 - (void)showInWindow{
 	UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -232,11 +255,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 /// 设置播放器logo
 - (void)setLogo:(UIImage *)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha{
-	[self.videoControl setLogoImage:image];
-	[self.videoControl setLogoPosition:location];
-	[self.videoControl setLogoSize:size];
-	[self.videoControl setLogoAlpha:alpha];
-	[self.videoControl logoImageView];
+	self.videoControl.logoImageView.image = image;
+	self.videoControl.logoImageView.frame = CGRectMake(0, 0, size.width, size.height);
+	self.videoControl.logoImageView.alpha = alpha;
+	self.videoControl.logoPosition = location;
 }
 
 /// 注册监听
@@ -357,7 +379,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	// 显示码率
 	[self setBitRateButtonDisplay:self.currentLevel];
 	// 本地视频不允许切换码率
-	self.videoControl.bitRateButton.enabled = [self isExistedTheLocalVideo:self.vid] == 0;
+	self.videoControl.bitRateButton.enabled = self.videoControl.routeLineButton.enabled = [self isExistedTheLocalVideo:self.vid] == 0;
 }
 
 // 视频显示信息改变
@@ -484,6 +506,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
+	[self.videoControl.routeLineButton addTarget:self action:@selector(routeLineButtonClick) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.shrinkScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
@@ -494,11 +517,25 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 #pragma mark 按钮事件
+- (void)bitRateButtonClick{
+	if (self.videoControl.sideView.hidden) {
+		self.videoControl.sideView.hidden = NO;
+		[self.videoControl animateHide];
+		
+		// 创建码率列表
+		NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
+		for (int i = 0; i < buttons.count; i++) {
+			UIButton *_button = [buttons objectAtIndex:i];
+			[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+		}
+	}else{
+		self.videoControl.sideView.hidden = YES;
+	}
+}
 - (void)bitRateViewButtonClick:(UIButton *)button{
-	
 	self.watchStartTime = [super currentPlaybackTime];
 	_isSwitching = YES;         // 码率切换
-	self.videoControl.bitRateView.hidden = YES;
+	self.videoControl.sideView.hidden = YES;
 	
 	switch (button.tag) {
 		case 0:
@@ -520,6 +557,42 @@ typedef NS_ENUM(NSInteger, panHandler){
 		default:
 			break;
 	}
+}
+
+- (void)routeLineButtonClick{
+	if (self.videoControl.sideView.hidden) {
+		self.videoControl.sideView.hidden = NO;
+		[self.videoControl animateHide];
+		
+		// 创建线路列表
+		NSArray *buttons = self.videoControl.createRouteLineButton;
+		for (int i = 0; i < buttons.count; i++) {
+			UIButton *_button = [buttons objectAtIndex:i];
+			[_button addTarget:self action:@selector(routeLineClick:) forControlEvents:UIControlEventTouchUpInside];
+		}
+	}else{
+		self.videoControl.sideView.hidden = YES;
+	}
+}
+- (void)routeLineClick:(UIButton *)button{
+	self.watchStartTime = [super currentPlaybackTime];
+	switch (button.tag) {
+		case 0:
+			self.routeLine = PLVRouteLine01;
+			[self.videoControl.indicator showMessage:@"切换到线路一"];
+			[self.videoControl.routeLineButton setTitle:@"线路一" forState:UIControlStateNormal];
+			break;
+		case 1:
+			self.routeLine = PLVRouteLine02;
+			[self.videoControl.indicator showMessage:@"切换到线路二"];
+			[self.videoControl.routeLineButton setTitle:@"线路二" forState:UIControlStateNormal];
+			break;
+		default:
+			break;
+	}
+	_isSwitching = YES;
+	self.videoControl.sideView.hidden = YES;
+	
 }
 
 - (void)playButtonClick{
@@ -595,17 +668,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self dismiss];
 }
 
-- (void)bitRateButtonClick{
-	if (!self.isBitRateViewShowing) {
-		self.videoControl.bitRateView.hidden = NO;
-		[self.videoControl animateHide];
-		self.isBitRateViewShowing = YES;
-	}else{
-		self.videoControl.bitRateView.hidden = YES;
-		self.isBitRateViewShowing = NO;
-	}
-}
-
 - (void)setProgressSliderMaxMinValues {
 	CGFloat duration = self.duration;
 	self.videoControl.slider.progressMinimumValue = .0f;
@@ -635,12 +697,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)moviePlayer:(PLVMoviePlayerController *)player didLoadVideoInfo:(PvVideo *)video{
 	// 维护状态
 	
-	// 码率列表
-	NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
-	for (int i = 0; i < buttons.count; i++) {
-		UIButton *_button = [buttons objectAtIndex:i];
-		[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-	}
+//	// 码率列表
+//	NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
+//	for (int i = 0; i < buttons.count; i++) {
+//		UIButton *_button = [buttons objectAtIndex:i];
+//		[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//	}
 	
 	// 问答
 	[self setEnableExam:self.enableExam];
@@ -658,27 +720,26 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 
 - (void)setBitRateButtonDisplay:(int)level {
-	NSString *titlt = [NSString new];
+	NSString *title = [NSString new];
 	switch (level) {
-		case 0: titlt = @"自动";
+		case 0: title = @"自动";
 			break;
-		case 1: titlt = @"流畅";
+		case 1: title = @"流畅";
 			break;
-		case 2: titlt = @"高清";
+		case 2: title = @"高清";
 			break;
-		case 3: titlt = @"超清";
+		case 3: title = @"超清";
 			break;
 		default:
 			break;
 	}
-	[self.videoControl.bitRateButton setTitle:titlt forState:UIControlStateNormal];
+	[self.videoControl.bitRateButton setTitle:title forState:UIControlStateNormal];
 }
 
 - (void)syncPlayButtonState{
 	if (self.loadState & MPMovieLoadStatePlayable
-		&& self.loadState & MPMovieLoadStatePlayable
 		&& self.playbackState == MPMoviePlaybackStatePlaying
-		&& self.playbackState) {
+		&& self.playbackState) {//...so what happend here?
 		self.videoControl.playButton.hidden = YES;
 		self.videoControl.pauseButton.hidden = NO;
 	}else{
@@ -813,10 +874,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 -  (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
 	if (error == nil) {
 		if (LOG_INFO) NSLog(@"截图保存成功");
-		[self.videoControl.indicator showMessage:@"保存成功"];
+		[self.videoControl.indicator showMessage:@"截图保存成功"];
 	} else {
 		if (LOG_INFO) NSLog(@"截图保存失败");
-		[self.videoControl.indicator showMessage:@"保存失败"];
+		[self.videoControl.indicator showMessage:@"截图保存失败"];
 	}
 }
 
@@ -963,22 +1024,22 @@ typedef NS_ENUM(NSInteger, panHandler){
 	switch (interfaceOrientation) {
 			
 		case UIInterfaceOrientationPortraitUpsideDown:{ // 电池栏在下
-			//			NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
+			//NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
 		case UIInterfaceOrientationPortrait:{ // 电池栏在上
-			//			NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
+			//NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
 			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
 		}
 			break;
 		case UIInterfaceOrientationLandscapeLeft:{ // 电池栏在右
-			//			NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
+			//NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
 		case UIInterfaceOrientationLandscapeRight:{ // 电池栏在左
-			//			NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
+			//NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
@@ -1025,7 +1086,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	UIDevice *device = [UIDevice currentDevice];
 	[device beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification  object:device];
-	//	NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)removeOrientationObserver{
@@ -1052,9 +1112,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 	if (self.videoControl.showInWindowMode) { // 窗口模式
 		[UIApplication sharedApplication].statusBarHidden = YES;
 		__block UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-		//		NSLog(@"show in window");
-		//		return;
-		//		self.originFrame = self.view.frame;
+//		NSLog(@"show in window");
+//		return;
+//		self.originFrame = self.view.frame;
 		CGFloat height = [[UIScreen mainScreen] bounds].size.width;
 		CGFloat width = [[UIScreen mainScreen] bounds].size.height;
 		CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
@@ -1076,10 +1136,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 			self.videoControl.shrinkScreenButton.hidden = NO;
 		}];
 	}else{ // 视图模式
-		//		NSLog(@"视图模式");
+//		NSLog(@"视图模式");
 		CGRect frame = [UIScreen mainScreen].bounds;
 		self.frame = self.view.frame = frame;
-		self.isFullscreenMode = YES;
 		[self.videoControl changeToFullsreen];
 		if (self.keepNavigationBar) {
 			[_navigationController setNavigationBarHidden:YES];
@@ -1098,10 +1157,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 		
 		self.videoControl.danmuButton.hidden = !self.enableDanmuDisplay;
 		self.videoControl.rateButton.hidden = !self.enableRateDisplay;
-		
-		if (self.fullscreenBlock) {
-			self.fullscreenBlock();
-		}
+		self.isFullscreenMode = YES;
+	}
+	if (self.fullscreenBlock) {
+		self.fullscreenBlock();
 	}
 }
 
@@ -1109,8 +1168,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)shrinkScreenStyle{
 	self.videoControl.snapshotButton.hidden = YES;
 	if (self.videoControl.showInWindowMode) {
-		//		NSLog(@"show in window");
-		//		return;
+		//NSLog(@"show in window");
+		//return;
 		[UIView animateWithDuration:0.3f animations:^{
 			[self.view setTransform:CGAffineTransformIdentity];
 			self.frame = self.originFrame;
@@ -1121,7 +1180,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 			self.videoControl.shrinkScreenButton.hidden = YES;
 		}];
 	}else{
-		//		NSLog(@"%s - show in view", __FUNCTION__);
+		//NSLog(@"%s - show in view", __FUNCTION__);
 		[self.danmuSendV backAction];
 		if (self.keepNavigationBar) {
 			[_navigationController setNavigationBarHidden:NO];
@@ -1131,9 +1190,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}
 		
 		self.frame = self.originFrame;
-		//		NSLog(@"self.originFrame = %@", NSStringFromCGRect(self.originFrame));
+		//NSLog(@"self.originFrame = %@", NSStringFromCGRect(self.originFrame));
 		self.view.frame = self.originFrame;
-		self.isFullscreenMode = NO;
 		[self.videoControl changeToSmallsreen];
 		self.videoControl.fullScreenButton.hidden = NO;
 		self.videoControl.shrinkScreenButton.hidden = YES;
@@ -1144,9 +1202,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 		if (self.danmuEnabled) {
 			self.videoControl.sendDanmuButton.hidden = YES;
 		}
-		if (self.shrinkscreenBlock) {
-			self.shrinkscreenBlock();
-		}
+		self.isFullscreenMode = NO;
+	}
+	if (self.shrinkscreenBlock) {
+		self.shrinkscreenBlock();
 	}
 }
 
@@ -1273,10 +1332,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
 	CGPoint point = [touch locationInView:self.view];
-	if ((point.y > self.frame.size.height-40)) {
-		return NO;
-	}
-	return YES;
+    return !(point.y > self.frame.size.height-40);
 }
 
 @end

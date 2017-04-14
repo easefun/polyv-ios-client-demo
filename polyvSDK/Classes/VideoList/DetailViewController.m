@@ -16,7 +16,9 @@
 @end
 
 
-@implementation DetailViewController
+@implementation DetailViewController{
+	BOOL _barShow;
+}
 
 
 -(void)viewDidDisappear:(BOOL)animated {
@@ -29,19 +31,23 @@
 	[super viewDidDisappear:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+	[self setStatusBarBackgroundColor:[UIColor clearColor]];
+	[super viewWillDisappear:animated];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
 	[self.videoPlayer configObserver];
     self.isPresented = NO;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-//	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+	[self setStatusBarBackgroundColor:[UIColor blackColor]];
 	[super viewWillAppear:animated];
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.edgesForExtendedLayout=UIRectEdgeNone;
     
     CGFloat width = self.view.bounds.size.width;
@@ -50,14 +56,14 @@
     }
     [self.videoPlayer setHeadTitle:self.video.title];
     UIImage*logo = [UIImage imageNamed:@"pvlogo.png"];
-    [self.videoPlayer setLogo:logo location:PvLogoLocationTopLeft size:CGSizeMake(70,30) alpha:0.8];
-    
-//    [self.view addSubview:self.videoPlayer.view];
-	CGSize playerSize = self.videoPlayer.frame.size;
-	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, playerSize.width, playerSize.height + 20)];
-	[self.view addSubview:contentView];
-	contentView.backgroundColor = [UIColor blackColor];
-	[contentView addSubview:self.videoPlayer.view];
+    [self.videoPlayer setLogo:logo location:PvLogoLocationBottomRight size:CGSizeMake(70,30) alpha:0.8];
+	
+    [self.view addSubview:self.videoPlayer.view];
+//	CGSize playerSize = self.videoPlayer.frame.size;
+//	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, playerSize.width, playerSize.height + 20)];
+//	[self.view addSubview:contentView];
+//	contentView.backgroundColor = [UIColor blackColor];
+//	[contentView addSubview:self.videoPlayer.view];
     [self.videoPlayer setParentViewController:self];
     [self.videoPlayer setNavigationController:self.navigationController];
     [self.videoPlayer setVid:self.video.vid];
@@ -67,19 +73,31 @@
 	[self.videoPlayer rollInfo:@"info" font:[UIFont systemFontOfSize:10] color:[UIColor whiteColor] withDuration:3.0];
 }
 
+//设置状态栏颜色
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+	UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+	if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+		statusBar.backgroundColor = color;
+	}
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (BOOL)prefersStatusBarHidden{
+	if (!_barShow) {
+		_barShow = !_barShow;
+		return _barShow;
+	}else{
+		_barShow = !_barShow;
+		return NO;
+	}
 }
-*/
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+	return UIStatusBarStyleLightContent;
+}
 
 @end
