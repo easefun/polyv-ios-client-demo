@@ -44,14 +44,14 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 @property (nonatomic, strong, readonly) UIButton *danmuButton;
 /// 发送弹幕按钮
 @property (nonatomic, strong, readonly) UIButton *sendDanmuButton;
-/// 启用发送弹幕按钮
-@property (nonatomic, assign) BOOL enableDanmuButton;
 /// 变速按钮
 @property (nonatomic, strong, readonly) UIButton *rateButton;
 /// 截图按钮
 @property (nonatomic, strong, readonly) UIButton *snapshotButton;
 /// 启用截图功能
 @property (nonatomic, assign) BOOL enableSnapshot;
+/// 启用发送弹幕按钮
+@property (nonatomic, assign) BOOL enableDanmuButton;
 /// 进度滑块
 @property (nonatomic, strong, readonly) PLVSlider *slider;
 /// 手势滑动指示器
@@ -68,10 +68,9 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 @property (nonatomic, assign) BOOL showInWindowMode;
 /// logo设置
 @property (nonatomic, assign) PvLogoLocation logoPosition;
-@property (nonatomic, assign) CGFloat logoAlpha;
-@property (nonatomic, assign) CGSize logoSize;
-@property (nonatomic, assign) UIImage* logoImage;
 @property (nonatomic, strong) UIImageView *logoImageView;
+/// 设置头标题
+@property (nonatomic, copy) NSString *headTitle;
 
 /// 渐变隐藏显示工具条
 - (void)animateHide;
@@ -83,11 +82,8 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 /// 全屏/小屏时所进行的UI操作
 - (void)changeToFullsreen;
 - (void)changeToSmallsreen;
-/// 设置头标题
-- (void)setHeadTitle:(NSString *)headtitle;
 /// 设置弹幕按钮颜色
 - (void)setDanmuButtonColor:(UIColor *)color;
 /// 禁用播放控制
-- (void)disableControl:(BOOL)disabled;
 - (NSString *)videoImageName:(NSString *)name;
 @end
