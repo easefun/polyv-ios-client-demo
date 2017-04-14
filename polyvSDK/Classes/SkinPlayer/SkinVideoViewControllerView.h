@@ -38,8 +38,10 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 @property (nonatomic, strong, readonly) UIButton *shrinkScreenButton;
 /// 码率切换按钮
 @property (nonatomic, strong, readonly) UIButton *bitRateButton;
+/// 线路切换按钮
+@property (nonatomic, strong, readonly) UIButton *routeLineButton;
 /// 码率列表
-@property (nonatomic, strong, readonly) UIView *bitRateView;
+@property (nonatomic, strong, readonly) UIView *sideView;
 /// 弹幕开启按钮
 @property (nonatomic, strong, readonly) UIButton *danmuButton;
 /// 发送弹幕按钮
@@ -77,6 +79,7 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 - (void)cancelAutoFadeOutControlBar;
 /// 创建码率按钮
 - (NSMutableArray *)createBitRateButton:(int)dfnum;
+- (NSArray<UIButton *> *)createRouteLineButton;
 /// 全屏/小屏时所进行的UI操作
 - (void)changeToFullsreen;
 - (void)changeToSmallsreen;

@@ -29,7 +29,7 @@ NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewContr
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
 @property (nonatomic, assign) BOOL keepNavigationBar;
-@property (nonatomic, assign) BOOL isBitRateViewShowing;
+@property (nonatomic, assign) BOOL isSideViewShowing;
 @property (assign) CGRect originFrame;
 @property (nonatomic, strong) NSTimer *durationTimer;
 @property (nonatomic, strong) NSTimer *bufferTimer;
@@ -379,7 +379,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	// 显示码率
 	[self setBitRateButtonDisplay:self.currentLevel];
 	// 本地视频不允许切换码率
-	self.videoControl.bitRateButton.enabled = [self isExistedTheLocalVideo:self.vid] == 0;
+	self.videoControl.bitRateButton.enabled = self.videoControl.routeLineButton.enabled = [self isExistedTheLocalVideo:self.vid] == 0;
 }
 
 // 视频显示信息改变
@@ -506,6 +506,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.sendDanmuButton addTarget:self action:@selector(sendDanmuButtonClick) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.fullScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.bitRateButton addTarget:self action:@selector(bitRateButtonClick) forControlEvents:UIControlEventTouchUpInside];
+	[self.videoControl.routeLineButton addTarget:self action:@selector(routeLineButtonClick) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.shrinkScreenButton addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderValueChanged:) forControlEvents:UIControlEventValueChanged | UIControlEventTouchDragInside];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
@@ -516,11 +517,25 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 #pragma mark 按钮事件
+- (void)bitRateButtonClick{
+	if (self.videoControl.sideView.hidden) {
+		self.videoControl.sideView.hidden = NO;
+		[self.videoControl animateHide];
+		
+		// 创建码率列表
+		NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
+		for (int i = 0; i < buttons.count; i++) {
+			UIButton *_button = [buttons objectAtIndex:i];
+			[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+		}
+	}else{
+		self.videoControl.sideView.hidden = YES;
+	}
+}
 - (void)bitRateViewButtonClick:(UIButton *)button{
-	
 	self.watchStartTime = [super currentPlaybackTime];
 	_isSwitching = YES;         // 码率切换
-	self.videoControl.bitRateView.hidden = YES;
+	self.videoControl.sideView.hidden = YES;
 	
 	switch (button.tag) {
 		case 0:
@@ -542,6 +557,42 @@ typedef NS_ENUM(NSInteger, panHandler){
 		default:
 			break;
 	}
+}
+
+- (void)routeLineButtonClick{
+	if (self.videoControl.sideView.hidden) {
+		self.videoControl.sideView.hidden = NO;
+		[self.videoControl animateHide];
+		
+		// 创建线路列表
+		NSArray *buttons = self.videoControl.createRouteLineButton;
+		for (int i = 0; i < buttons.count; i++) {
+			UIButton *_button = [buttons objectAtIndex:i];
+			[_button addTarget:self action:@selector(routeLineClick:) forControlEvents:UIControlEventTouchUpInside];
+		}
+	}else{
+		self.videoControl.sideView.hidden = YES;
+	}
+}
+- (void)routeLineClick:(UIButton *)button{
+	self.watchStartTime = [super currentPlaybackTime];
+	switch (button.tag) {
+		case 0:
+			self.routeLine = PLVRouteLine01;
+			[self.videoControl.indicator showMessage:@"切换到线路一"];
+			[self.videoControl.routeLineButton setTitle:@"线路一" forState:UIControlStateNormal];
+			break;
+		case 1:
+			self.routeLine = PLVRouteLine02;
+			[self.videoControl.indicator showMessage:@"切换到线路二"];
+			[self.videoControl.routeLineButton setTitle:@"线路二" forState:UIControlStateNormal];
+			break;
+		default:
+			break;
+	}
+	_isSwitching = YES;
+	self.videoControl.sideView.hidden = YES;
+	
 }
 
 - (void)playButtonClick{
@@ -617,17 +668,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self dismiss];
 }
 
-- (void)bitRateButtonClick{
-	if (!self.isBitRateViewShowing) {
-		self.videoControl.bitRateView.hidden = NO;
-		[self.videoControl animateHide];
-		self.isBitRateViewShowing = YES;
-	}else{
-		self.videoControl.bitRateView.hidden = YES;
-		self.isBitRateViewShowing = NO;
-	}
-}
-
 - (void)setProgressSliderMaxMinValues {
 	CGFloat duration = self.duration;
 	self.videoControl.slider.progressMinimumValue = .0f;
@@ -657,12 +697,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)moviePlayer:(PLVMoviePlayerController *)player didLoadVideoInfo:(PvVideo *)video{
 	// 维护状态
 	
-	// 码率列表
-	NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
-	for (int i = 0; i < buttons.count; i++) {
-		UIButton *_button = [buttons objectAtIndex:i];
-		[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-	}
+//	// 码率列表
+//	NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
+//	for (int i = 0; i < buttons.count; i++) {
+//		UIButton *_button = [buttons objectAtIndex:i];
+//		[_button addTarget:self action:@selector(bitRateViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//	}
 	
 	// 问答
 	[self setEnableExam:self.enableExam];
@@ -680,20 +720,20 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 
 - (void)setBitRateButtonDisplay:(int)level {
-	NSString *titlt = [NSString new];
+	NSString *title = [NSString new];
 	switch (level) {
-		case 0: titlt = @"自动";
+		case 0: title = @"自动";
 			break;
-		case 1: titlt = @"流畅";
+		case 1: title = @"流畅";
 			break;
-		case 2: titlt = @"高清";
+		case 2: title = @"高清";
 			break;
-		case 3: titlt = @"超清";
+		case 3: title = @"超清";
 			break;
 		default:
 			break;
 	}
-	[self.videoControl.bitRateButton setTitle:titlt forState:UIControlStateNormal];
+	[self.videoControl.bitRateButton setTitle:title forState:UIControlStateNormal];
 }
 
 - (void)syncPlayButtonState{

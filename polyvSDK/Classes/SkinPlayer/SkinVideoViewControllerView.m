@@ -28,7 +28,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 @property (nonatomic, strong) UIButton *danmuButton;
 @property (nonatomic, strong) UIButton *closeButton;
 
-@property (nonatomic, strong) UIView *bitRateView;
+@property (nonatomic, strong) UIView *sideView;
 @property (nonatomic, strong) UIButton *sendDanmuButton;
 @property (nonatomic, strong) PLVIndicator *indicator;
 @property (nonatomic, strong) UIButton *snapshotButton;
@@ -44,6 +44,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 @property (nonatomic, strong) UIButton *bitRateButton;
 @property (nonatomic, strong) UIButton *fullScreenButton;
 @property (nonatomic, strong) UIButton *shrinkScreenButton;
+@property (nonatomic, strong) UIButton *routeLineButton;
 
 @property (nonatomic, strong) NSMutableArray *bitRateButtons;
 @property (nonatomic, assign) BOOL isBarShowing;
@@ -62,7 +63,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		[self addSubview:self.contentView];
 		
 		[self.contentView addSubview:self.subtitleLabel];
-		[self addSubview:self.bitRateView];
+		[self addSubview:self.sideView];
 		
 		// 顶部工具栏
 		[self.contentView addSubview:self.topBar];
@@ -83,6 +84,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		[self.bottomBar addSubview:self.fullScreenButton];
 		[self.bottomBar addSubview:self.shrinkScreenButton];
 		self.shrinkScreenButton.hidden = YES;
+		[self.bottomBar addSubview:self.routeLineButton];
 		
 		[self.contentView addSubview:self.sendDanmuButton];
 		[self.contentView addSubview:self.indicator];
@@ -151,7 +153,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 }
 
 - (NSMutableArray *)createBitRateButton:(int)dfnum{
-	[self.bitRateView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+	[self.sideView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	self.bitRateButtons = [NSMutableArray new];
 	
 	for (int i = 0;i<=dfnum;i++) {
@@ -176,11 +178,57 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		}
 		_button.titleLabel.font = [UIFont systemFontOfSize:14];
 		[self.bitRateButtons addObject:_button];
-		[self.bitRateView addSubview:_button];
+		[self.sideView addSubview:_button];
 		//[_button addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
 	}
-	[self arrangeBitRateButtons];
+//	[self arrangeBitRateButtons];
+	[self layoutSideViewButtons:self.bitRateButtons];
 	return self.bitRateButtons;
+}
+
+///// 排列码率按钮
+//- (void)arrangeBitRateButtons{
+//	int buttonWidth = 100;
+//	int buttonsize = (int)self.bitRateButtons.count*30;
+//	int initHeight =(CGRectGetHeight(self.sideView.bounds)-buttonsize)/2;
+//	
+//	if (self.bitRateButtons!=nil) {
+//		for (int i = 0; i < self.bitRateButtons.count; i++) {
+//			UIButton *_button = [self.bitRateButtons objectAtIndex:i];
+//			_button.bounds = CGRectMake(0, 0, pVideoControlBarHeight, 30);
+//			_button.frame = CGRectMake((CGRectGetWidth(self.sideView.bounds)-buttonWidth)/2, initHeight, buttonWidth, 30);
+//			initHeight+=30;
+//		}
+//	}
+//}
+
+- (void)layoutSideViewButtons:(NSArray<UIButton *> *)buttons{
+	int buttonWidth = 100;
+	int buttonsize = (int)buttons.count*30;
+	int initHeight =(CGRectGetHeight(self.sideView.bounds)-buttonsize)/2;
+	
+	if (!buttons.count) return;
+	for (UIButton *_button in buttons) {
+		_button.bounds = CGRectMake(0, 0, pVideoControlBarHeight, 30);
+		_button.frame = CGRectMake((CGRectGetWidth(self.sideView.bounds)-buttonWidth)/2, initHeight, buttonWidth, 30);
+		initHeight+=30;
+	}
+}
+
+- (NSArray<UIButton *> *)createRouteLineButton{
+	[self.sideView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+	NSMutableArray *buttons = [NSMutableArray array];
+	for (int i = 0; i < 2; i++) {
+		UIButton *lineButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		lineButton.tintColor = [UIColor whiteColor];
+		lineButton.titleLabel.font = [UIFont systemFontOfSize:14];
+		[lineButton setTitle:[NSString stringWithFormat:@"线路 %zd", i+1] forState:UIControlStateNormal];
+		lineButton.tag = i;
+		[self.sideView addSubview:lineButton];
+		[buttons addObject:lineButton];
+	}
+	[self layoutSideViewButtons:buttons];
+	return buttons;
 }
 
 - (void)changeToFullsreen{
@@ -231,7 +279,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	
 	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
 	self.snapshotButton.frame = CGRectMake(20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.snapshotButton.bounds))/2, CGRectGetWidth(self.snapshotButton.bounds), CGRectGetHeight(self.snapshotButton.bounds));
-	self.bitRateView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds));
+	self.sideView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds));
 	self.subtitleLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 	self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 	self.indicator.center = CGPointMake(self.center.x, self.center.y *.5);
@@ -243,7 +291,13 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
 	self.pauseButton.frame = self.playButton.frame;
 	
-	self.bitRateButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
+	CGFloat bitRateX = CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds) - CGRectGetWidth(self.routeLineButton.bounds);
+	CGFloat bitRateY = CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2;
+	self.bitRateButton.frame = CGRectMake(bitRateX, bitRateY, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
+	
+	CGRect routeLineFrame = self.bitRateButton.frame;
+	routeLineFrame.origin.x += routeLineFrame.size.width;
+	self.routeLineButton.frame = routeLineFrame;
 	
 	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
 	self.shrinkScreenButton.frame = self.fullScreenButton.frame;
@@ -253,7 +307,12 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 									  CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame),
 									  CGRectGetHeight(self.slider.bounds));
 	
-	self.timeLabel.frame = CGRectMake(CGRectGetMidX(self.slider.frame), CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.slider.bounds)/2, CGRectGetHeight(self.timeLabel.bounds));
+	[self.timeLabel sizeToFit];
+	CGRect timeFrame = self.timeLabel.frame;
+	timeFrame.size.width = 200;
+	timeFrame.origin = CGPointMake(CGRectGetMaxX(self.slider.frame) - timeFrame.size.width, CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0);
+	// CGRectMake(, CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.slider.bounds), CGRectGetHeight(self.timeLabel.bounds));
+	self.timeLabel.frame = timeFrame;
 	
 	//logo 位置
 	CGRect logoFrame = self.logoImageView.frame;
@@ -278,44 +337,13 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	self.logoImageView.frame = logoFrame;
 	self.pvExamView.frame = self.frame;
 	//editContent.frame = self.sendDanmuButton.frame;
-	[self arrangeBitRateButtons];
+//	[self arrangeBitRateButtons];
 }
-
-
-/// 排列码率按钮
-- (void)arrangeBitRateButtons{
-	int buttonWidth = 100;
-	int buttonsize = (int)self.bitRateButtons.count*30;
-	int initHeight =(CGRectGetHeight(self.bitRateView.bounds)-buttonsize)/2;
-	
-	if (self.bitRateButtons!=nil) {
-		for (int i = 0; i < self.bitRateButtons.count; i++) {
-			UIButton *_button = [self.bitRateButtons objectAtIndex:i];
-			_button.bounds = CGRectMake(0, 0, pVideoControlBarHeight, 30);
-			_button.frame = CGRectMake((CGRectGetWidth(self.bitRateView.bounds)-buttonWidth)/2, initHeight, buttonWidth, 30);
-			initHeight+=30;
-		}
-	}
-}
-
-- (NSArray<UIButton *> *)createRouteLineButton{
-	[self.bitRateView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-	NSMutableArray *buttons = [NSMutableArray array];
-	for (int i = 0; i < 2; i++) {
-		UIButton *lineButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		lineButton.tintColor = [UIColor whiteColor];
-		lineButton.titleLabel.font = [UIFont systemFontOfSize:14];
-		[lineButton setTitle:[NSString stringWithFormat:@"线路 %zd", i+1] forState:UIControlStateNormal];
-		[buttons addObject:lineButton];
-	}
-	return buttons;
-}
-
 
 
 #pragma touch events
 - (void)onTap:(UITapGestureRecognizer *)gesture{
-	self.bitRateView.hidden = YES;
+	self.sideView.hidden = YES;
 	if (gesture.state == UIGestureRecognizerStateRecognized) {
 		if (self.isBarShowing) {
 			[self animateHide];
@@ -418,13 +446,13 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 }
 
 #pragma mark masks
-- (UIView *)bitRateView{
-	if (!_bitRateView) {
-		_bitRateView = [UIView new];
-		_bitRateView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:pVideoControlBarItemAlpha];
-		_bitRateView.hidden = YES;
+- (UIView *)sideView{
+	if (!_sideView) {
+		_sideView = [UIView new];
+		_sideView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:pVideoControlBarItemAlpha];
+		_sideView.hidden = YES;
 	}
-	return _bitRateView;
+	return _sideView;
 }
 
 - (UIButton *)sendDanmuButton{
@@ -561,6 +589,17 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		_fullScreenButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
 	}
 	return _fullScreenButton;
+}
+
+- (UIButton *)routeLineButton{
+	if (!_routeLineButton) {
+		_routeLineButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		_routeLineButton.tintColor = [UIColor whiteColor];
+		[_routeLineButton setTitle:@"线路" forState:UIControlStateNormal];
+		_routeLineButton.titleLabel.font = [UIFont systemFontOfSize:14];
+		_routeLineButton.bounds = CGRectMake(0, 0, pVideoControlBarHeight, pVideoControlBarHeight);
+	}
+	return _routeLineButton;
 }
 
 - (UIButton *)shrinkScreenButton{
