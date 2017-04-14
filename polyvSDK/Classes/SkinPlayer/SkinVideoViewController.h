@@ -40,6 +40,11 @@
 /// 截图开关，默认为关闭
 @property (nonatomic, assign) BOOL enableSnapshot;
 
+/// 原全屏接口已弃用，请使用 -fullscreen 方法实现全屏
+@property (nonatomic, getter=isFullscreen) BOOL fullscreen __deprecated;
+@property (nonatomic, assign) BOOL isFullscreenMode;
+- (void)fullscreen:(BOOL)enable;
+
 /// 初始化
 - (instancetype)initWithFrame:(CGRect)frame;
 /// 窗口模式

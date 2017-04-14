@@ -28,7 +28,6 @@ NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewContr
 @property (nonatomic, assign) double currentTime;
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
-@property (nonatomic, assign) BOOL isFullscreenMode;
 @property (nonatomic, assign) BOOL keepNavigationBar;
 @property (nonatomic, assign) BOOL isBitRateViewShowing;
 @property (assign) CGRect originFrame;
@@ -68,6 +67,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)backButtonAction;
 - (void)addOrientationObserver;
 - (void)removeOrientationObserver;
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation;
 @end
 
 @interface SkinVideoViewController (Gesture)<UIGestureRecognizerDelegate>
@@ -94,6 +94,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 	NSMutableArray *_videoExams;
 	NSMutableDictionary *_parsedSrt;
 }
+
+@dynamic fullscreen;
 
 #pragma mark - 存取器
 - (SkinVideoViewControllerView *)videoControl{
@@ -173,6 +175,27 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 #pragma mark - 外部方法
+- (void)fullscreen:(BOOL)enable{
+	//	UIButton *sender = fullscreen ? self.videoControl.fullScreenButton : self.videoControl.shrinkScreenButton;
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	if (enable) { // 即将全屏
+		if (orientation == UIInterfaceOrientationPortrait) {
+			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+		}
+	}else{
+		if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+			[self interfaceOrientation:UIInterfaceOrientationPortrait];
+		}
+	}
+//	if (orientation == UIInterfaceOrientationPortrait && enable) {
+//		[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//	}else if((orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) && !enable){
+//		[self interfaceOrientation:UIInterfaceOrientationPortrait];
+//	}else if(!enable){
+//		
+//	}
+}
+
 /// 窗口模式
 - (void)showInWindow{
 	UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -232,11 +255,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 /// 设置播放器logo
 - (void)setLogo:(UIImage *)image location:(int)location size:(CGSize)size alpha:(CGFloat)alpha{
-	[self.videoControl setLogoImage:image];
-	[self.videoControl setLogoPosition:location];
-	[self.videoControl setLogoSize:size];
-	[self.videoControl setLogoAlpha:alpha];
-	[self.videoControl logoImageView];
+	self.videoControl.logoImageView.image = image;
+	self.videoControl.logoImageView.frame = CGRectMake(0, 0, size.width, size.height);
+	self.videoControl.logoImageView.alpha = alpha;
+	self.videoControl.logoPosition = location;
 }
 
 /// 注册监听
@@ -962,22 +984,22 @@ typedef NS_ENUM(NSInteger, panHandler){
 	switch (interfaceOrientation) {
 			
 		case UIInterfaceOrientationPortraitUpsideDown:{ // 电池栏在下
-			//			NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
+			//NSLog(@"fullScreenAction第3个旋转方向---电池栏在下");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
 		case UIInterfaceOrientationPortrait:{ // 电池栏在上
-			//			NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
+			//NSLog(@"fullScreenAction第0个旋转方向---电池栏在上");
 			[self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
 		}
 			break;
 		case UIInterfaceOrientationLandscapeLeft:{ // 电池栏在右
-			//			NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
+			//NSLog(@"fullScreenAction第2个旋转方向---电池栏在右");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
 		case UIInterfaceOrientationLandscapeRight:{ // 电池栏在左
-			//			NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
+			//NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		}
 			break;
@@ -1024,7 +1046,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	UIDevice *device = [UIDevice currentDevice];
 	[device beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification  object:device];
-	//	NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)removeOrientationObserver{
@@ -1051,9 +1072,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 	if (self.videoControl.showInWindowMode) { // 窗口模式
 		[UIApplication sharedApplication].statusBarHidden = YES;
 		__block UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-		//		NSLog(@"show in window");
-		//		return;
-		//		self.originFrame = self.view.frame;
+//		NSLog(@"show in window");
+//		return;
+//		self.originFrame = self.view.frame;
 		CGFloat height = [[UIScreen mainScreen] bounds].size.width;
 		CGFloat width = [[UIScreen mainScreen] bounds].size.height;
 		CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);
@@ -1075,10 +1096,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 			self.videoControl.shrinkScreenButton.hidden = NO;
 		}];
 	}else{ // 视图模式
-		//		NSLog(@"视图模式");
+//		NSLog(@"视图模式");
 		CGRect frame = [UIScreen mainScreen].bounds;
 		self.frame = self.view.frame = frame;
-		self.isFullscreenMode = YES;
 		[self.videoControl changeToFullsreen];
 		if (self.keepNavigationBar) {
 			[_navigationController setNavigationBarHidden:YES];
@@ -1097,6 +1117,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		
 		self.videoControl.danmuButton.hidden = !self.enableDanmuDisplay;
 		self.videoControl.rateButton.hidden = !self.enableRateDisplay;
+		self.isFullscreenMode = YES;
 	}
 	if (self.fullscreenBlock) {
 		self.fullscreenBlock();
@@ -1107,8 +1128,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)shrinkScreenStyle{
 	self.videoControl.snapshotButton.hidden = YES;
 	if (self.videoControl.showInWindowMode) {
-		//		NSLog(@"show in window");
-		//		return;
+		//NSLog(@"show in window");
+		//return;
 		[UIView animateWithDuration:0.3f animations:^{
 			[self.view setTransform:CGAffineTransformIdentity];
 			self.frame = self.originFrame;
@@ -1119,7 +1140,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 			self.videoControl.shrinkScreenButton.hidden = YES;
 		}];
 	}else{
-		//		NSLog(@"%s - show in view", __FUNCTION__);
+		//NSLog(@"%s - show in view", __FUNCTION__);
 		[self.danmuSendV backAction];
 		if (self.keepNavigationBar) {
 			[_navigationController setNavigationBarHidden:NO];
@@ -1129,9 +1150,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}
 		
 		self.frame = self.originFrame;
-		//		NSLog(@"self.originFrame = %@", NSStringFromCGRect(self.originFrame));
+		//NSLog(@"self.originFrame = %@", NSStringFromCGRect(self.originFrame));
 		self.view.frame = self.originFrame;
-		self.isFullscreenMode = NO;
 		[self.videoControl changeToSmallsreen];
 		self.videoControl.fullScreenButton.hidden = NO;
 		self.videoControl.shrinkScreenButton.hidden = YES;
@@ -1142,6 +1162,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		if (self.danmuEnabled) {
 			self.videoControl.sendDanmuButton.hidden = YES;
 		}
+		self.isFullscreenMode = NO;
 	}
 	if (self.shrinkscreenBlock) {
 		self.shrinkscreenBlock();
