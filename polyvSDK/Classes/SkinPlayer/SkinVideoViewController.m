@@ -435,8 +435,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 播放完成或退出
 - (void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 	[self.videoControl.indicatorView stopAnimating];
-	self.videoControl.bitRateButton.enabled = NO;
-	self.videoControl.routeLineButton.enabled = NO;
+	//self.videoControl.bitRateButton.enabled = NO;
+	//self.videoControl.routeLineButton.enabled = NO;
 	
 	if (self.autoContinue) {
 		//NSLog(@"当前时间 %f", self.currentTime);
@@ -686,6 +686,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 	double currentTime = floor(slider.value);
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	//self.videoControl.bitRateButton.enabled = YES;
+	//self.videoControl.routeLineButton.enabled = YES;
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
