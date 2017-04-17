@@ -435,6 +435,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 播放完成或退出
 - (void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 	[self.videoControl.indicatorView stopAnimating];
+	self.videoControl.bitRateButton.enabled = NO;
+	self.videoControl.routeLineButton.enabled = NO;
 	
 	if (self.autoContinue) {
 		//NSLog(@"当前时间 %f", self.currentTime);

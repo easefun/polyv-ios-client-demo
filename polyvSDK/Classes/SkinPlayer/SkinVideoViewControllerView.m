@@ -307,11 +307,8 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 									  CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame),
 									  CGRectGetHeight(self.slider.bounds));
 	
-	[self.timeLabel sizeToFit];
-	CGRect timeFrame = self.timeLabel.frame;
-	timeFrame.size.width = 200;
-	timeFrame.origin = CGPointMake(CGRectGetMaxX(self.slider.frame) - timeFrame.size.width, CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0);
-	// CGRectMake(, CGRectGetHeight(self.bottomBar.bounds)-1 - CGRectGetHeight(self.timeLabel.bounds) - 2.0, CGRectGetWidth(self.slider.bounds), CGRectGetHeight(self.timeLabel.bounds));
+	CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame);
+	CGRect timeFrame = CGRectMake(CGRectGetMinX(self.slider.frame), CGRectGetMaxY(self.slider.frame), CGRectGetWidth(self.slider.frame), timeH);
 	self.timeLabel.frame = timeFrame;
 	
 	//logo 位置
@@ -566,7 +563,8 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		_timeLabel.font = [UIFont systemFontOfSize:pVideoControlTimeLabelFontSize];
 		_timeLabel.textColor = [UIColor whiteColor];
 		_timeLabel.textAlignment = NSTextAlignmentRight;
-		_timeLabel.bounds = CGRectMake(0, 0, pVideoControlTimeLabelFontSize, pVideoControlTimeLabelFontSize);
+		//_timeLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+		//_timeLabel.bounds = CGRectMake(0, 0, pVideoControlTimeLabelFontSize, pVideoControlTimeLabelFontSize);
 	}
 	return _timeLabel;
 }
