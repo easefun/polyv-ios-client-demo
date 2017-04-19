@@ -48,42 +48,12 @@
 	
 	[self.tableView setDataSource:self];
 	[self.tableView setDelegate:self];
-	
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//	[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20", PolyvReadtoken]]];
-	[request setURL:[NSURL URLWithString:@"https://demo.polyv.net/data/video.js"]];
-	[request setHTTPMethod:@"GET"];
-	
-	NSURLSession *session = [NSURLSession sharedSession];
-	[[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		if(data!=nil){
-			NSDictionary *jsondata = [NSJSONSerialization
-									   JSONObjectWithData:data
-									   options:0
-									   error:&error];
-			
-			NSMutableArray *videos = [jsondata objectForKey:@"data"];
-			if ([videos isKindOfClass:[NSNull class]]) {
-				NSLog(@"----- 该账号暂无视频");
-			} else {
-				NSMutableArray *tempArr = [NSMutableArray array];
-				for(int i = 0; i < videos.count; i++){
-					NSDictionary *item = [videos objectAtIndex:i];
-					Video *video = [[Video alloc] initWithDict:item];
-					// 按顺序加入数组，加密在前，非加密在后
-					if (video.seed) {
-						[_videolist addObject:video];
-					}else{
-						[tempArr addObject:video];
-					}
-				}
-				[_videolist addObjectsFromArray:tempArr];
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self.tableView reloadData];
-				});
-			}
-		}
-	}] resume];
+    
+    UIRefreshControl *refresh = [[UIRefreshControl alloc]init];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"重新加载"];
+    [refresh addTarget:self action:@selector(reloadVideoList) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
+    [self reloadVideoList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,6 +61,47 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reloadVideoList{
+    [self.refreshControl beginRefreshing];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //[request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://v.polyv.net/uc/services/rest?method=getNewList&readtoken=%@&pageNum=1&numPerPage=20", PolyvReadtoken]]];
+    [request setURL:[NSURL URLWithString:@"https://demo.polyv.net/data/video.js"]];
+    [request setHTTPMethod:@"GET"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if(data!=nil){
+            NSDictionary *jsondata = [NSJSONSerialization
+                                      JSONObjectWithData:data
+                                      options:0
+                                      error:&error];
+            
+            NSMutableArray *videos = [jsondata objectForKey:@"data"];
+            if ([videos isKindOfClass:[NSNull class]]) {
+                NSLog(@"----- 该账号暂无视频");
+            } else {
+                NSMutableArray *videolist = [NSMutableArray array];
+                NSMutableArray *tempArr = [NSMutableArray array];
+                for(int i = 0; i < videos.count; i++){
+                    NSDictionary *item = [videos objectAtIndex:i];
+                    Video *video = [[Video alloc] initWithDict:item];
+                    // 按顺序加入数组，加密在前，非加密在后
+                    if (video.seed) {
+                        [videolist addObject:video];
+                    }else{
+                        [tempArr addObject:video];
+                    }
+                }
+                [videolist addObjectsFromArray:tempArr];
+                _videolist = videolist;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                    [self.refreshControl endRefreshing];
+                });
+            }
+        }
+    }] resume];
+}
 
 #pragma mark - Table view data source
 
