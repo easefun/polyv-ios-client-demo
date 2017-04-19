@@ -424,12 +424,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 // 做好播放准备后
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification{
-	if (_watchStartTime > 0 && _watchStartTime < self.duration) {
-		self.currentPlaybackTime = _watchStartTime;
-		[self setTimeLabelValues:_watchStartTime totalTime:self.duration];
-		_watchStartTime = -1;
-		_isSwitching = NO;
-	}
+    if (_watchStartTime > 0 && _watchStartTime < self.duration) {
+        self.currentPlaybackTime = _watchStartTime;
+        [self setTimeLabelValues:_watchStartTime totalTime:self.duration];
+        _watchStartTime = -1;
+    }
+    _isSwitching = NO;
 }
 
 // 播放完成或退出
