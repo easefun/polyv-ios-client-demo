@@ -428,8 +428,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 		self.currentPlaybackTime = _watchStartTime;
 		[self setTimeLabelValues:_watchStartTime totalTime:self.duration];
 		_watchStartTime = -1;
-		_isSwitching = NO;
 	}
+    _isSwitching = NO;
 }
 
 // 播放完成或退出
