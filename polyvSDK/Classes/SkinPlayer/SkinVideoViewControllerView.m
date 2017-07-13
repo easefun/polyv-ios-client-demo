@@ -87,10 +87,10 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		[self.bottomBar addSubview:self.routeLineButton];
 		
 		[self.contentView addSubview:self.sendDanmuButton];
-		[self.contentView addSubview:self.indicator];
+		//[self.contentView addSubview:self.indicator];
 		[self.contentView addSubview:self.snapshotButton];
 		
-		[self.contentView addSubview:self.indicatorView];
+		//[self.contentView addSubview:self.indicatorView];
 		[self.indicatorView startAnimating];
 		
 		[self addSubview:self.pvExamView];

@@ -159,6 +159,8 @@ typedef NS_ENUM(NSInteger, panHandler){
 		frame = CGRectMake(frame.origin.x, frame.origin.y + 20, frame.size.width, frame.size.height);
 		self.frame = frame;
 		self.originFrame = frame;
+        [self.view addSubview:self.videoControl.indicator];
+        [self.view addSubview:self.videoControl.indicatorView];
 		[self.view addSubview:self.videoControl];
 		self.videoControl.frame = self.view.bounds;
 		
