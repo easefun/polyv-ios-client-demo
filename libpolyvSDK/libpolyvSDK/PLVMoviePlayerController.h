@@ -9,11 +9,21 @@
 #import <Foundation/Foundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "PvVideo.h"
+@import AVFoundation;
 
 typedef NS_ENUM(NSInteger, PLVRouteLine) {
-	PLVRouteLine01 = 1,
-	PLVRouteLine02
+    PLVRouteLine01 = 1,
+    PLVRouteLine02
 };
+
+/// MPMoviePlaybackState 字符串
+NSString *NSStringFromMPMoviePlaybackState(MPMoviePlaybackState state);
+
+/// MPMovieLoadState 字符串
+NSString *NSStringFromMPMovieLoadState(MPMovieLoadState state);
+
+/// MPMovieFinishReason 字符串
+NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);
 
 @class PLVMoviePlayerController;
 
@@ -30,7 +40,66 @@ typedef NS_ENUM(NSInteger, PLVRouteLine) {
 
 @end
 
-@interface PLVMoviePlayerController: MPMoviePlayerController
+// MPMoviePlayerController -> UIViewController
+@interface PLVMoviePlayerController: UIViewController
+
+#pragma mark - MPMoviePlayerController
+
+/// The URL that points to the movie file.
+@property(nonatomic, copy) NSURL *contentURL;
+
+/// The playback type of the movie.
+@property(nonatomic) MPMovieSourceType movieSourceType __deprecated;
+
+/// The scaling mode to use when displaying the movie.
+@property(nonatomic) MPMovieScalingMode scalingMode;
+
+/// The style of the playback controls.
+@property(nonatomic) MPMovieControlStyle controlStyle __deprecated;
+
+/// The duration of the movie, measured in seconds. (read-only)
+@property(nonatomic, readonly) NSTimeInterval duration;
+
+/// The amount of currently playable content. (read-only)
+@property(nonatomic, readonly) NSTimeInterval playableDuration;
+
+/// The network load state of the movie player. (read-only)
+@property(nonatomic, readonly) MPMovieLoadState loadState;
+
+/// The current playback state of the movie player. (read-only)
+@property(nonatomic, readonly) MPMoviePlaybackState playbackState;
+
+/// A Boolean that indicates whether a movie should begin playback automatically.
+@property(nonatomic) BOOL shouldAutoplay;
+
+/// A Boolean that indicates whether the first video frame of the movie is ready to be displayed.
+@property(nonatomic, readonly) BOOL readyForDisplay;
+
+/// A Boolean value indicating whether a movie player is ready to play. (read-only)
+@property(nonatomic, readonly) BOOL isPreparedToPlay;
+
+/// The current playback rate for the player.
+@property(nonatomic) float currentPlaybackRate;
+
+/// The current position of the playhead.
+@property(nonatomic) NSTimeInterval currentPlaybackTime;
+
+/// Initiates playback of the current item.
+- (void)play;
+
+/// Pauses playback of the current item.
+- (void)pause;
+
+/// Ends playback of the current item.
+- (void)stop;
+
+/// Prepares a movie player for playback.
+- (void)prepareToPlay __deprecated;
+
+/// Causes the movie player to enter or exit full-screen mode.
+- (void)setFullscreen:(BOOL)fullscreen animated:(BOOL)animated __deprecated;
+
+#pragma mark - PLVMoviePlayerController
 
 /// 代理属性
 @property (nonatomic, weak) id<PLVMoviePlayerDelegate> delegate;
@@ -124,11 +193,4 @@ typedef NS_ENUM(NSInteger, PLVRouteLine) {
 
 @end
 
-/// MPMoviePlaybackState 字符串
-NSString *NSStringFromMPMoviePlaybackState(MPMoviePlaybackState state);
 
-/// MPMovieLoadState 字符串
-NSString *NSStringFromMPMovieLoadState(MPMovieLoadState state);
-
-/// MPMovieFinishReason 字符串
-NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);

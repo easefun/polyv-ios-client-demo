@@ -385,6 +385,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 视频显示信息改变
 - (void)onMPMoviePlayerReadyForDisplayDidChangeNotification{
 	//    NSLog(@"%s,%f", __FUNCTION__, self.currentPlaybackTime);
+    [self setProgressSliderMaxMinValues];
 }
 
 // 播放状态改变
@@ -435,6 +436,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 // 播放完成或退出
 - (void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 	[self.videoControl.indicatorView stopAnimating];
+    [self syncPlayButtonState];
 	
 	if (self.autoContinue) {
 		//NSLog(@"当前时间 %f", self.currentTime);
@@ -512,7 +514,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
 	[self.videoControl.slider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
 	[self.videoControl.snapshotButton addTarget:self action:@selector(snapshot) forControlEvents:UIControlEventTouchUpInside];
-	[self setProgressSliderMaxMinValues];
 	[self monitorVideoPlayback];
 }
 
@@ -937,7 +938,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 #pragma mark 定时器事件
 - (void)monitorVideoPlayback{
-	if (_isSeeking) true;
+	if (_isSeeking) return;
 	if (_isSwitching) {     // 正在切换码率，return出去
 		return;
 	}
