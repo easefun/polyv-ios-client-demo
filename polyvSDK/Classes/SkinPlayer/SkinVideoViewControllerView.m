@@ -511,13 +511,12 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	return _indicatorView;
 }
 
-// X
-//- (PvExamView *) pvExamView{
-//	if (!_pvExamView) {
-//		_pvExamView = [[PvExamView alloc] initWithFrame:self.frame];
-//	}
-//	return _pvExamView;
-//}
+- (PvExamView *)pvExamView{
+	if (!_pvExamView) {
+		_pvExamView = [[PvExamView alloc] initWithFrame:self.frame];
+	}
+	return _pvExamView;
+}
 
 #pragma mark bottom bar
 - (UIView *)bottomBar{

@@ -78,7 +78,9 @@
 	
 	// 设置是否自动播放，默认为YES
 	//self.videoPlayer.shouldAutoplay = NO;
-	
+    
+    // 开启问答
+    //self.videoPlayer.enableExam = YES;
 	
 	/**
 	 *  ---- 回调代码块 ----

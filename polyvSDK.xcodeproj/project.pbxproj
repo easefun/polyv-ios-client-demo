@@ -27,9 +27,13 @@
 		E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */; };
 		E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09861E5BE88F006FE206 /* UTDID.framework */; };
 		E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */; };
+		E568FD0A1EF0F9C900803517 /* PvCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E568FD091EF0F9C900803517 /* PvCheckBox.m */; };
+		E568FD0D1EF0F9D500803517 /* PvExamView.m in Sources */ = {isa = PBXBuildFile; fileRef = E568FD0C1EF0F9D500803517 /* PvExamView.m */; };
+		E568FD101EF0F9DC00803517 /* PvRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E568FD0F1EF0F9DC00803517 /* PvRadioButton.m */; };
 		E59536551E8FA6C000A8B405 /* UINavigationController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E595364F1E8FA6C000A8B405 /* UINavigationController+Orientation.m */; };
 		E59536561E8FA6C000A8B405 /* UITabBarController+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = E59536511E8FA6C000A8B405 /* UITabBarController+Orientation.m */; };
 		E59536571E8FA6C000A8B405 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = E59536541E8FA6C000A8B405 /* Video.m */; };
+		E5C7812A1EADA90300B58134 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5C781291EADA90300B58134 /* Launch Screen.storyboard */; };
 		E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */; };
 		E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */; };
 		E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E5CBFED01E5A860D00C20418 /* libresolv.tbd */; };
@@ -134,12 +138,19 @@
 		E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudHttpDNS.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudHttpDNS.framework"; sourceTree = "<absolute>"; };
 		E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlicloudUtils.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/AlicloudUtils.framework"; sourceTree = "<absolute>"; };
 		E51C09861E5BE88F006FE206 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UTDID.framework; path = "/Users/miniMonster/workspace/git/polyv-ios-client-demo/polyvSDK/Classes/libpolyvSDK/AdditionalLibrary/UTDID.framework"; sourceTree = "<absolute>"; };
+		E568FD081EF0F9C900803517 /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
+		E568FD091EF0F9C900803517 /* PvCheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PvCheckBox.m; sourceTree = "<group>"; };
+		E568FD0B1EF0F9D500803517 /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
+		E568FD0C1EF0F9D500803517 /* PvExamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PvExamView.m; sourceTree = "<group>"; };
+		E568FD0E1EF0F9DC00803517 /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
+		E568FD0F1EF0F9DC00803517 /* PvRadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PvRadioButton.m; sourceTree = "<group>"; };
 		E595364E1E8FA6C000A8B405 /* UINavigationController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Orientation.h"; sourceTree = "<group>"; };
 		E595364F1E8FA6C000A8B405 /* UINavigationController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Orientation.m"; sourceTree = "<group>"; };
 		E59536501E8FA6C000A8B405 /* UITabBarController+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+Orientation.h"; sourceTree = "<group>"; };
 		E59536511E8FA6C000A8B405 /* UITabBarController+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+Orientation.m"; sourceTree = "<group>"; };
 		E59536531E8FA6C000A8B405 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
 		E59536541E8FA6C000A8B405 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
+		E5C781291EADA90300B58134 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		E5CBFECC1E5A85F500C20418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E5CBFECE1E5A860300C20418 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E5CBFED01E5A860D00C20418 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -222,13 +233,10 @@
 		E5F05AF21E5ED85800A832CF /* PolyvSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvSettings.h; sourceTree = "<group>"; };
 		E5F05AF31E5ED85800A832CF /* PolyvUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyvUtil.h; sourceTree = "<group>"; };
 		E5F05AF41E5ED85800A832CF /* PvCachable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCachable.h; sourceTree = "<group>"; };
-		E5F05AF51E5ED85800A832CF /* PvCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvCheckBox.h; sourceTree = "<group>"; };
 		E5F05AF61E5ED85800A832CF /* PVDanmuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PVDanmuManager.h; sourceTree = "<group>"; };
 		E5F05AF71E5ED85800A832CF /* PvDanmuOperateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuOperateView.h; sourceTree = "<group>"; };
 		E5F05AF81E5ED85800A832CF /* PvDanmuSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvDanmuSendView.h; sourceTree = "<group>"; };
 		E5F05AF91E5ED85800A832CF /* PvExam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExam.h; sourceTree = "<group>"; };
-		E5F05AFA1E5ED85800A832CF /* PvExamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvExamView.h; sourceTree = "<group>"; };
-		E5F05AFB1E5ED85800A832CF /* PvRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvRadioButton.h; sourceTree = "<group>"; };
 		E5F05AFC1E5ED85800A832CF /* PvReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvReportManager.h; sourceTree = "<group>"; };
 		E5F05AFD1E5ED85800A832CF /* PvUrlSessionDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownload.h; sourceTree = "<group>"; };
 		E5F05AFE1E5ED85800A832CF /* PvUrlSessionDownloadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PvUrlSessionDownloadDelegate.h; sourceTree = "<group>"; };
@@ -351,6 +359,19 @@
 				CBA37143196E6549008E95ED /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E568FD071EF0F9B300803517 /* PLVControl */ = {
+			isa = PBXGroup;
+			children = (
+				E568FD0E1EF0F9DC00803517 /* PvRadioButton.h */,
+				E568FD0F1EF0F9DC00803517 /* PvRadioButton.m */,
+				E568FD0B1EF0F9D500803517 /* PvExamView.h */,
+				E568FD0C1EF0F9D500803517 /* PvExamView.m */,
+				E568FD081EF0F9C900803517 /* PvCheckBox.h */,
+				E568FD091EF0F9C900803517 /* PvCheckBox.m */,
+			);
+			path = PLVControl;
 			sourceTree = "<group>";
 		};
 		E595364D1E8FA6C000A8B405 /* Category */ = {
@@ -486,6 +507,7 @@
 			children = (
 				E5D4D8B11E48097F004308F0 /* AppDelegate.h */,
 				E5D4D8B21E48097F004308F0 /* AppDelegate.m */,
+				E5C781291EADA90300B58134 /* Launch Screen.storyboard */,
 				E5D4D8B31E48097F004308F0 /* Main.storyboard */,
 				E5D4D8B51E48097F004308F0 /* RootViewViewController.h */,
 				E5D4D8B61E48097F004308F0 /* RootViewViewController.m */,
@@ -554,6 +576,7 @@
 		E5F05AEC1E5ED85800A832CF /* libpolyvSDK */ = {
 			isa = PBXGroup;
 			children = (
+				E568FD071EF0F9B300803517 /* PLVControl */,
 				E5F05AED1E5ED85800A832CF /* PLVAssetData.h */,
 				E5F05AEE1E5ED85800A832CF /* PLVData.h */,
 				E5F05AEF1E5ED85800A832CF /* PLVKit.h */,
@@ -562,13 +585,10 @@
 				E5F05AF21E5ED85800A832CF /* PolyvSettings.h */,
 				E5F05AF31E5ED85800A832CF /* PolyvUtil.h */,
 				E5F05AF41E5ED85800A832CF /* PvCachable.h */,
-				E5F05AF51E5ED85800A832CF /* PvCheckBox.h */,
 				E5F05AF61E5ED85800A832CF /* PVDanmuManager.h */,
 				E5F05AF71E5ED85800A832CF /* PvDanmuOperateView.h */,
 				E5F05AF81E5ED85800A832CF /* PvDanmuSendView.h */,
 				E5F05AF91E5ED85800A832CF /* PvExam.h */,
-				E5F05AFA1E5ED85800A832CF /* PvExamView.h */,
-				E5F05AFB1E5ED85800A832CF /* PvRadioButton.h */,
 				E5F05AFC1E5ED85800A832CF /* PvReportManager.h */,
 				E5F05AFD1E5ED85800A832CF /* PvUrlSessionDownload.h */,
 				E5F05AFE1E5ED85800A832CF /* PvUrlSessionDownloadDelegate.h */,
@@ -667,6 +687,7 @@
 				E5D211251CD8B72800F848CA /* checkbox_unchecked@2x.png in Resources */,
 				CBA37126196E6549008E95ED /* InfoPlist.strings in Resources */,
 				E5D211311CD8B72800F848CA /* pl-video-player-pause@2x.png in Resources */,
+				E5C7812A1EADA90300B58134 /* Launch Screen.storyboard in Resources */,
 				E5D211341CD8B72800F848CA /* pl-video-player-play@3x.png in Resources */,
 				CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */,
 				E5D2112B1CD8B72800F848CA /* pl-video-player-close@3x.png in Resources */,
@@ -708,10 +729,12 @@
 			files = (
 				E59536561E8FA6C000A8B405 /* UITabBarController+Orientation.m in Sources */,
 				E5D4D8D61E48097F004308F0 /* FMDBHelper.m in Sources */,
+				E568FD0D1EF0F9D500803517 /* PvExamView.m in Sources */,
 				E5D4D8D91E48097F004308F0 /* SubTitleLabel.m in Sources */,
 				E5D4D8E21E48097F004308F0 /* PolyvPlayerDemoViewController.m in Sources */,
 				E5D4D8D31E48097F004308F0 /* FMDatabasePool.m in Sources */,
 				E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */,
+				E568FD101EF0F9DC00803517 /* PvRadioButton.m in Sources */,
 				CBA37128196E6549008E95ED /* main.m in Sources */,
 				E5D4D8D41E48097F004308F0 /* FMDatabaseQueue.m in Sources */,
 				E5D4D8CE1E48097F004308F0 /* DownloadListTableViewController.m in Sources */,
@@ -726,6 +749,7 @@
 				E5D4D8E11E48097F004308F0 /* SkinVideoViewControllerView.m in Sources */,
 				E5D4D8E61E48097F004308F0 /* VideoListTableViewController.m in Sources */,
 				E5D4D8E51E48097F004308F0 /* DetailViewController2.m in Sources */,
+				E568FD0A1EF0F9C900803517 /* PvCheckBox.m in Sources */,
 				E5D4D8D81E48097F004308F0 /* PLVSlider.m in Sources */,
 				E5D4D8E01E48097F004308F0 /* SkinVideoViewController.m in Sources */,
 				E59536571E8FA6C000A8B405 /* Video.m in Sources */,
@@ -852,9 +876,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -886,9 +911,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_ACTIVITY_MODE = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (

@@ -424,19 +424,17 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 // 做好播放准备后
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification{
-	if (_watchStartTime > 0 && _watchStartTime < self.duration) {
-		self.currentPlaybackTime = _watchStartTime;
-		[self setTimeLabelValues:_watchStartTime totalTime:self.duration];
-		_watchStartTime = -1;
-	}
+    if (_watchStartTime > 0 && _watchStartTime < self.duration) {
+        self.currentPlaybackTime = _watchStartTime;
+        [self setTimeLabelValues:_watchStartTime totalTime:self.duration];
+        _watchStartTime = -1;
+    }
     _isSwitching = NO;
 }
 
 // 播放完成或退出
 - (void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification{
 	[self.videoControl.indicatorView stopAnimating];
-	//self.videoControl.bitRateButton.enabled = NO;
-	//self.videoControl.routeLineButton.enabled = NO;
 	
 	if (self.autoContinue) {
 		//NSLog(@"当前时间 %f", self.currentTime);
@@ -686,8 +684,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	double currentTime = floor(slider.value);
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
-	//self.videoControl.bitRateButton.enabled = YES;
-	//self.videoControl.routeLineButton.enabled = YES;
 }
 
 - (void)progressSliderTouchEnded:(UISlider *)slider {
@@ -1141,7 +1137,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}];
 	}else{ // 视图模式
 //		NSLog(@"视图模式");
-		CGRect frame = [UIScreen mainScreen].bounds;
+        CGRect frame = CGRectZero;
+        //frame = [UIScreen mainScreen].bounds;
+        //if (!CGRectEqualToRect(frame, [self fullscreenFrame])) {
+        //    NSLog(@"scrren = %@, frame = %@", NSStringFromCGRect(frame), NSStringFromCGRect([self fullscreenFrame]));
+        //}
+        frame = [self fullscreenFrame];
 		self.frame = self.view.frame = frame;
 		[self.videoControl changeToFullsreen];
 		if (self.keepNavigationBar) {
@@ -1166,6 +1167,18 @@ typedef NS_ENUM(NSInteger, panHandler){
 	if (self.fullscreenBlock) {
 		self.fullscreenBlock();
 	}
+}
+
+- (CGRect)fullscreenFrame {
+    CGRect fullscreenFrame = [UIScreen mainScreen].bounds;
+    CGSize fullscreenSize = fullscreenFrame.size;
+    if (fullscreenSize.width < fullscreenSize.height) {
+        CGFloat tmp = fullscreenSize.width;
+        fullscreenSize.width = fullscreenSize.height;
+        fullscreenSize.height = tmp;
+    }
+    fullscreenFrame.size = fullscreenSize;
+    return fullscreenFrame;
 }
 
 /// 非全屏样式

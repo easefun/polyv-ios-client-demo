@@ -15,10 +15,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // 监听SDK错误通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(errorDidOccur:) name:PLVErrorNotification object:nil];
+    
 	// 配置下载目录
 	[PolyvSettings.sharedInstance setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
 	// 配置日志等级
-	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelAll];
+	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelWarn | PLVLogLevelInfo];
 	// 开启 HttpDNS 功能
 	//[PolyvSettings.sharedInstance setHttpDNSEnable:YES];
 	
@@ -45,6 +48,12 @@
 	
 	return YES;
 }
+
+/// 错误通知响应
+- (void)errorDidOccur:(NSNotification *)notificaiton {
+    NSLog(@"error info = %@", notificaiton.userInfo[PLVErrorMessageKey]);
+}
+
 -(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
 {
 	NSDictionary *userInfo = @{PLVSessionIdKey: identifier,

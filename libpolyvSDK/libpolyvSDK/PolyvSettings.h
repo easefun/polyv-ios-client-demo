@@ -22,6 +22,8 @@ extern BOOL enableAirplay;
 static NSString * const PLVBackgroundSessionUpdateNotification = @"PLVBackgroundSessionUpdateNotification";
 static NSString * const PLVSessionIdKey = @"sessionId";
 static NSString * const PLVBackgroundSessionCompletionHandlerKey = @"backgroundSessionCompletionHandler";
+static NSString * const PLVErrorNotification = @"PLVErrorNotification";
+static NSString * const PLVErrorMessageKey = @"PLVErrorMessageKey";
 
 typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 	PLVLogLevelNone		= 0,		// 禁用日志输出
