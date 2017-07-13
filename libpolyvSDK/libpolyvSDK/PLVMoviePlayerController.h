@@ -40,7 +40,6 @@ NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);
 
 @end
 
-// MPMoviePlayerController -> UIViewController
 @interface PLVMoviePlayerController: UIViewController
 
 #pragma mark - MPMoviePlayerController
