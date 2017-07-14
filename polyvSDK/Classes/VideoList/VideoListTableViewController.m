@@ -31,8 +31,7 @@
 @implementation VideoListTableViewController
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.navigationBarHidden = NO;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
@@ -45,10 +44,12 @@
 	
 	_videolist = [NSMutableArray array];
 	_fmdb = [FMDBHelper sharedInstance];
-	
-	[self.tableView setDataSource:self];
-	[self.tableView setDelegate:self];
     
+    [self setupUI];
+}
+
+- (void)setupUI {
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     UIRefreshControl *refresh = [[UIRefreshControl alloc]init];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"重新加载"];
     [refresh addTarget:self action:@selector(reloadVideoList) forControlEvents:UIControlEventValueChanged];
@@ -70,35 +71,34 @@
     
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if(data!=nil){
-            NSDictionary *jsondata = [NSJSONSerialization
-                                      JSONObjectWithData:data
-                                      options:0
-                                      error:&error];
-            
-            NSMutableArray *videos = [jsondata objectForKey:@"data"];
-            if ([videos isKindOfClass:[NSNull class]]) {
-                NSLog(@"----- 该账号暂无视频");
-            } else {
-                NSMutableArray *videolist = [NSMutableArray array];
-                NSMutableArray *tempArr = [NSMutableArray array];
-                for(int i = 0; i < videos.count; i++){
-                    NSDictionary *item = [videos objectAtIndex:i];
-                    Video *video = [[Video alloc] initWithDict:item];
-                    // 按顺序加入数组，加密在前，非加密在后
-                    if (video.seed) {
-                        [videolist addObject:video];
-                    }else{
-                        [tempArr addObject:video];
-                    }
+        if (!data) {
+            NSLog(@"无法获取数据");
+            [self.refreshControl endRefreshing];
+            return;
+        }
+        NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSMutableArray *videos = [jsondata objectForKey:@"data"];
+        if ([videos isKindOfClass:[NSNull class]]) {
+            NSLog(@"----- 该账号暂无视频");
+        } else {
+            NSMutableArray *videolist = [NSMutableArray array];
+            NSMutableArray *tempArr = [NSMutableArray array];
+            for(int i = 0; i < videos.count; i++){
+                NSDictionary *item = [videos objectAtIndex:i];
+                Video *video = [[Video alloc] initWithDict:item];
+                // 按顺序加入数组，加密在前，非加密在后
+                if (video.seed) {
+                    [videolist addObject:video];
+                }else{
+                    [tempArr addObject:video];
                 }
-                [videolist addObjectsFromArray:tempArr];
-                _videolist = videolist;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                    [self.refreshControl endRefreshing];
-                });
             }
+            [videolist addObjectsFromArray:tempArr];
+            _videolist = videolist;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                [self.refreshControl endRefreshing];
+            });
         }
     }] resume];
 }
