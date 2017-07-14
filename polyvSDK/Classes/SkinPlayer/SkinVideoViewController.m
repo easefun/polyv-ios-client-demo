@@ -414,10 +414,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 	
 	if (self.loadState & MPMovieLoadStateStalled) {
 		[self.videoControl.indicatorView startAnimating];
+        _isPrepared = NO;
 	}
 	if (self.loadState & MPMovieLoadStatePlaythroughOK) {
 		[self.videoControl.indicatorView stopAnimating];
 		_isPrepared = YES;
+        _isSeeking = NO;
 	}else{
 		//NSLog(@"state = %@", @(self.loadState));
 	}
@@ -487,6 +489,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 		}else{
 			errorstring = @"playback failed without any given reason";
 		}
+        NSLog(@"playback failed: %@", errorstring);
 		[PvReportManager reportError:[super getPid] uid:PolyvUserId vid:self.vid error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
 	}
 	//NSLog(@"done");
@@ -678,12 +681,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 - (void)progressSliderTouchBegan:(UISlider *)slider {
+    _isSeeking = YES;
 	[self pause];
 	[self.videoControl cancelAutoFadeOutControlBar];
 }
 
 - (void)progressSliderValueChanged:(UISlider *)slider {
-	_isSeeking = YES;
 	double currentTime = floor(slider.value);
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
@@ -693,7 +696,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl autoFadeOutControlBar];
 	[self setCurrentPlaybackTime:floor(slider.value)];
 	[self play];
-	_isSeeking = NO;
 }
 
 #pragma mark - PLVMoviePlayerDelegate
@@ -940,7 +942,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 #pragma mark 定时器事件
 - (void)monitorVideoPlayback{
-	if (_isSeeking) return;
+	if (_isSeeking || !_isPrepared) return;
 	if (_isSwitching) {     // 正在切换码率，return出去
 		return;
 	}
