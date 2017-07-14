@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "PolyvSettings.h"
 #import "PolyvUtil.h"
+#import <AlicloudUtils/AlicloudReachabilityManager.h>
 
 @implementation AppDelegate
 
@@ -17,6 +18,10 @@
 {
     // 监听SDK错误通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(errorDidOccur:) name:PLVErrorNotification object:nil];
+    
+    // 采用 AlicloudReachabilityManager 监听网络情况
+    [AlicloudReachabilityManager shareInstance];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStatusDidChange:) name:ALICLOUD_NETWOEK_STATUS_NOTIFY object:nil];
     
 	// 配置下载目录
 	[PolyvSettings.sharedInstance setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
@@ -52,6 +57,31 @@
 /// 错误通知响应
 - (void)errorDidOccur:(NSNotification *)notificaiton {
     NSLog(@"error info = %@", notificaiton.userInfo[PLVErrorMessageKey]);
+}
+
+/// 网络情况通知响应
+- (void)networkStatusDidChange:(NSNotification *)notification {
+    if ([AlicloudReachabilityManager shareInstance].preNetworkStatus == [AlicloudReachabilityManager shareInstance].currentNetworkStatus) return;
+    NSString *networkStatusString = @"nerwork status did change: ";
+    switch ([AlicloudReachabilityManager shareInstance].currentNetworkStatus) {
+        case AlicloudNotReachable:{
+            networkStatusString = [networkStatusString stringByAppendingFormat:@"Not Reachable."];
+        }break;
+        case AlicloudReachableVia2G:{
+            networkStatusString = [networkStatusString stringByAppendingFormat:@"2G."];
+        }break;
+        case AlicloudReachableVia3G:{
+            networkStatusString = [networkStatusString stringByAppendingFormat:@"3G."];
+        }break;
+        case AlicloudReachableVia4G:{
+            networkStatusString = [networkStatusString stringByAppendingFormat:@"4G."];
+        }break;
+        case AlicloudReachableViaWiFi:{
+            networkStatusString = [networkStatusString stringByAppendingFormat:@"WiFi."];
+        }break;
+        default:{}break;
+    }
+    NSLog(@"%@", networkStatusString);
 }
 
 -(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
