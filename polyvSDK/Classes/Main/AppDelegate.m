@@ -56,7 +56,7 @@
 
 /// 错误通知响应
 - (void)errorDidOccur:(NSNotification *)notificaiton {
-    NSLog(@"error info = %@", notificaiton.userInfo[PLVErrorMessageKey]);
+    NSLog(@"%@ - error info = %@", notificaiton.object, notificaiton.userInfo[PLVErrorMessageKey]);
 }
 
 /// 网络情况通知响应
