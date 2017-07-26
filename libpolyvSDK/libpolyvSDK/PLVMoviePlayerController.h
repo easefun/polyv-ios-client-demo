@@ -177,13 +177,29 @@ NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);
 - (void)switchLevel:(PvLevel)level completion:(void (^)(PvLevel level))completion;
 
 /**
+ *  获取本地视频码率，已弃用，请使用 `+localVideoLevelWithVid:` 或 `-localVideoLevel` 方法
+ *
+ *  @param vid 视频 id
+ *
+ *  @return 本地视频码率
+ */
+- (int)isExistedTheLocalVideo:(NSString *)vid __deprecated;
+
+/**
  *  获取本地视频码率
  *
  *  @param vid 视频 id
  *
  *  @return 本地视频码率
  */
-- (int)isExistedTheLocalVideo:(NSString *)vid;
++ (int)localVideoLevelWithVid:(NSString *)vid;
+
+/**
+ *  获取本地视频码率
+ *
+ *  @return 本地视频码率
+ */
+- (int)localVideoLevel;
 
 /**
  *  销毁播放器对象
