@@ -109,7 +109,6 @@
 	[self.videoPlayer pause];
 }
 - (IBAction)fullscreenAction:(id)sender {
-	[self.videoPlayer setFullscreen:YES animated:YES];
 }
 - (IBAction)switchVid:(id)sender {
 	self.videoPlayer.vid = @"sl8da4jjbxe69c6942a7a737819660de_s";

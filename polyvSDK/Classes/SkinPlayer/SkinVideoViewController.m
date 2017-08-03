@@ -165,7 +165,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 		self.videoControl.frame = self.view.bounds;
 		
 		self.view.backgroundColor = [UIColor blackColor];
-		self.controlStyle = MPMovieControlStyleNone;
 		self.videoControl.closeButton.hidden = YES;
 		[self.videoControl.indicatorView startAnimating];
 		self.enableDanmuDisplay = YES;
@@ -381,7 +380,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 	// 显示码率
 	[self setBitRateButtonDisplay:self.currentLevel];
 	// 本地视频不允许切换码率
-	self.videoControl.bitRateButton.enabled = self.videoControl.routeLineButton.enabled = [self isExistedTheLocalVideo:self.vid] == 0;
+	self.videoControl.bitRateButton.enabled = self.videoControl.routeLineButton.enabled = self.localVideoLevel == 0;
 }
 
 // 视频显示信息改变
@@ -861,7 +860,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)snapshot{
 	int currentTime = (int)self.currentPlaybackTime;
 	int level = self.getLevel;
-	if (!level) level = [self isExistedTheLocalVideo:self.vid];
+	if (!level) level = self.localVideoLevel;
 	NSString *sign = [NSString stringWithFormat:@"%@%d%dpolyvsnapshot", self.vid, level, currentTime];
 	NSString *urlStr = [NSString stringWithFormat:@"http://go.polyv.net/snapshot/videoimage.php?vid=%@&level=%d&second=%d&sign=%@", self.vid, level, currentTime, [PolyvUtil md5HexDigest:sign]];
 	//NSLog(@"url = %@", urlStr);
@@ -1312,9 +1311,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 - (void)verticalPan:(CGFloat)value{
 	if (self.volumeEnable) {
-		CGFloat volume = [[MPMusicPlayerController applicationMusicPlayer] volume];
-		volume -= value / 10000;
-		[[MPMusicPlayerController applicationMusicPlayer] setVolume:volume];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        CGFloat volume = [MPMusicPlayerController applicationMusicPlayer].volume;
+        volume -= value / 10000;
+        [MPMusicPlayerController applicationMusicPlayer].volume = volume;
+#pragma clang diagnostic pop
 	}else {
 		[UIScreen mainScreen].brightness -= value / 10000;
 	}
