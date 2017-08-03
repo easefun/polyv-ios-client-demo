@@ -50,7 +50,7 @@
 
 - (void)setupUI {
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    UIRefreshControl *refresh = [[UIRefreshControl alloc]init];
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"重新加载"];
     [refresh addTarget:self action:@selector(reloadVideoList) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;

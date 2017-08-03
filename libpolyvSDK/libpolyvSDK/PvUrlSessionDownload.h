@@ -34,7 +34,7 @@
  *  @param level 码率
  *
  *  @return PvUrlSessionDownload 对象
-  */
+ */
 - (instancetype)initWithVid:(NSString *)vid level:(PvLevel)level;
 
 /**
@@ -89,7 +89,7 @@
  *  @param vid   视频 id
  *  @param level 码率
  */
-+ (void)deleteVideo:(NSString *)vid level:(int)level;
++ (void)deleteVideo:(NSString *)vid level:(PvLevel)level;
 
 /**
  *  删除所有下载文件
@@ -111,6 +111,6 @@
  *
  *  @return 该视频是否已存在
  */
-+ (BOOL)isVideoExists:(NSString *)vid level:(int)level;
++ (BOOL)isVideoExists:(NSString *)vid level:(PvLevel)level;
 
 @end
