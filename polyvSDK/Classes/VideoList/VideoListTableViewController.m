@@ -71,9 +71,11 @@
     
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (!data) {
+        if (!data.length) {
             NSLog(@"无法获取数据");
-            [self.refreshControl endRefreshing];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.refreshControl endRefreshing];
+            });
             return;
         }
         NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
@@ -117,10 +119,11 @@
     Video *video = [_videolist objectAtIndex:indexPath.row];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
-    [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:video.piclink]] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        imageView.image = [UIImage imageWithData:data];
-    }];
-    
+    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:video.piclink] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageView.image = [UIImage imageWithData:data];
+        });
+    }] resume];
 
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     titleLabel.text = video.title;
@@ -135,15 +138,11 @@
         typeLabel.text = @"";
     }
     
-    
-    
-    
     UIButton *btn = (UIButton *)[cell viewWithTag:104];
     btn.tag = indexPath.row;
     
     //NSLog(@"%d - %@", indexPath.row, video.title);
     [btn addTarget:self action:@selector(downloadClick:) forControlEvents:UIControlEventTouchDown];
-
     
     return cell;
 }

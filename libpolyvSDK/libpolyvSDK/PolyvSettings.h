@@ -48,20 +48,45 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 
 @interface PolyvSettings : NSObject
 
-/// 下载载目录路径
+/// 下载载目录路径（必须在`initVideoSettings:Readtoken:Writetoken:UserId:`方法之前设置）
 @property (nonatomic, copy, getter=getDownloadDir) NSString *downloadDir;
-/// 日志输出级别，默认为 PLVLogLevelWithoutDebug
+
+/// 日志输出级别，默认为 PLVLogLevelWithoutDebug（必须在`initVideoSettings:Readtoken:Writetoken:UserId:`方法之前设置）
 @property (nonatomic, assign) PLVLogLevel logLevel;
-/// 是否开启 HttpDNS，开启后必须允许 http 访问
+
+/// 是否开启 HttpDNS，开启后必须允许 http 访问（必须在`initVideoSettings:Readtoken:Writetoken:UserId:`方法之前设置）
 @property (nonatomic, assign) BOOL httpDNSEnable;
 
-/**初始化Polyv设置，需要在AppDelegate.m的didFinishLaunchingWithOptions方法里面添加*/
+
+/**
+ Polyv SDK 初始化
+ 
+ @param privateKey secretkey
+ @param readtoken readtoken
+ @param writetoken writetoken
+ @param userId userid
+ 
+ @discussion 需要在AppDelegate.m的`-didFinishLaunchingWithOptions`方法里面添加。且必须在配置配置信息之后。
+ */
 - (void)initVideoSettings:(NSString *)privateKey Readtoken:(NSString *)readtoken Writetoken:(NSString *)writetoken UserId:(NSString *)userId;
 
-/**只初始化上传功能设置*/
+/**
+ 只初始化上传功能设置
+ 
+ @param privateKey secretkey
+ @param readtoken readtoken
+ @param writetoken writetoken
+ @param userId userid
+ */
 - (void)initUploadSettings:(NSString *)privateKey Readtoken:(NSString *)readtoken Writetoken:(NSString *)writetoken UserId:(NSString *)userId;
 
-+ (id)sharedInstance;
+
+/**
+ Polyv SDK 配置类单例对象
+ 
+ @return 该类单例对象
+ */
++ (instancetype)sharedInstance;
 
 //+(void)stat:(NSString*)pid vid:(NSString*)vid flow:(long)flow pd:(int)pd sd:(int)sd cts:(int)cts duration:(int)duration;
 //+(void)reportError:(NSString*)pid vid:(NSString*)vid error:(NSString*)error param1:(NSString*)param1 param2:(NSString*)param2 param3:(NSString*)param3 param4:(NSString*)param4 param5:(NSString*)param5;

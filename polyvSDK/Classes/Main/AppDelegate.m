@@ -16,6 +16,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // 当前 SDK 版本
+    NSLog(@"当前 SDK 版本：%@", [PolyvSettings sharedInstance].sdkVersion);
+    
     // 监听SDK错误通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(errorDidOccur:) name:PLVErrorNotification object:nil];
     
@@ -24,11 +27,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStatusDidChange:) name:ALICLOUD_NETWOEK_STATUS_NOTIFY object:nil];
     
 	// 配置下载目录
-	[PolyvSettings.sharedInstance setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
+    [PolyvSettings sharedInstance].downloadDir = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"];
 	// 配置日志等级
-	[PolyvSettings.sharedInstance setLogLevel:PLVLogLevelWarn | PLVLogLevelInfo];
+    [PolyvSettings sharedInstance].logLevel = PLVLogLevelWarn | PLVLogLevelInfo;
 	// 开启 HttpDNS 功能
-	//[PolyvSettings.sharedInstance setHttpDNSEnable:YES];
+    //[PolyvSettings sharedInstance].httpDNSEnable = YES;
 	
 	// 配置sdk加密串
 	// NSString *appKey = @"你的app sdk加密串";

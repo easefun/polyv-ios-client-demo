@@ -645,9 +645,6 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = easefun;
 				TargetAttributes = {
-					CBA37117196E6549008E95ED = {
-						DevelopmentTeam = ETRBR9HA5V;
-					};
 					CBA37138196E6549008E95ED = {
 						TestTargetID = CBA37117196E6549008E95ED;
 					};
@@ -884,7 +881,7 @@
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ETRBR9HA5V;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
@@ -918,7 +915,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_ACTIVITY_MODE = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ETRBR9HA5V;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libpolyvSDK/AdditionalLibrary",
