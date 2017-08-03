@@ -184,6 +184,6 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
  *
  *  @return SDK 版本
  */
-- (NSString *)sdkVersion;
++ (NSString *)sdkVersion;
 
 @end

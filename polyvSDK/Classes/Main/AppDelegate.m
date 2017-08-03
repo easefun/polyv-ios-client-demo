@@ -17,7 +17,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // 当前 SDK 版本
-    NSLog(@"当前 SDK 版本：%@", [PolyvSettings sharedInstance].sdkVersion);
+    NSLog(@"当前 SDK 版本：%@", [PolyvSettings sdkVersion]);
     
     // 监听SDK错误通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(errorDidOccur:) name:PLVErrorNotification object:nil];
