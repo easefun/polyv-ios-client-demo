@@ -26,29 +26,18 @@ static const CGFloat PLVPlayerAnimationInterval = 0.3;
 /// 播放控制视图
 @property (nonatomic, strong) SkinVideoViewControllerView *videoControl;
 
-@property (nonatomic, strong) UIView *movieBackgroundView;
 @property (nonatomic, assign) BOOL keepNavigationBar;
-@property (nonatomic, assign) BOOL isSideViewShowing;
 @property (nonatomic, assign) CGRect originFrame;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, strong) PVDanmuManager *danmuManager;
-@property (nonatomic, strong) PvDanmuSendView *danmuSendV;
-
-@property (nonatomic, assign) NSString *headtitle;
-@property (nonatomic, assign) NSString *teaserURL;
-@property (nonatomic, assign) NSURL *videoContentURL;
-
-@property (nonatomic, assign) CGPoint startPoint;
-@property (nonatomic, assign) CGFloat curPosition;
-@property (nonatomic, assign) CGFloat curVoice;
-@property (nonatomic, assign) CGFloat curBrightness;
+@property (nonatomic, strong) PvDanmuSendView *danmuSendView;
 
 @property (nonatomic, assign) BOOL volumeEnable;
+@property (nonatomic, assign) NSString *headtitle;
 
 /// 播放过程定时器
 @property (nonatomic, strong) NSTimer *playbackTimer;
-//@property (nonatomic, strong) NSTimer *bufferTimer;
 
 
 // 枚举值，包含水平移动方向和垂直移动方向
@@ -58,7 +47,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 };
 
 /** 定义一个实例变量，保存枚举值 */
-@property (nonatomic, assign) panHandler     panHandler;
+@property (nonatomic, assign) panHandler panHandler;
 
 @end
 
@@ -83,10 +72,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	__weak UIViewController *_parentViewController;
 	BOOL _isPrepared;
 	
-	NSDate *_firstLoadStartTime;
-	NSDate *_secondLoadStartTime;
-	BOOL _firstLoadTimeSent;
-	BOOL _secondLoadTimeSent;
 	BOOL _isSeeking;
 	BOOL _isSwitching;  // 切换码率中
 	
@@ -103,15 +88,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 		_videoControl.translatesAutoresizingMaskIntoConstraints = YES;
 	}
 	return _videoControl;
-}
-
-- (UIView *)movieBackgroundView {
-	if (!_movieBackgroundView) {
-		_movieBackgroundView = [[UIView alloc] init];
-		_movieBackgroundView.alpha = 0.0;
-		_movieBackgroundView.backgroundColor = [UIColor blackColor];
-	}
-	return _movieBackgroundView;
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -430,7 +406,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 - (void)onMediaPlaybackIsPreparedToPlayDidChangeNotification {
 	if (_watchStartTime > 0 && _watchStartTime < self.duration) {
 		self.currentPlaybackTime = _watchStartTime;
-		[self setTimeLabelValues:_watchStartTime totalTime:self.duration];
+		[self setTimeLaWithTime:_watchStartTime duration:self.duration];
 		_watchStartTime = -1;
 	}
 	_isSwitching = NO;
@@ -540,7 +516,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 - (void)progressSliderValueChanged:(UISlider *)slider {
 	double currentTime = floor(slider.value);
 	double totalTime = floor(self.duration);
-	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	[self setTimeLaWithTime:currentTime duration:totalTime];
 }
 - (void)progressSliderTouchEnded:(UISlider *)slider {
 	[self.videoControl autoFadeOutControlBar];
@@ -659,13 +635,13 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 // 弹幕
 - (void)sendDanmuButtonClick {
-	if (self.danmuSendV != nil) {
-		self.danmuSendV = nil;
+	if (self.danmuSendView != nil) {
+		self.danmuSendView = nil;
 	}
-	self.danmuSendV = [[PvDanmuSendView alloc] initWithFrame:self.view.bounds];
-	[self.view addSubview:self.danmuSendV];
-	self.danmuSendV.deleagte = self;
-	[self.danmuSendV showAction:self.view];
+	self.danmuSendView = [[PvDanmuSendView alloc] initWithFrame:self.view.bounds];
+	[self.view addSubview:self.danmuSendView];
+	self.danmuSendView.deleagte = self;
+	[self.danmuSendView showAction:self.view];
 	[super pause];
 	[self.danmuManager pause];
 }
@@ -854,8 +830,8 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	}
 }
 
-- (void)setTimeLabelValues:(double)currentTime totalTime:(double)totalTime {
-	self.videoControl.timeLabel.text = [self timeStringWithTime:currentTime duration:totalTime];
+- (void)setTimeLaWithTime:(double)currentTime duration:(double)duration {
+	self.videoControl.timeLabel.text = [self timeStringWithTime:currentTime duration:duration];
 }
 
 - (NSString *)timeStringWithTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration {
@@ -894,7 +870,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	
 	double currentTime = floor(self.currentPlaybackTime);
 	double totalTime = floor(self.duration);
-	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	[self setTimeLaWithTime:currentTime duration:totalTime];
 	self.videoControl.slider.progressValue = ceil(currentTime);
 	
 	[self searchSubtitles];
@@ -1133,7 +1109,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 			self.videoControl.shrinkScreenButton.hidden = YES;
 		}];
 	} else {
-		[self.danmuSendV backAction];
+		[self.danmuSendView backAction];
 		if (self.keepNavigationBar) {
 			[_navigationController setNavigationBarHidden:NO];
 			self.videoControl.backButton.hidden = YES;
@@ -1266,7 +1242,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 - (void)horizontalPan:(CGFloat)value {
 	double currentTime = floor([self getMoveToTime:value]);
 	double totalTime = floor(self.duration);
-	[self setTimeLabelValues:currentTime totalTime:totalTime];
+	[self setTimeLaWithTime:currentTime duration:totalTime];
 	double minutesElapsed = floor(currentTime / 60.0);
 	double secondsElapsed = fmod(currentTime, 60.0);
 	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
