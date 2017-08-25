@@ -14,8 +14,9 @@
 #import "PvReportManager.h"
 #import "PolyvUtil.h"
 //#import "PvExamView.h"
-#define kPanPrecision 20
-#define USER_DICT_AUTOCONTINUE @"autoContinue"
+
+static NSString * const PLVAutoContinueKey = @"autoContinue";
+const CGFloat PLVPanPrecision = 20;
 
 static const CGFloat pPlayerAnimationTimeinterval = 0.3f;
 NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewControllerVidAvailable";
@@ -24,15 +25,11 @@ NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewContr
 
 /// 播放控制视图
 @property (nonatomic, strong) SkinVideoViewControllerView *videoControl;
-/// 当前播放时间
-@property (nonatomic, assign) double currentTime;
 
 @property (nonatomic, strong) UIView *movieBackgroundView;
 @property (nonatomic, assign) BOOL keepNavigationBar;
 @property (nonatomic, assign) BOOL isSideViewShowing;
 @property (assign) CGRect originFrame;
-@property (nonatomic, strong) NSTimer *durationTimer;
-@property (nonatomic, strong) NSTimer *bufferTimer;
 
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, strong) PVDanmuManager *danmuManager;
@@ -49,6 +46,10 @@ NSString *const PLVSkinVideoViewControllerVidAvailable = @"PLVSkinVideoViewContr
 @property (nonatomic, assign) CGFloat curBrightness;
 
 @property (nonatomic, assign) BOOL volumeEnable;
+
+/// 播放过程定时器
+@property (nonatomic, strong) NSTimer *playbackTimer;
+//@property (nonatomic, strong) NSTimer *bufferTimer;
 
 
 // 枚举值，包含水平移动方向和垂直移动方向
@@ -82,14 +83,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 	__weak UIViewController *_parentViewController;
 	BOOL _isPrepared;
 	
-	NSTimer *_stallTimer;
 	NSDate *_firstLoadStartTime;
 	NSDate *_secondLoadStartTime;
 	BOOL _firstLoadTimeSent;
 	BOOL _secondLoadTimeSent;
 	BOOL _isSeeking;
 	BOOL _isSwitching;  // 切换码率中
-	NSTimer *_watchTimer;
 	
 	NSMutableArray *_videoExams;
 	NSMutableDictionary *_parsedSrt;
@@ -151,6 +150,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 #pragma mark - dealloc & init
 - (void)dealloc{
+    [self cancelObserver];
 	PLVDebugLog(@"%s", __FUNCTION__)
 }
 
@@ -298,17 +298,12 @@ typedef NS_ENUM(NSInteger, panHandler){
 /// 销毁
 - (void)cancel{
 	[super cancel];
-	[self cancelObserver];
-	
-	[self stopBufferTimer];
-	[self stopDurationTimer];
-	[_stallTimer invalidate];
+	[self stopPlaybackTimer];
 }
 
 /// 销毁，在导航控制器中不会执行
 - (void)dismiss{
-	[self stopDurationTimer];
-	[self stopBufferTimer];
+	[self stopPlaybackTimer];
 	__weak typeof(self) weakSelf = self;
 	[UIView animateWithDuration:pPlayerAnimationTimeinterval animations:^{
 		weakSelf.view.alpha = 0.0;
@@ -319,7 +314,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 			weakSelf.dimissCompleteBlock();
 		}
 	}];
-	[_watchTimer invalidate];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
@@ -355,7 +349,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (void)setAutoContinue:(BOOL)autoContinue {
 	if (autoContinue) {
 		_autoContinue = autoContinue;
-		NSDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:USER_DICT_AUTOCONTINUE];
+		NSDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:PLVAutoContinueKey];
 		if (autoContinueDict) {
 			double startTime = [autoContinueDict[self.vid] doubleValue];
 			if (startTime > 0) {
@@ -394,11 +388,10 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self syncPlayButtonState];
 	if (self.playbackState == MPMoviePlaybackStatePlaying) {
 		[self.videoControl.indicatorView stopAnimating];
-		[self startDurationTimer];
-		[self starBufferTimer];
+		[self startPlaybackTimer];
 		[self.videoControl autoFadeOutControlBar];
 	} else{
-		[self stopDurationTimer];
+		//[self stopPlaybackTimer];
 		if (self.playbackState == MPMoviePlaybackStateStopped) {
 			[self.videoControl animateShow];
 		}
@@ -407,8 +400,6 @@ typedef NS_ENUM(NSInteger, panHandler){
 
 // 网络加载状态改变
 - (void)onMPMoviePlayerLoadStateDidChangeNotification{
-	//NSLog(@"%s,%f", __FUNCTION__, self.currentPlaybackTime);
-	
 	[self syncPlayButtonState];
 	
 	if (self.loadState & MPMovieLoadStateStalled) {
@@ -441,57 +432,43 @@ typedef NS_ENUM(NSInteger, panHandler){
 	[self.videoControl.indicatorView stopAnimating];
     [self syncPlayButtonState];
 	
-	if (self.autoContinue) {
-		//NSLog(@"当前时间 %f", self.currentTime);
-		NSMutableDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:USER_DICT_AUTOCONTINUE].mutableCopy;
-		if (!autoContinueDict) autoContinueDict = [NSMutableDictionary dictionary];
-		autoContinueDict[self.vid] = @(self.currentTime);
-		//NSLog(@"auto dict = %@", autoContinueDict);
-		[[NSUserDefaults standardUserDefaults] setObject:autoContinueDict forKey:USER_DICT_AUTOCONTINUE];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
+    MPMovieFinishReason finishReason = [notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
+    if (self.autoContinue && finishReason != MPMovieFinishReasonPlaybackEnded) {
+        NSMutableDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:PLVAutoContinueKey].mutableCopy;
+        if (!autoContinueDict) autoContinueDict = [NSMutableDictionary dictionary];
+        autoContinueDict[self.vid] = @(self.currentPlaybackTime);
+        [[NSUserDefaults standardUserDefaults] setObject:autoContinueDict forKey:PLVAutoContinueKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 	
 	
-	//double totalTime = floor(self.duration);
-	//[self setTimeLabelValues:totalTime totalTime:totalTime];
-	//====error report
-	NSDictionary *notificationUserInfo = [notification userInfo];
-	NSNumber *resultValue = [notificationUserInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
-	
-	MPMovieFinishReason reason = [resultValue intValue];
-	
-	if (fabs(self.duration - self.currentPlaybackTime) <1) {
-		self.videoControl.slider.progressValue = self.duration;
-		double totalTime = floor(self.duration);
-		[self setTimeLabelValues:totalTime totalTime:totalTime];
-		
-		self.isWatchCompleted = YES;
-		
-		// 播放结束清除续播记录
-		NSMutableDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:USER_DICT_AUTOCONTINUE].mutableCopy;
-		if (self.vid && autoContinueDict.count) {
-			[autoContinueDict removeObjectForKey:self.vid];
-			[[NSUserDefaults standardUserDefaults] setObject:autoContinueDict forKey:USER_DICT_AUTOCONTINUE];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-		}
-		
-		if (self.watchCompletedBlock) {
-			self.watchCompletedBlock();
-		}
-	}
-	if (reason == MPMovieFinishReasonPlaybackError) {
-		NSError *mediaPlayerError = [notificationUserInfo objectForKey:@"error"];
-		
-		NSString *errorstring = @"";
-		if (mediaPlayerError) {
-			errorstring = [NSString stringWithFormat:@"%@", [mediaPlayerError localizedDescription]];
-		}else{
-			errorstring = @"playback failed without any given reason";
-		}
-        NSLog(@"playback failed: %@", errorstring);
-		[PvReportManager reportError:[super getPid] uid:PolyvUserId vid:self.vid error:errorstring param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
-	}
-	//NSLog(@"done");
+    switch (finishReason) {
+        case MPMovieFinishReasonPlaybackEnded:{
+            // 播放结束清除续播记录
+            NSMutableDictionary *autoContinueDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:PLVAutoContinueKey].mutableCopy;
+            if (self.vid && autoContinueDict.count) {
+                [autoContinueDict removeObjectForKey:self.vid];
+                [[NSUserDefaults standardUserDefaults] setObject:autoContinueDict forKey:PLVAutoContinueKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            // 结束回调
+            self.isWatchCompleted = YES;
+            if (self.watchCompletedBlock) {
+                self.watchCompletedBlock();
+            }
+        }break;
+        case MPMovieFinishReasonUserExited:{
+            
+        }break;
+        case MPMovieFinishReasonPlaybackError:{
+            NSError *playbackError = notification.userInfo[@"error"];
+            NSString *errorMessage = playbackError ? playbackError.localizedDescription : @"playback failed without any given reason";
+            NSLog(@"playback failed: %@", errorMessage);
+            [PvReportManager reportError:[super getPid] uid:PolyvUserId vid:self.vid error:errorMessage param1:self.param1 param2:@"" param3:@"" param4:@"" param5:@"polyv-ios-sdk"];
+        }break;
+        default:{}break;
+    }
 }
 
 - (void)onMPMovieDurationAvailableNotification{
@@ -918,36 +895,28 @@ typedef NS_ENUM(NSInteger, panHandler){
 }
 
 #pragma mark 定时器
-- (void)startDurationTimer{
-	self.durationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(monitorVideoPlayback) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:self.durationTimer forMode:NSDefaultRunLoopMode];
+- (void)startPlaybackTimer{
+    if (!_playbackTimer) {
+        self.playbackTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(monitorVideoPlayback) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.playbackTimer forMode:NSDefaultRunLoopMode];
+    }
 }
 
-- (void)stopDurationTimer{
-	[self.durationTimer invalidate];
-}
-
-- (void)starBufferTimer {
-	// 确保在同一对象下只被创建一次，否则可能造成内存泄漏的问题(其他如startDurationTimer方法中可参考修改，介于可能影响其他代码的可能性先不做修改)
-	if (!_bufferTimer) {
-		_bufferTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(trackBuffer) userInfo:nil repeats:YES];
-		[[NSRunLoop currentRunLoop] addTimer:_durationTimer forMode:NSDefaultRunLoopMode];
-	}
-}
-
-- (void)stopBufferTimer{
-	[self.bufferTimer invalidate];
+- (void)stopPlaybackTimer{
+	[self.playbackTimer invalidate];
+    self.playbackTimer = nil;
 }
 
 #pragma mark 定时器事件
 - (void)monitorVideoPlayback{
+    [self trackBuffer];
+    
 	if (_isSeeking || !_isPrepared) return;
 	if (_isSwitching) {     // 正在切换码率，return出去
 		return;
 	}
 	
 	double currentTime = floor(self.currentPlaybackTime);
-	self.currentTime = currentTime;
 	double totalTime = floor(self.duration);
 	[self setTimeLabelValues:currentTime totalTime:totalTime];
 	self.videoControl.slider.progressValue = ceil(currentTime);
@@ -956,9 +925,9 @@ typedef NS_ENUM(NSInteger, panHandler){
 	if (self.danmuEnabled) {
 		[_danmuManager rollDanmu:currentTime];
 	}
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
 	if(self.enableExam){
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		PvExam *examShouldShow;
 		for(PvExam *exam in _videoExams){
 			if (exam.seconds < currentTime && ![[userDefaults stringForKey:[NSString stringWithFormat:@"exam_%@", exam.examId]] isEqualToString:@"Y"]) {
@@ -1326,7 +1295,7 @@ typedef NS_ENUM(NSInteger, panHandler){
 - (CGFloat)getMoveToTime:(CGFloat)move{
 	CGFloat current = self.currentPlaybackTime;
 	CGFloat duration = self.duration;
-	CGFloat moveToValue = move / kPanPrecision + current;
+	CGFloat moveToValue = move / PLVPanPrecision + current;
 	if (moveToValue >= duration) {
 		moveToValue = duration;
 	}else if (moveToValue <= 0){

@@ -17,12 +17,11 @@
 
 
 @interface VideoListTableViewController (){
-    
-    NSMutableArray *_videolist;
     Video *_video;
     FMDBHelper *_fmdb;
 }
 @property (nonatomic, strong) SkinVideoViewController *videoPlayer;
+@property (nonatomic, strong) NSMutableArray *videolist;
 
 @end
 
@@ -69,12 +68,13 @@
     [request setURL:[NSURL URLWithString:@"https://demo.polyv.net/data/video.js"]];
     [request setHTTPMethod:@"GET"];
     
+    __weak typeof(self) weakSelf = self;
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (!data.length) {
             NSLog(@"无法获取数据");
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.refreshControl endRefreshing];
+                [weakSelf.refreshControl endRefreshing];
             });
             return;
         }
@@ -96,10 +96,10 @@
                 }
             }
             [videolist addObjectsFromArray:tempArr];
-            _videolist = videolist;
+            weakSelf.videolist = videolist;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-                [self.refreshControl endRefreshing];
+                [weakSelf.tableView reloadData];
+                [weakSelf.refreshControl endRefreshing];
             });
         }
     }] resume];
@@ -119,9 +119,10 @@
     Video *video = [_videolist objectAtIndex:indexPath.row];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    __weak typeof(imageView) weakImageView = imageView;
     [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:video.piclink] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            imageView.image = [UIImage imageWithData:data];
+            weakImageView.image = [UIImage imageWithData:data];
         });
     }] resume];
 
