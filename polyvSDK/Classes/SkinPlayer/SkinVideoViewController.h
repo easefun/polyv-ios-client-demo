@@ -40,6 +40,9 @@
 /// 截图开关，默认为关闭
 @property (nonatomic, assign) BOOL enableSnapshot;
 
+//额外参数，用来跟踪出错用户
+@property (nonatomic, assign) NSString *param1;
+
 /// 原全屏接口已弃用，请使用 -fullscreen 方法实现全屏
 @property (nonatomic, getter=isFullscreen) BOOL fullscreen __deprecated;
 @property (nonatomic, assign) BOOL isFullscreenMode;

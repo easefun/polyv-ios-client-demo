@@ -85,6 +85,5 @@ typedef NS_ENUM(NSInteger, PvLogoLocation) {
 - (void)changeToSmallsreen;
 /// 设置弹幕按钮颜色
 - (void)setDanmuButtonColor:(UIColor *)color;
-/// 禁用播放控制
-- (NSString *)videoImageName:(NSString *)name;
+
 @end
