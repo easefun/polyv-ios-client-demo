@@ -11,6 +11,7 @@
 #import "PolyvSettings.h"
 #import "PolyvUtil.h"
 #import <AlicloudUtils/AlicloudReachabilityManager.h>
+#import <AVFoundation/AVFoundation.h>
 
 @implementation AppDelegate
 
@@ -54,7 +55,23 @@
 	}
 	 */
 	
+	// 配置音频会话，忽略系统静音开关
+	[self setupAudioSession];
+	
 	return YES;
+}
+
+/// 配置音量会话
+- (void)setupAudioSession {
+	NSError *categoryError = nil;
+	if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&categoryError]){
+		NSLog(@"音量会话类别设置错误：%@", categoryError);
+	}
+	
+	NSError *activeError = nil;
+	if (![[AVAudioSession sharedInstance] setActive:YES error:&activeError])	{
+		NSLog(@"音量会话激活设置错误：%@", activeError);
+	}
 }
 
 /// 错误通知响应

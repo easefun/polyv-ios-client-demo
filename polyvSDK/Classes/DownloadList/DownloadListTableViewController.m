@@ -207,13 +207,13 @@
 
 #pragma mark  download delegate
 
-//下载失败
+// 下载失败回调
 - (void)dataDownloadFailed:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid reason:(NSString *)reason {
 	[[FMDBHelper sharedInstance] updateDownloadStatic:vid status:-1];
 	NSLog(@"dataDownloadFailed %@ - %@", vid, reason);
 }
 
-//实时获取下载进度百分比
+// 实时获取下载进度百分比回调
 - (void)dataDownloadAtPercent:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid percent: (NSNumber *)aPercent {
 	[[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
 	
@@ -223,13 +223,14 @@
 	});
 }
 
-//实时获取下载速率(下载开始之后此方法会一直被调用直到当前下载任务结束)
+// 实时下载速率回调
 - (void)dataDownloadAtRate:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid rate:(NSNumber *)aRate {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self updateVideo:vid rate:[aRate longLongValue]];
 	});
 }
 
+// 下载状态回调
 - (void)downloader:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid didChangeDownloadState:(PLVDownloadState)state {
     switch (state) {
         case PLVDownloadStatePreparing:{
