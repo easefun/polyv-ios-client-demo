@@ -835,12 +835,12 @@ typedef NS_ENUM(NSInteger, panHandler) {
 }
 
 - (NSString *)timeStringWithTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration {
-	double minutesElapsed = floor(currentTime / 60.0);
+	double minutesElapsed = currentTime / 60.0;
 	double secondsElapsed = fmod(currentTime, 60.0);
 	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
 	
-	double minutesRemaining = floor(duration / 60.0);
-	double secondsRemaining = floor(fmod(duration, 60.0));
+	double minutesRemaining = duration / 60.0;
+	double secondsRemaining = fmod(duration, 60.0);
 	NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
 	
 	return [NSString stringWithFormat:@"%@/%@", timeElapsedString, timeRmainingString];
@@ -868,10 +868,10 @@ typedef NS_ENUM(NSInteger, panHandler) {
 		return;
 	}
 	
-	double currentTime = floor(self.currentPlaybackTime);
-	double totalTime = floor(self.duration);
+	double currentTime = self.currentPlaybackTime;
+	double totalTime = self.duration;
 	[self setTimeLaWithTime:currentTime duration:totalTime];
-	self.videoControl.slider.progressValue = ceil(currentTime);
+	self.videoControl.slider.progressValue = currentTime;
 	
 	[self searchSubtitles];
 	if (self.danmuEnabled) {
