@@ -264,7 +264,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 /// 发送跑马灯
 - (void)rollInfo:(NSString *)info font:(UIFont *)font color:(UIColor *)color withDuration:(NSTimeInterval)duration {
-	//	NSLog(@"%s", __FUNCTION__);
 	CGFloat width = self.frame.size.width;
 	__block UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(width, 0, 0, 0)];
 	if (!font) {
@@ -831,7 +830,9 @@ typedef NS_ENUM(NSInteger, panHandler) {
 }
 
 - (void)setTimeLaWithTime:(double)currentTime duration:(double)duration {
-	self.videoControl.timeLabel.text = [self timeStringWithTime:currentTime duration:duration];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		self.videoControl.timeLabel.text = [self timeStringWithTime:currentTime duration:duration];
+	});
 }
 
 - (NSString *)timeStringWithTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration {
@@ -862,7 +863,9 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 - (void)monitorVideoPlayback {
     [self trackBuffer];
-    
+	
+	//NSString *playbackLog = [NSString stringWithFormat:@"seeking: %s, prepared: %s, switching: %s", _isSeeking?"YES":"NO", _isPrepared?"YES":"NO", _isSwitching?"YES":"NO"];
+	//NSLog(@"%@", playbackLog);
 	if (_isSeeking || !_isPrepared) return;
 	if (_isSwitching) {     // 正在切换码率，return出去
 		return;
@@ -901,7 +904,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	self.videoControl.pvExamView.closedBlock = ^(int seekto) {
 		weakSelf.videoControl.pvExamView.hidden = YES;
 		if (seekto!=-1) {
-			//NSLog(@"%d", seekto);
 			[weakSelf setCurrentPlaybackTime:seekto];
 		}
 		
@@ -930,11 +932,11 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 - (void)sendDanmu:(PvDanmuSendView *)danmuSendV info:(NSString *)info {
 	NSTimeInterval currentTime = [super currentPlaybackTime];
-	//	NSLog(@"info = %@", info);
+	// NSLog(@"info = %@", info);
 	[self.danmuManager sendDanmu:self.vid msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
 	[super play];
 	
-	//    [self.danmuManager rollDanmu:0];
+	// [self.danmuManager rollDanmu:0];
 	//f = 1 画框焦点
 	[self.danmuManager insertDanmu:@{@"c":info, @"t":@"1", @"m":@"l",@"color":@"0xFFFFFF",@"f":@"1"}];
 	[self.danmuManager resume:currentTime];
@@ -967,7 +969,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		} break;
 		case UIInterfaceOrientationLandscapeRight:{ // 电池栏在左
-			//NSLog(@"fullScreenAction第1个旋转方向---电池栏在左");
 			[self interfaceOrientation:UIInterfaceOrientationPortrait];
 		} break;
 		default:
