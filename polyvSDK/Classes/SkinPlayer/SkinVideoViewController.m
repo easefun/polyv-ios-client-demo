@@ -836,15 +836,12 @@ typedef NS_ENUM(NSInteger, panHandler) {
 }
 
 - (NSString *)timeStringWithTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration {
-	double minutesElapsed = currentTime / 60.0;
-	double secondsElapsed = fmod(currentTime, 60.0);
-	NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
-	
-	double minutesRemaining = duration / 60.0;
-	double secondsRemaining = fmod(duration, 60.0);
-	NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
-	
-	return [NSString stringWithFormat:@"%@/%@", timeElapsedString, timeRmainingString];
+	return [NSString stringWithFormat:@"%@/%@", [self timeStringWithSeconds:currentTime], [self timeStringWithSeconds:duration]];
+}
+- (NSString *)timeStringWithSeconds:(NSTimeInterval)time {
+	NSInteger minutes = ((NSUInteger)time / 60) % 60;
+	NSInteger seconds = (NSUInteger)time % 60;
+	return [NSString stringWithFormat:@"%02zd:%02zd", minutes, seconds];
 }
 
 #pragma mark - timer
