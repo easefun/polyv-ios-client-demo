@@ -103,7 +103,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	if (!self.getVid || !self.video.isInteractiveVideo) return;
 	if (_enableExam) { // 开启问答
 		//NSLog(@"开启问答");
-		_videoExams = [PolyvSettings getVideoExams:self.getVid];
+		_videoExams = [PolyvSettings getVideoExams:self.vid];
 		//清空答题纪录，下次观看也会重新弹出问题
 		[self.videoControl.pvExamView resetExamHistory];
 	} else { // 关闭问答
@@ -137,6 +137,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 		frame = CGRectMake(frame.origin.x, frame.origin.y + 20, frame.size.width, frame.size.height);
 		self.frame = frame;
 		self.originFrame = frame;
+		[self.view addSubview:self.videoControl.subtitleLabel];
         [self.view addSubview:self.videoControl.indicator];
         [self.view addSubview:self.videoControl.indicatorView];
 		[self.view addSubview:self.videoControl];
@@ -663,6 +664,8 @@ typedef NS_ENUM(NSInteger, panHandler) {
 #pragma mark - PLVMoviePlayerDelegate
 - (void)moviePlayer:(PLVMoviePlayerController *)player didLoadVideoInfo:(PvVideo *)video {
 	// 维护状态
+	_videoExams = nil;
+	_parsedSrt = nil;
 	
 //	// 码率列表
 //	NSMutableArray *buttons = [self.videoControl createBitRateButton:[super getLevel]];
@@ -896,6 +899,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 }
 
 - (void)showExam:(PvExam *)exam {
+	[self cancelPlaybackTimer];
 	[self.videoControl.pvExamView setExam:exam];
 	__weak typeof(self)weakSelf = self;
 	self.videoControl.pvExamView.closedBlock = ^(int seekto) {
@@ -905,6 +909,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 		}
 		
 		[weakSelf play];
+		[weakSelf startPlaybackTimer];
 	};
 	self.videoControl.pvExamView.hidden = NO;
 }
@@ -1144,6 +1149,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 #pragma mark - 平移手势方法
 
 - (void)panHandler:(UIPanGestureRecognizer *)recognizer {
+	if (!self.videoControl.pvExamView.hidden) return;
 	CGPoint offset = [recognizer translationInView:recognizer.view];
 	
 	//根据在view上Pan的位置，确定是调音量还是亮度

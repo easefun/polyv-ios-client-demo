@@ -62,7 +62,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		[self addSubview:self.logoImageView];
 		[self addSubview:self.contentView];
 		
-		[self.contentView addSubview:self.subtitleLabel];
+		//[self.contentView addSubview:self.subtitleLabel];
 		[self addSubview:self.sideView];
 		
 		// 顶部工具栏
