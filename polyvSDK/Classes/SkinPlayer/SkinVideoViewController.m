@@ -13,7 +13,7 @@
 #import "PvDanmuSendView.h"
 #import "PvReportManager.h"
 #import "PolyvUtil.h"
-//#import "PvExamView.h"
+#import <Photos/Photos.h>
 
 static NSString * const PLVAutoContinueKey = @"autoContinue";
 const CGFloat PLVPanPrecision = 20;
@@ -805,6 +805,33 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 #pragma mark - snapshot
 - (void)snapshot {
+	// 请求图库权限
+	PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+	switch (status) {
+		case PHAuthorizationStatusNotDetermined:{
+			// 请求权限
+			[PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+				switch (status) {
+					case PHAuthorizationStatusAuthorized:{
+						NSLog(@"图库访问已授权");
+					}break;
+					default:{
+						NSLog(@"未授权访问图库");
+					}break;
+				}
+			}];
+		}break;
+		case PHAuthorizationStatusAuthorized:{
+			NSLog(@"图库访问已授权");
+		}break;
+		case PHAuthorizationStatusDenied:
+		case PHAuthorizationStatusRestricted:{
+			NSLog(@"未授权访问图库");
+		}break;
+		default:{}break;
+	}
+	
+	// 获取当前时长，并请求截图
 	int currentTime = (int)self.currentPlaybackTime;
 	int level = self.getLevel;
 	if (!level) level = self.localVideoLevel;
@@ -812,12 +839,14 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	NSString *urlStr = [NSString stringWithFormat:@"http://go.polyv.net/snapshot/videoimage.php?vid=%@&level=%d&second=%d&sign=%@", self.vid, level, currentTime, [PolyvUtil md5HexDigest:sign]];
 	//NSLog(@"url = %@", urlStr);
 	NSURL *url = [NSURL URLWithString:urlStr];
-	
 	[[[NSURLSession sharedSession] downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		if (error) {
+			NSLog(@"request snapshot error: %@", error);
+			return;
+		}
 		NSString *destinationPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:response.suggestedFilename];
 		[[NSFileManager defaultManager] moveItemAtPath:location.path toPath:destinationPath error:nil];
 		UIImage *image = [UIImage imageWithContentsOfFile:destinationPath];
-		
 		UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 	}] resume];
 }
