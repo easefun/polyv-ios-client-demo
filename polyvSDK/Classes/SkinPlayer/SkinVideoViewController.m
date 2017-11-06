@@ -32,6 +32,7 @@ static const CGFloat PLVPlayerAnimationInterval = 0.3;
 @property (nonatomic, assign) BOOL danmuEnabled;
 @property (nonatomic, strong) PVDanmuManager *danmuManager;
 @property (nonatomic, strong) PvDanmuSendView *danmuSendView;
+@property (nonatomic, assign) BOOL sendingDanmu;
 
 @property (nonatomic, assign) BOOL volumeEnable;
 @property (nonatomic, assign) NSString *headtitle;
@@ -633,29 +634,6 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	
 }
 
-// 弹幕
-- (void)sendDanmuButtonClick {
-	if (self.danmuSendView != nil) {
-		self.danmuSendView = nil;
-	}
-	self.danmuSendView = [[PvDanmuSendView alloc] initWithFrame:self.view.bounds];
-	[self.view addSubview:self.danmuSendView];
-	self.danmuSendView.deleagte = self;
-	[self.danmuSendView showAction:self.view];
-	[super pause];
-	[self.danmuManager pause];
-}
-- (void)danmuButtonClick {
-	if (self.danmuEnabled) {
-		[self enableDanmu:false];
-		self.videoControl.sendDanmuButton.hidden = YES;
-	} else {
-		[self enableDanmu:true];
-		self.videoControl.sendDanmuButton.hidden = NO;
-	}
-}
-
-
 // 关闭
 - (void)closeButtonClick {
 	[self dismiss];
@@ -906,7 +884,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	self.videoControl.slider.progressValue = currentTime;
 	
 	[self searchSubtitles];
-	if (self.danmuEnabled) {
+	if (self.danmuEnabled && !self.sendingDanmu) {
 		[_danmuManager rollDanmu:currentTime];
 	}
 	
@@ -951,31 +929,41 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	}
 }
 
+// 弹幕
+- (void)sendDanmuButtonClick {
+	if (self.danmuSendView != nil) {
+		self.danmuSendView = nil;
+	}
+	self.danmuSendView = [[PvDanmuSendView alloc] initWithFrame:self.view.bounds];
+	//self.danmuSendView = [[QHDanmuSendView alloc] initWithFrame:self.view.bounds];
+	[self.view addSubview:self.danmuSendView];
+	self.danmuSendView.deleagte = self;
+	[self.danmuSendView showAction:self.view];
+	[super pause];
+	[self.danmuManager pause];
+	self.sendingDanmu = YES;
+}
+
+- (void)danmuButtonClick {
+	if (self.danmuEnabled) {
+		[self enableDanmu:false];
+		self.videoControl.sendDanmuButton.hidden = YES;
+	} else {
+		[self enableDanmu:true];
+		self.videoControl.sendDanmuButton.hidden = NO;
+	}
+}
 
 #pragma mark - QHDanmuSendViewDelegate
-- (NSString *)timeFormatted:(int)totalSeconds {
-	int seconds = totalSeconds % 60;
-	int minutes = (totalSeconds / 60) % 60;
-	int hours = totalSeconds / 3600;
-	
-	return [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
-}
 
 - (void)sendDanmu:(PvDanmuSendView *)danmuSendV info:(NSString *)info {
 	NSTimeInterval currentTime = [super currentPlaybackTime];
-	// NSLog(@"info = %@", info);
-	[self.danmuManager sendDanmu:self.vid msg:info time:[self timeFormatted:currentTime] fontSize:@"24" fontMode:@"roll" fontColor:@"0xFFFFFF"];
-	[super play];
-	
-	// [self.danmuManager rollDanmu:0];
-	//f = 1 画框焦点
-	[self.danmuManager insertDanmu:@{@"c":info, @"t":@"1", @"m":@"l",@"color":@"0xFFFFFF",@"f":@"1"}];
-	[self.danmuManager resume:currentTime];
+	[self.danmuManager sendDanmu:self.vid msg:info time:currentTime fontSize:24 fontMode:@"roll" fontColor:@"0xFFFFFF"];
+	self.sendingDanmu = NO;
 }
 
 - (void)closeSendDanmu:(PvDanmuSendView *)danmuSendV {
 	[super play];
-	[self.danmuManager resume:[super currentPlaybackTime]];
 }
 
 @end
