@@ -1,6 +1,6 @@
 polyv-ios-client-demo
 =====================
-参考 POLYV iOS SDK 集成指南 https://github.com/easefun/polyv-ios-sdk/wiki
+参考 POLYV iOS SDK 集成指南 https://github.com/easefun/polyv-ios-client-demo/wiki
 
 #### API 文档
 - [v1.2.0](https://demo.polyv.net/polyv/ios/sdk/doc/1.2.0/index.html)
@@ -53,4 +53,4 @@ polyv-ios-client-demo
 
 > 移动解析（HttpDNS）基于Http协议向指定的DNS服务器发送域名解析请求，替代了基于DNS协议向运营商Local DNS发起解析请求的传统方式，可以避免Local DNS造成的域名劫持和跨网访问问题，解决移动互联网服务中域名解析异常带来的困扰。
 
-默认为关闭状态，开启只需设置 `PolyvSettings` 单例对象的 `httpDNSEnable` 为 `YES` 即可。具体参照[集成指南](https://github.com/easefun/polyv-ios-sdk/wiki)。
+默认为关闭状态，开启只需设置 `PolyvSettings` 单例对象的 `httpDNSEnable` 为 `YES` 即可。具体参照[集成指南](https://github.com/easefun/polyv-ios-client-demo/wiki)。
