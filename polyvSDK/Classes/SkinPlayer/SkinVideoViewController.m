@@ -849,7 +849,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	return [NSString stringWithFormat:@"%@/%@", [self timeStringWithSeconds:currentTime], [self timeStringWithSeconds:duration]];
 }
 - (NSString *)timeStringWithSeconds:(NSTimeInterval)time {
-	NSInteger minutes = ((NSUInteger)time / 60) % 60;
+	NSInteger minutes = (NSUInteger)time / 60;
 	NSInteger seconds = (NSUInteger)time % 60;
 	return [NSString stringWithFormat:@"%02zd:%02zd", minutes, seconds];
 }
