@@ -1092,6 +1092,8 @@ typedef NS_ENUM(NSInteger, panHandler) {
 				[self.danmuManager initStart];
 			}
 			self.videoControl.sendDanmuButton.hidden = NO;
+		} else {
+			self.videoControl.sendDanmuButton.hidden = YES;
 		}
 		
 		self.videoControl.danmuButton.hidden = !self.enableDanmuDisplay;
