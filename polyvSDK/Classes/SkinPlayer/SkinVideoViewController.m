@@ -523,6 +523,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	[self.videoControl autoFadeOutControlBar];
 	[self setCurrentPlaybackTime:floor(slider.value)];
 	[self play];
+	_isSeeking = !(self.loadState & MPMovieLoadStatePlayable);
 }
 
 // 倍速播放
