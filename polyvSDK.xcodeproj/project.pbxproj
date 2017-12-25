@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0378095C1FF0D23B00F5367B /* PLVDownloadItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0378095B1FF0D23B00F5367B /* PLVDownloadItemCell.m */; };
 		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
 		CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6569201C561B8B00AC2EC8 /* pvlogo.png */; };
 		CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */; };
@@ -115,6 +116,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0378095A1FF0D23B00F5367B /* PLVDownloadItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLVDownloadItemCell.h; sourceTree = "<group>"; };
+		0378095B1FF0D23B00F5367B /* PLVDownloadItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PLVDownloadItemCell.m; sourceTree = "<group>"; };
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		CB6569201C561B8B00AC2EC8 /* pvlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pvlogo.png; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -282,6 +285,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		037809561FF0D07800F5367B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E51C09841E5BE88F006FE206 /* AlicloudHttpDNS.framework */,
+				E51C09861E5BE88F006FE206 /* UTDID.framework */,
+				E51C09851E5BE88F006FE206 /* AlicloudUtils.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		CBA3710F196E6549008E95ED = {
 			isa = PBXGroup;
 			children = (
@@ -289,6 +302,7 @@
 				CBA37140196E6549008E95ED /* polyvSDKTests */,
 				CBA3711A196E6549008E95ED /* Frameworks */,
 				CBA37119196E6549008E95ED /* Products */,
+				037809561FF0D07800F5367B /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -448,6 +462,8 @@
 			children = (
 				E5D4D8801E48097F004308F0 /* DownloadListTableViewController.h */,
 				E5D4D8811E48097F004308F0 /* DownloadListTableViewController.m */,
+				0378095A1FF0D23B00F5367B /* PLVDownloadItemCell.h */,
+				0378095B1FF0D23B00F5367B /* PLVDownloadItemCell.m */,
 			);
 			path = DownloadList;
 			sourceTree = "<group>";
@@ -751,6 +767,7 @@
 				E5D4D8E51E48097F004308F0 /* DetailViewController2.m in Sources */,
 				E568FD0A1EF0F9C900803517 /* PvCheckBox.m in Sources */,
 				E5D4D8D81E48097F004308F0 /* PLVSlider.m in Sources */,
+				0378095C1FF0D23B00F5367B /* PLVDownloadItemCell.m in Sources */,
 				E5D4D8E01E48097F004308F0 /* SkinVideoViewController.m in Sources */,
 				E59536571E8FA6C000A8B405 /* Video.m in Sources */,
 			);
