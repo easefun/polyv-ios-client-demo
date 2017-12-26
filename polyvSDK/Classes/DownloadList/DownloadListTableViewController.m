@@ -23,13 +23,11 @@
 
 @property (nonatomic, strong) NSMutableArray<Video *> *videos;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, Video *> *videoDic;
-
-@property (nonatomic, strong) NSMutableArray<UITableViewCell *> *downloadItemCells;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, PLVDownloadItemCell *> *downloadItemCellDic;
 
 @property (nonatomic, strong) NSMutableDictionary *downloaderDic;
 
-
+@property (nonatomic, strong) NSDate *lastTime;
 
 @end
 
@@ -48,6 +46,13 @@
         _downloaderDic = [NSMutableDictionary dictionary];
     }
     return _downloaderDic;
+}
+
+- (NSDate *)lastTime {
+	if (!_lastTime) {
+		_lastTime = [NSDate date];
+	}
+	return _lastTime;
 }
 
 //- (NSMutableArray<UITableViewCell *> *)downloadItemCells {
@@ -82,7 +87,6 @@
 - (void)reloadData {
 	self.videos = [[FMDBHelper sharedInstance] listDownloadVideo];
 	self.videoDic = [NSMutableDictionary dictionary];
-	self.downloadItemCells = [NSMutableArray array];
 	self.downloadItemCellDic = [NSMutableDictionary dictionary];
 	for (int i = 0;i < self.videos.count;  i++) {
 		Video *video = self.videos[i];
@@ -100,7 +104,6 @@
 		static NSString *CellIdentifier = @"downloadItemCell";
 		PLVDownloadItemCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		cell.video = video;
-		[self.downloadItemCells addObject:cell];
 		self.downloadItemCellDic[video.vid] = cell;
 	}
 	[self.tableView reloadData];
@@ -154,11 +157,11 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.videos count];
+	return self.videos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.downloadItemCells[indexPath.row];
+	return self.downloadItemCellDic[self.videos[indexPath.row].vid];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -221,8 +224,13 @@
 
 // 实时获取下载进度百分比回调
 - (void)dataDownloadAtPercent:(PvUrlSessionDownload *)downloader withVid:(NSString *)vid percent:(NSNumber *)aPercent {
-	// !!!: 频繁写入数据库会造成UI卡顿风险
-	//[[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
+	// !!!: 频繁写入数据库会造成UI卡顿风险，因此此处是隔3秒更新一次数据库
+	NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:self.lastTime];
+	if (timeDiff > 3) {
+		[[FMDBHelper sharedInstance] updateDownloadPercent:vid percent:aPercent];
+		self.lastTime = [NSDate date];
+	}
+	
 	Video *video = self.videoDic[vid];
 	video.percent = aPercent.floatValue;
 	[self updateCellWithVid:vid];
