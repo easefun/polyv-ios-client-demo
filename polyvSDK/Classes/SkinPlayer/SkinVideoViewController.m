@@ -415,7 +415,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 // 播放完成或退出
 - (void)onMPMoviePlayerPlaybackDidFinishNotification:(NSNotification *)notification {
-	[self.videoControl.indicatorView stopAnimating];
+	//[self.videoControl.indicatorView stopAnimating];
 	[self syncPlayButtonState];
 	
 	MPMovieFinishReason finishReason = [notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];

@@ -55,25 +55,6 @@
 	return _lastTime;
 }
 
-//- (NSMutableArray<UITableViewCell *> *)downloadItemCells {
-//	if (!_downloadItemCells) {
-//		_downloadItemCells = [NSMutableArray array];
-//	}
-//	return _downloadItemCells;
-//}
-//- (NSMutableDictionary *)downloadItemCellDic {
-//	if (!_downloadItemCellDic) {
-//		_downloadItemCellDic = [NSMutableDictionary dictionary];
-//	}
-//	return _downloadItemCellDic;
-//}
-//- (NSMutableDictionary *)videoDic {
-//	if (!_videoDic) {
-//		_videoDic = [NSMutableDictionary dictionary];
-//	}
-//	return _videoDic;
-//}
-
 #pragma mark -
 
 - (void)viewDidLoad {
