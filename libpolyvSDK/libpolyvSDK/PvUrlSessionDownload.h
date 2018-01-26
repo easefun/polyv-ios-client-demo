@@ -14,6 +14,7 @@
 
 /// 视频元数据
 @property (nonatomic, strong) NSDictionary *videoInfo __deprecated;
+@property (nonatomic, strong, readonly) PvVideo *video;
 
 /// 当前码率
 @property (nonatomic, assign, readonly) PvLevel level;
