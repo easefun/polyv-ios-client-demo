@@ -29,6 +29,6 @@
  @param stayDuration 停留时长
  @param sessionId 场次ID
  */
-+ (void)viewlogWithPid:(NSString *)pid vid:(NSString *)vid currentPlaybackTime:(NSInteger)currentPlaybackTime videoDuration:(NSInteger)videoDuration watchDuration:(NSInteger)watchDuration stayDuration:(NSInteger)stayDuration sessionId:(NSString *)sessionId;
++ (void)viewlogWithPid:(NSString *)pid vid:(NSString *)vid currentPlaybackTime:(NSInteger)currentPlaybackTime videoDuration:(NSInteger)videoDuration watchDuration:(NSInteger)watchDuration stayDuration:(NSInteger)stayDuration sessionId:(NSString *)sessionId param1:(NSString *)param1 param2:(NSString *)param2 param3:(NSString *)param3 param4:(NSString *)param4 param5:(NSString *)param5;
 
 @end
