@@ -94,7 +94,21 @@ typedef NS_ENUM(NSInteger, panHandler) {
 - (void)setFrame:(CGRect)frame {
 	_frame = frame;
 	[self.view setFrame:frame];
-	[self.videoControl setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    BOOL isLeftOrRight = ( orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) ? YES: NO;
+
+    if (PLV_iPhoneX && isLeftOrRight){
+        CGFloat x = PLV_Landscape_Left_And_Right_Safe_Side_Margin;
+        CGFloat y = 0;
+        CGFloat width = frame.size.width - 2*x;
+        CGFloat height = frame.size.height /*- PLV_Landscape_Left_And_Right_Safe_Bottom_Margin*/;
+        [self.videoControl setFrame:CGRectMake(x, y, width, height)];
+
+    }else{
+        
+        [self.videoControl setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    }
 	[self.videoControl setNeedsLayout];
 	[self.videoControl layoutIfNeeded];
 }
@@ -135,7 +149,7 @@ typedef NS_ENUM(NSInteger, panHandler) {
 
 - (instancetype)initWithFrame:(CGRect)frame {
 	if (self = [super init]) {
-		frame = CGRectMake(frame.origin.x, frame.origin.y + 20, frame.size.width, frame.size.height);
+		frame = CGRectMake(frame.origin.x, frame.origin.y + /*20*/PLV_StatusBarHeight, frame.size.width, frame.size.height);
 		self.frame = frame;
 		self.originFrame = frame;
 		[self.view addSubview:self.videoControl.subtitleLabel];

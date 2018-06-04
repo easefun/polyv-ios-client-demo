@@ -13,4 +13,19 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+
+
+// UIScreen width.
+#define PLV_ScreenWidth   [UIScreen mainScreen].bounds.size.width
+// UIScreen height.
+#define PLV_ScreenHeight  [UIScreen mainScreen].bounds.size.height
+// iPhone X
+#define PLV_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+// 横屏时左右安全区域
+#define PLV_Landscape_Left_And_Right_Safe_Side_Margin  44
+// 横屏时底部安全区域
+#define PLV_Landscape_Left_And_Right_Safe_Bottom_Margin  21
+// 状态栏高度
+#define PLV_StatusBarHeight (PLV_iPhoneX ? 44.f: 20.f)
+
 #endif

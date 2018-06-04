@@ -262,10 +262,10 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	// top bar
 	self.topBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), pVideoControlBarHeight);
 	
-	self.backButton.frame = CGRectMake(0, 0, CGRectGetWidth(self.backButton.bounds), CGRectGetHeight(self.backButton.bounds));
+	self.backButton.frame = CGRectMake(0+[self leftOrRightSafeEdge], 0, CGRectGetWidth(self.backButton.bounds), CGRectGetHeight(self.backButton.bounds));
 	
 	self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
-	CGFloat titleLabelX = CGRectGetWidth(self.backButton.bounds);
+	CGFloat titleLabelX = /*CGRectGetWidth(self.backButton.bounds)*/CGRectGetMaxX(self.backButton.bounds) + 35;
 	CGFloat titleLabelW = CGRectGetWidth(self.topBar.bounds) - titleLabelX - CGRectGetWidth(self.closeButton.bounds);
 	self.titleLabel.frame = CGRectMake(titleLabelX, 0, titleLabelW, CGRectGetHeight(self.topBar.bounds));
 	
@@ -277,7 +277,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 									   CGRectGetHeight(self.rateButton.bounds));
 	
 	
-	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
+	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20 - [self leftOrRightSafeEdge], (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
 	self.snapshotButton.frame = CGRectMake(20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.snapshotButton.bounds))/2, CGRectGetWidth(self.snapshotButton.bounds), CGRectGetHeight(self.snapshotButton.bounds));
 	self.sideView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds));
 	self.subtitleLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
@@ -286,12 +286,12 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	
 	
 	// bottom bar
-	self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - pVideoControlBarHeight, CGRectGetWidth(self.bounds), pVideoControlBarHeight);
+	self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - /*pVideoControlBarHeight*/[self bottomVideoControlBarHeight], CGRectGetWidth(self.bounds), /*pVideoControlBarHeight*/[self bottomVideoControlBarHeight]);
 	
-	self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
+	self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds) + [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
 	self.pauseButton.frame = self.playButton.frame;
 	
-	CGFloat bitRateX = CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds) - CGRectGetWidth(self.routeLineButton.bounds);
+	CGFloat bitRateX = CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds) - CGRectGetWidth(self.routeLineButton.bounds) - [self leftOrRightSafeEdge];
 	CGFloat bitRateY = CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2;
 	self.bitRateButton.frame = CGRectMake(bitRateX, bitRateY, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
 	
@@ -299,7 +299,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	routeLineFrame.origin.x += routeLineFrame.size.width;
 	self.routeLineButton.frame = routeLineFrame;
 	
-	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
+	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
 	self.shrinkScreenButton.frame = self.fullScreenButton.frame;
 	
 	self.slider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame),
@@ -315,19 +315,19 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	CGRect logoFrame = self.logoImageView.frame;
 	switch (self.logoPosition) {
 		case PvLogoLocationTopLeft: {
-			logoFrame.origin = CGPointMake(0, 0);
+			logoFrame.origin = CGPointMake(0 + [self leftOrRightSafeEdge], 0);
 			break;
 		}
 		case PvLogoLocationTopRight: {
-			logoFrame.origin = CGPointMake(self.frame.size.width - logoFrame.size.width, 0);
+			logoFrame.origin = CGPointMake(self.frame.size.width - logoFrame.size.width - [self leftOrRightSafeEdge], 0);
 			break;
 		}
 		case PvLogoLocationBottomLeft: {
-			logoFrame.origin = CGPointMake(0, self.frame.size.height - logoFrame.size.height);
+			logoFrame.origin = CGPointMake(0 + [self leftOrRightSafeEdge], self.frame.size.height - logoFrame.size.height);
 			break;
 		}
 		case PvLogoLocationBottomRight: {
-			logoFrame.origin = CGPointMake(self.frame.size.width - logoFrame.size.width, self.frame.size.height - logoFrame.size.height);
+			logoFrame.origin = CGPointMake(self.frame.size.width - logoFrame.size.width - [self leftOrRightSafeEdge], self.frame.size.height - logoFrame.size.height);
 			break;
 		}
 	}
@@ -335,6 +335,33 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	self.pvExamView.frame = self.frame;
 	//editContent.frame = self.sendDanmuButton.frame;
 //	[self arrangeBitRateButtons];
+}
+
+// iphoneX 横屏左右安全边距
+- (CGFloat)leftOrRightSafeEdge
+{
+    CGFloat saveEdge = 0;
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    BOOL isLeftOrRight = (orientation == UIDeviceOrientationLandscapeLeft ||orientation == UIDeviceOrientationLandscapeRight) ? YES:NO;
+    if(isLeftOrRight && PLV_iPhoneX){
+        saveEdge = PLV_Landscape_Left_And_Right_Safe_Side_Margin;
+    }
+
+    return saveEdge;
+}
+
+// 动态获取底部控制栏高度
+- (CGFloat)bottomVideoControlBarHeight{
+    
+    CGFloat height = pVideoControlBarHeight;
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    BOOL isLeftOrRight = (orientation == UIDeviceOrientationLandscapeLeft ||orientation == UIDeviceOrientationLandscapeRight) ? YES:NO;
+    if(isLeftOrRight && PLV_iPhoneX){
+        height = height + PLV_Landscape_Left_And_Right_Safe_Bottom_Margin;
+    }
+    
+    return height;
 }
 
 
