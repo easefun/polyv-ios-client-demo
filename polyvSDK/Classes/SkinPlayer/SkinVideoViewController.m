@@ -96,9 +96,9 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	[self.view setFrame:frame];
     
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    BOOL isLeftOrRight = ( orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) ? YES: NO;
+//    BOOL isLeftOrRight = ( orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) ? YES: NO;
 
-    if (PLV_iPhoneX && isLeftOrRight){
+    if (PLV_iPhoneX && /*isLeftOrRight*/UIDeviceOrientationIsLandscape(orientation)){
         CGFloat x = PLV_Landscape_Left_And_Right_Safe_Side_Margin;
         CGFloat y = 0;
         CGFloat width = frame.size.width - 2*x;
@@ -652,6 +652,13 @@ typedef NS_ENUM(NSInteger, panHandler) {
 // 关闭
 - (void)closeButtonClick {
 	[self dismiss];
+    
+    // 横屏需要切换回竖屏
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    UIInterfaceOrientation interface = (UIInterfaceOrientation)orientation;
+    if (UIInterfaceOrientationIsLandscape(interface)){
+        [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    }
 }
 
 #pragma mark - PLVMoviePlayerDelegate
