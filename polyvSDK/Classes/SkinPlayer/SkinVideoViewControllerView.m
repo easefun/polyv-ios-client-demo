@@ -264,7 +264,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	
 	self.backButton.frame = CGRectMake(0+[self leftOrRightSafeEdge], 0, CGRectGetWidth(self.backButton.bounds), CGRectGetHeight(self.backButton.bounds));
 	
-	self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds), CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
+	self.closeButton.frame = CGRectMake(CGRectGetWidth(self.topBar.bounds) - CGRectGetWidth(self.closeButton.bounds) - [self leftOrRightSafeEdge], CGRectGetMinX(self.topBar.bounds), CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
 	CGFloat titleLabelX = /*CGRectGetWidth(self.backButton.bounds)*/CGRectGetMaxX(self.backButton.bounds) + 35;
 	CGFloat titleLabelW = CGRectGetWidth(self.topBar.bounds) - titleLabelX - CGRectGetWidth(self.closeButton.bounds);
 	self.titleLabel.frame = CGRectMake(titleLabelX, 0, titleLabelW, CGRectGetHeight(self.topBar.bounds));

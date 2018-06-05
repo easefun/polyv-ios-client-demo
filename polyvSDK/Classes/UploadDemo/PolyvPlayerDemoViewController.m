@@ -25,6 +25,9 @@
 
 @end
 
+NSString * const vidOne = @"sl8da4jjbxc5565c46961a6f88ca52e5_s";
+NSString * const vidTwo = @"sl8da4jjbxe69c6942a7a737819660de_s";
+
 @implementation PolyvPlayerDemoViewController
 
 - (void)dealloc{
@@ -32,8 +35,18 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self setStatusBarBackgroundColor:[UIColor blackColor]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self setStatusBarBackgroundColor:[UIColor clearColor]];
+}
+
 - (void)viewDidLoad{
-	_vid = @"sl8da4jjbxc5565c46961a6f88ca52e5_s";
+    _vid = vidOne;
 	
 	// 配置下载器
 	_downloader = [[PvUrlSessionDownload alloc] initWithVid:_vid level:1];
@@ -47,7 +60,7 @@
 	self.videoPlayer.shouldAutoplay = NO;
  
 	// 设置播放器首图
-	NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/video/getImage?vid=%@", _vid]];
+    NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://v.polyv.net/uc/video/getImage?vid=%@", _vid]];
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
 		NSData *data0 = [NSData dataWithContentsOfURL:imageURL];
 		UIImage *image = [UIImage imageWithData:data0];
@@ -92,26 +105,43 @@
 	[self.videoPlayer stop];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
+
 // 播放器操作
 - (IBAction)seekAction:(id)sender {
     [self.videoPlayer setCurrentPlaybackTime:40];
 }
+
 - (IBAction)playAction:(id)sender {
     [self playButtonTap];
 }
+
 - (void)playButtonTap{
 	if(self.videoPlayer.playbackState != MPMoviePlaybackStatePlaying && self.videoPlayer.playbackState!=MPMoviePlaybackStatePaused){
-		[_posterImageView removeFromSuperview];
+//        [_posterImageView removeFromSuperview];
 	}
+    [_posterImageView removeFromSuperview];
+
 	[self.videoPlayer play];
 }
+
 - (IBAction)pauseAction:(id)sender {
 	[self.videoPlayer pause];
 }
+
 - (IBAction)fullscreenAction:(id)sender {
 }
+
 - (IBAction)switchVid:(id)sender {
-	self.videoPlayer.vid = @"sl8da4jjbxe69c6942a7a737819660de_s";
+    
+    if ([_vid isEqualToString:vidOne]){
+        _vid = vidTwo;
+    }
+    else{
+        _vid = vidOne;
+    }
+    
+    [self.videoPlayer setVid:_vid level:PvLevelAuto];
+    [self.videoPlayer play];
 }
 
 // 下载器操作
@@ -191,7 +221,20 @@
 }
 
 - (BOOL)prefersStatusBarHidden{
-	return YES;
+//    return YES;
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
+//设置状态栏颜色
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
 }
 
 #pragma mark - 页面旋转

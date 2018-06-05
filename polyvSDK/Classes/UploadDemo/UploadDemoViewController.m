@@ -44,16 +44,21 @@
 
 -(void)handleSingleTap{
     if (!self.videoPlayer) {
+        
         PvVideo *video = [PolyvSettings getVideo:self.vid];
         if([video available]){
+            
             CGFloat width = [UIScreen mainScreen].bounds.size.width;
             self.videoPlayer = [[SkinVideoViewController alloc] initWithFrame:CGRectMake(0, 0, width, width*(9.0/16.0))];
             __weak typeof(self)weakSelf = self;
             [self.videoPlayer setDimissCompleteBlock:^{
+                
                 [weakSelf.videoPlayer stop];
                 weakSelf.videoPlayer = nil;
             }];
-        }else{
+        }
+        else{
+            
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
                                                             message:@"视频还没准备好"
                                                            delegate:nil
@@ -62,9 +67,8 @@
             [alert show];
             
         }
-        
-        
     }
+    
     [self.videoPlayer showInWindow];
     [self.videoPlayer setVid:self.vid level:1];
 }
@@ -75,6 +79,7 @@
     //NSString* text = [NSString stringWithFormat:NSLocalizedString(@"for upload to:\n%@",nil), [self endpoint]];
     //[self.urlTextView setText:text];
 }
+
 - (IBAction)closeButtonAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -94,8 +99,7 @@
 }
 
 #pragma mark - UIImagePickerDelegate Methods
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
     NSURL *outputURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"temp.mov"]];
@@ -106,6 +110,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     _hudView.layer.cornerRadius = 10.0;
     
     UIActivityIndicatorView*_activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
     _activityIndicatorView.frame = CGRectMake(65, 40, _activityIndicatorView.bounds.size.width, _activityIndicatorView.bounds.size.height);
     [_hudView addSubview:_activityIndicatorView];
     [_activityIndicatorView startAnimating];
@@ -125,35 +130,35 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
      {
          dispatch_async(dispatch_get_main_queue(), ^{
              [_hudView removeFromSuperview];
+             
+             if (exportSession.status == AVAssetExportSessionStatusCompleted)
+             {
+                 [self.urlTextView setText:nil];
+                 [self.imageView setImage:nil];
+                 [self.progressBar setProgress:.0];
+                 [self dismissViewControllerAnimated:YES
+                                          completion:^{
+                                              
+                                              NSString* type = [info valueForKey:UIImagePickerControllerMediaType];
+                                              CFStringRef typeDescription = (UTTypeCopyDescription((__bridge CFStringRef)(type)));
+                                              NSString* text = [NSString stringWithFormat:NSLocalizedString(@"Uploading %@…", nil), typeDescription];
+                                              CFRelease(typeDescription);
+                                              [self.statusLabel setText:text];
+                                              [self.imageOverlay setHidden:NO];
+                                              [self.chooseFileButton setEnabled:NO];
+                                              
+                                              [self uploadVideoFromURL:outputURL];
+                                              
+                                          }];
+                 
+             }
+             else
+             {
+                 printf("error\n");
+                 
+             }
          });
          
-         if (exportSession.status == AVAssetExportSessionStatusCompleted)
-         {
-             [self.urlTextView setText:nil];
-             [self.imageView setImage:nil];
-             [self.progressBar setProgress:.0];
-             [self dismissViewControllerAnimated:YES
-                                      completion:^{
-                                          
-                                          NSString* type = [info valueForKey:UIImagePickerControllerMediaType];
-                                          CFStringRef typeDescription = (UTTypeCopyDescription((__bridge CFStringRef)(type)));
-                                          NSString* text = [NSString stringWithFormat:NSLocalizedString(@"Uploading %@…", nil), typeDescription];
-                                          CFRelease(typeDescription);
-                                          [self.statusLabel setText:text];
-                                          [self.imageOverlay setHidden:NO];
-                                          [self.chooseFileButton setEnabled:NO];
-                                          
-                                          [self uploadVideoFromURL:outputURL];
-                                          
-                                          
-                                      }];
-
-         }
-         else
-         {
-             printf("error\n");
-             
-         }
      }];
     
     }

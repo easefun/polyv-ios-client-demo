@@ -65,6 +65,23 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleBackgroundSession:) name:PLVBackgroundSessionUpdateNotification object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+//    [self setStatusBarBackgroundColor:[UIColor blackColor]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+//    [self setStatusBarBackgroundColor:[UIColor clearColor]];
+}
+
+//设置状态栏颜色
+- (void)setStatusBarBackgroundColor:(UIColor *)color {
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
+        statusBar.backgroundColor = color;
+    }
+}
 - (void)reloadData {
 	self.videos = [[FMDBHelper sharedInstance] listDownloadVideo];
 	self.videoDic = [NSMutableDictionary dictionary];
