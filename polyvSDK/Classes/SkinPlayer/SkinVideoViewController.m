@@ -234,7 +234,11 @@ typedef NS_ENUM(NSInteger, panHandler) {
 	self.keepNavigationBar = keep;
 	if (keep) {
 		CGRect frame = self.view.frame;
-		frame = CGRectMake(frame.origin.x, frame.origin.y - 20, frame.size.width, frame.size.height);
+        // mod by libl 2018-06-19
+        // iPhoneX 适配
+        CGFloat offset_x = PLV_StatusBarHeight;
+        frame = CGRectMake(frame.origin.x, frame.origin.y - offset_x, frame.size.width, frame.size.height);
+        // end
 		self.view.frame = frame;
 		self.originFrame = frame;
 		[_navigationController setNavigationBarHidden:NO animated:NO];

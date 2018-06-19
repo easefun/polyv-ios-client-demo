@@ -278,7 +278,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	
 	
 	self.sendDanmuButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.sendDanmuButton.bounds) - 20 - [self leftOrRightSafeEdge], (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.sendDanmuButton.bounds))/2, CGRectGetWidth(self.sendDanmuButton.bounds), CGRectGetHeight(self.sendDanmuButton.bounds));
-	self.snapshotButton.frame = CGRectMake(20, (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.snapshotButton.bounds))/2, CGRectGetWidth(self.snapshotButton.bounds), CGRectGetHeight(self.snapshotButton.bounds));
+	self.snapshotButton.frame = CGRectMake(20+[self leftOrRightSafeEdge], (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.snapshotButton.bounds))/2, CGRectGetWidth(self.snapshotButton.bounds), CGRectGetHeight(self.snapshotButton.bounds));
 	self.sideView.frame = CGRectMake(2*CGRectGetWidth(self.bounds)/3, CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds)/3 ,  CGRectGetHeight(self.bounds));
 	self.subtitleLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 	self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
