@@ -288,26 +288,36 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 	// bottom bar
 	self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - /*pVideoControlBarHeight*/[self bottomVideoControlBarHeight], CGRectGetWidth(self.bounds), /*pVideoControlBarHeight*/[self bottomVideoControlBarHeight]);
 	
-	self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds) + [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
-	self.pauseButton.frame = self.playButton.frame;
+    // 播放
+    CGFloat offset_y = [self bottomVideoControlBarOffset]/2;
+	self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds) + [self leftOrRightSafeEdge],
+                                       CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2 - offset_y, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
 	
+    // 暂停
+    self.pauseButton.frame = self.playButton.frame;
+	
+    // 流畅
 	CGFloat bitRateX = CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds) - CGRectGetWidth(self.routeLineButton.bounds) - [self leftOrRightSafeEdge];
-	CGFloat bitRateY = CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2;
+	CGFloat bitRateY = CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2 - offset_y;
 	self.bitRateButton.frame = CGRectMake(bitRateX, bitRateY, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
 	
+    // 线路
 	CGRect routeLineFrame = self.bitRateButton.frame;
 	routeLineFrame.origin.x += routeLineFrame.size.width;
 	self.routeLineButton.frame = routeLineFrame;
 	
-	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
+    // 全屏
+	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2 - offset_y, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
 	self.shrinkScreenButton.frame = self.fullScreenButton.frame;
 	
+    // 进度条
 	self.slider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame),
-									  CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.slider.bounds)/2,
+									  CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.slider.bounds)/2 - offset_y,
 									  CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame),
 									  CGRectGetHeight(self.slider.bounds));
 	
-	CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame);
+    // 时间
+	CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame) -offset_y;
 	CGRect timeFrame = CGRectMake(CGRectGetMinX(self.slider.frame), CGRectGetMaxY(self.slider.frame), CGRectGetWidth(self.slider.frame), timeH);
 	self.timeLabel.frame = timeFrame;
 	
@@ -362,6 +372,18 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
     }
     
     return height;
+}
+
+- (CGFloat)bottomVideoControlBarOffset{
+    
+    CGFloat offsetY = 0;
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    BOOL isLeftOrRight = (orientation == UIDeviceOrientationLandscapeLeft ||orientation == UIDeviceOrientationLandscapeRight) ? YES:NO;
+    if(isLeftOrRight && PLV_iPhoneX){
+        offsetY = offsetY + PLV_Landscape_Left_And_Right_Safe_Bottom_Margin;
+    }
+    
+    return offsetY;
 }
 
 
