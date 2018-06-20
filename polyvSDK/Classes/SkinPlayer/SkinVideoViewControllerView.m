@@ -12,7 +12,7 @@
 
 static const CGFloat pVideoControlBarHeight = 50.0;
 static const CGFloat pVideoControlAnimationTimeinterval = 0.5;
-static const CGFloat pVideoControlTimeLabelFontSize = 10.0;
+static const CGFloat pVideoControlTimeLabelFontSize = 14.0;
 static const CGFloat pVideoControlTitleLabelFontSize = 16.0;
 static const CGFloat pVideoControlBarAutoFadeOutTimeinterval = 5.0;
 static const CGFloat pVideoControlBarItemAlpha = 0.7;
@@ -296,7 +296,9 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
     // 暂停
     self.pauseButton.frame = self.playButton.frame;
 	
-    // 流畅
+   
+    
+    // 自动 流畅 高清
 	CGFloat bitRateX = CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - CGRectGetWidth(self.bitRateButton.bounds) - CGRectGetWidth(self.routeLineButton.bounds) - [self leftOrRightSafeEdge];
 	CGFloat bitRateY = CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.bitRateButton.bounds)/2 - offset_y;
 	self.bitRateButton.frame = CGRectMake(bitRateX, bitRateY, CGRectGetWidth(self.bitRateButton.bounds), CGRectGetHeight(self.bitRateButton.bounds));
@@ -309,17 +311,26 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
     // 全屏
 	self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds) - [self leftOrRightSafeEdge], CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2 - offset_y, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
 	self.shrinkScreenButton.frame = self.fullScreenButton.frame;
+    
+    // 时间
+    //    CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame) -offset_y;
+    CGRect timeFrame = CGRectMake(CGRectGetMinX(self.bitRateButton.frame) - CGRectGetWidth(self.timeLabel.frame),
+                                  CGRectGetMinY(self.bitRateButton.frame),
+                                  CGRectGetWidth(self.timeLabel.frame),
+                                  CGRectGetHeight(self.timeLabel.frame));
+    self.timeLabel.frame = timeFrame;
 	
     // 进度条
-	self.slider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame),
-									  CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.slider.bounds)/2 - offset_y,
-									  CGRectGetMinX(self.bitRateButton.frame) - CGRectGetMaxX(self.playButton.frame),
-									  CGRectGetHeight(self.slider.bounds));
-	
-    // 时间
-	CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame) -offset_y;
-	CGRect timeFrame = CGRectMake(CGRectGetMinX(self.slider.frame), CGRectGetMaxY(self.slider.frame), CGRectGetWidth(self.slider.frame), timeH);
-	self.timeLabel.frame = timeFrame;
+    self.slider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame),
+                                   CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.slider.bounds)/2 - offset_y,
+                                   CGRectGetMinX(self.timeLabel.frame) - CGRectGetMaxX(self.playButton.frame),
+                                   CGRectGetHeight(self.slider.bounds));
+
+   
+//    // 时间
+//    CGFloat timeH = CGRectGetHeight(self.bottomBar.bounds) - CGRectGetMaxY(self.slider.frame) -offset_y;
+//    CGRect timeFrame = CGRectMake(CGRectGetMinX(self.slider.frame), CGRectGetMaxY(self.slider.frame), CGRectGetWidth(self.slider.frame), timeH);
+//    self.timeLabel.frame = timeFrame;
 	
 	//logo 位置
 	CGRect logoFrame = self.logoImageView.frame;
@@ -611,6 +622,7 @@ static const CGFloat pVideoControlBarItemAlpha = 0.7;
 		_timeLabel.font = [UIFont systemFontOfSize:pVideoControlTimeLabelFontSize];
 		_timeLabel.textColor = [UIColor whiteColor];
 		_timeLabel.textAlignment = NSTextAlignmentRight;
+        _timeLabel.frame = CGRectMake(0, 0, 100, pVideoControlBarHeight);
 		//_timeLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
 		//_timeLabel.bounds = CGRectMake(0, 0, pVideoControlTimeLabelFontSize, pVideoControlTimeLabelFontSize);
 	}
