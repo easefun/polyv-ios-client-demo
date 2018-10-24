@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "PvVideo.h"
-@import AVFoundation;
+#import <AVFoundation/AVFoundation.h>
 
 typedef NS_ENUM(NSInteger, PLVRouteLine) {
-    PLVRouteLine01 = 1,
-    PLVRouteLine02
+	PLVRouteLine01 = 1,
+	PLVRouteLine02
 };
+
+static NSString * const PLVVidKey = @"vid";
+static NSString * const PLVLastPlaybackTimeKey = @"lastPlaybackTime";
 
 /// MPMoviePlaybackState 字符串
 NSString *NSStringFromMPMoviePlaybackState(MPMoviePlaybackState state);
@@ -40,6 +43,7 @@ NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);
 
 @end
 
+// MPMoviePlayerController -> UIViewController
 @interface PLVMoviePlayerController: UIViewController
 
 #pragma mark - MPMoviePlayerController
@@ -115,6 +119,9 @@ NSString *NSStringFromMPMovieFinishReason(MPMovieFinishReason reason);
 @property (nonatomic, assign) int watchTimeDuration;
 /// 用户停留时间
 @property (nonatomic, assign) int stayTimeDuration;
+/// 其他 viewlog 参数，param1~param5
+@property (nonatomic, strong) NSDictionary<NSString *, NSString *> *viewlogExtraParams;
+
 /// 片头开关
 @property (nonatomic, assign) BOOL teaserEnable;
 /// 路由线路

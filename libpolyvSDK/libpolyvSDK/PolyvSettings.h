@@ -26,13 +26,13 @@ static NSString * const PLVErrorNotification = @"PLVErrorNotification";
 static NSString * const PLVErrorMessageKey = @"PLVErrorMessageKey";
 
 typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
-	PLVLogLevelNone		= 0,		// 禁用日志输出
-	PLVLogLevelError	= 1 << 0,	// 只输出错误日志
-	PLVLogLevelWarn		= 1 << 1,	// 只输出警告日志
-	PLVLogLevelInfo		= 1 << 2,	// 只输出信息日志
-	PLVLogLevelDebug	= 1 << 3,	// 只输出调试日志
-	PLVLogLevelWithoutDebug = PLVLogLevelError | PLVLogLevelWarn | PLVLogLevelInfo,
-	PLVLogLevelAll		= 0xFFFFFFFF,
+    PLVLogLevelNone		= 0,		// 禁用日志输出
+    PLVLogLevelError	= 1 << 0,	// 只输出错误日志
+    PLVLogLevelWarn		= 1 << 1,	// 只输出警告日志
+    PLVLogLevelInfo		= 1 << 2,	// 只输出信息日志
+    PLVLogLevelDebug	= 1 << 3,	// 只输出调试日志
+    PLVLogLevelWithoutDebug = PLVLogLevelError | PLVLogLevelWarn | PLVLogLevelInfo,
+    PLVLogLevelAll		= 0xFFFFFFFF,
 };
 
 #define LOG_ERROR	[PolyvSettings.sharedInstance logLevel] & PLVLogLevelError
@@ -44,6 +44,16 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 #define PLVWarnLog(fmt, ...)	if (LOG_WARN) NSLog((@"[PLV_SDK_WARN] " fmt), ##__VA_ARGS__);
 #define PLVInfoLog(fmt, ...)	if (LOG_INFO) NSLog((@"[PLV_SDK_INFO] " fmt), ##__VA_ARGS__);
 #define PLVDebugLog(fmt, ...)	if (LOG_DEBUG) NSLog((@"[PLV_SDK_DEBUG] " fmt), ##__VA_ARGS__);
+
+//PLVErrorReportf(NSString *format, ...);
+#define PLVErrorReport(format, ...) \
+{\
+if (LOG_ERROR) NSLog((@"[PLV_SDK_ERROR] " format), ##__VA_ARGS__);\
+NSString *errorMessage = [NSString stringWithFormat:(format), ##__VA_ARGS__];\
+NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];\
+userInfo[PLVErrorMessageKey] = errorMessage;\
+[[NSNotificationCenter defaultCenter] postNotificationName:PLVErrorNotification object:self userInfo:userInfo];\
+}
 
 
 @interface PolyvSettings : NSObject
@@ -57,22 +67,28 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 /// 是否开启 HttpDNS，开启后必须允许 http 访问（必须在`initVideoSettings:Readtoken:Writetoken:UserId:`方法之前设置）
 @property (nonatomic, assign) BOOL httpDNSEnable;
 
+/// viewerID 观看终端用户ID,用于viewlog
+@property (nonatomic, copy) NSString *viewerID;
+
+/// viewerName 观看终端用户名称，用于viewlog
+@property (nonatomic, copy) NSString *viewerName;
+
 
 /**
  Polyv SDK 初始化
- 
+
  @param privateKey secretkey
  @param readtoken readtoken
  @param writetoken writetoken
  @param userId userid
  
- @discussion 需要在AppDelegate.m的`-didFinishLaunchingWithOptions`方法里面添加。且必须在配置配置信息之后。
+  @discussion 需要在AppDelegate.m的`-didFinishLaunchingWithOptions`方法里面添加。且必须在配置配置信息之后。
  */
 - (void)initVideoSettings:(NSString *)privateKey Readtoken:(NSString *)readtoken Writetoken:(NSString *)writetoken UserId:(NSString *)userId;
 
 /**
  只初始化上传功能设置
- 
+
  @param privateKey secretkey
  @param readtoken readtoken
  @param writetoken writetoken
@@ -83,7 +99,7 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
 
 /**
  Polyv SDK 配置类单例对象
- 
+
  @return 该类单例对象
  */
 + (instancetype)sharedInstance;
@@ -185,5 +201,8 @@ typedef NS_OPTIONS(NSUInteger, PLVLogLevel) {
  *  @return SDK 版本
  */
 + (NSString *)sdkVersion;
+
+/// 配置UserAgent
++ (NSMutableURLRequest *)configUserAgentWithRequest:(NSMutableURLRequest *)request;
 
 @end
