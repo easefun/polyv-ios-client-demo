@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0378095C1FF0D23B00F5367B /* PLVDownloadItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0378095B1FF0D23B00F5367B /* PLVDownloadItemCell.m */; };
+		67480A3421C259EF00692450 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67480A2F21C259EE00692450 /* UTDID.framework */; };
+		67480A3521C259EF00692450 /* UTMini.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67480A3021C259EE00692450 /* UTMini.framework */; };
+		67480A3621C259EF00692450 /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67480A3121C259EE00692450 /* AlicloudHttpDNS.framework */; };
+		67480A3721C259EF00692450 /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67480A3221C259EF00692450 /* AlicloudUtils.framework */; };
+		67480A3821C259EF00692450 /* AlicloudBeacon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67480A3321C259EF00692450 /* AlicloudBeacon.framework */; };
 		CB231BF01BDDD8B400EC18BF /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = CB231BEF1BDDD8B400EC18BF /* video.png */; };
 		CB6569211C561B8B00AC2EC8 /* pvlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6569201C561B8B00AC2EC8 /* pvlogo.png */; };
 		CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */; };
@@ -86,9 +91,6 @@
 		E5D4D8E41E48097F004308F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8C91E48097F004308F0 /* DetailViewController.m */; };
 		E5D4D8E51E48097F004308F0 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8CB1E48097F004308F0 /* DetailViewController2.m */; };
 		E5D4D8E61E48097F004308F0 /* VideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5D4D8CD1E48097F004308F0 /* VideoListTableViewController.m */; };
-		E5F05B021E5ED85800A832CF /* AlicloudHttpDNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */; };
-		E5F05B031E5ED85800A832CF /* AlicloudUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */; };
-		E5F05B041E5ED85800A832CF /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05AEB1E5ED85800A832CF /* UTDID.framework */; };
 		E5F05B051E5ED85800A832CF /* libpolyvSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F05B001E5ED85800A832CF /* libpolyvSDK.a */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +120,11 @@
 /* Begin PBXFileReference section */
 		0378095A1FF0D23B00F5367B /* PLVDownloadItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLVDownloadItemCell.h; sourceTree = "<group>"; };
 		0378095B1FF0D23B00F5367B /* PLVDownloadItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PLVDownloadItemCell.m; sourceTree = "<group>"; };
+		67480A2F21C259EE00692450 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		67480A3021C259EE00692450 /* UTMini.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTMini.framework; sourceTree = "<group>"; };
+		67480A3121C259EE00692450 /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudHttpDNS.framework; sourceTree = "<group>"; };
+		67480A3221C259EF00692450 /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudUtils.framework; sourceTree = "<group>"; };
+		67480A3321C259EF00692450 /* AlicloudBeacon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudBeacon.framework; sourceTree = "<group>"; };
 		CB231BEF1BDDD8B400EC18BF /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
 		CB6569201C561B8B00AC2EC8 /* pvlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pvlogo.png; sourceTree = "<group>"; };
 		CB79F81B196E7E0700A1B817 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -225,9 +232,6 @@
 		E5D4D8CB1E48097F004308F0 /* DetailViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		E5D4D8CC1E48097F004308F0 /* VideoListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoListTableViewController.h; sourceTree = "<group>"; };
 		E5D4D8CD1E48097F004308F0 /* VideoListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoListTableViewController.m; sourceTree = "<group>"; };
-		E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudHttpDNS.framework; sourceTree = "<group>"; };
-		E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlicloudUtils.framework; sourceTree = "<group>"; };
-		E5F05AEB1E5ED85800A832CF /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		E5F05AED1E5ED85800A832CF /* PLVAssetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVAssetData.h; sourceTree = "<group>"; };
 		E5F05AEE1E5ED85800A832CF /* PLVData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVData.h; sourceTree = "<group>"; };
 		E5F05AEF1E5ED85800A832CF /* PLVKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVKit.h; sourceTree = "<group>"; };
@@ -254,21 +258,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5CBFED11E5A860D00C20418 /* libresolv.tbd in Frameworks */,
+				67480A3721C259EF00692450 /* AlicloudUtils.framework in Frameworks */,
 				E5CBFECF1E5A860300C20418 /* CoreTelephony.framework in Frameworks */,
 				E5CBFECD1E5A85F500C20418 /* SystemConfiguration.framework in Frameworks */,
 				E51C098A1E5BE93B006FE206 /* AlicloudHttpDNS.framework in Frameworks */,
 				E51C09891E5BE88F006FE206 /* UTDID.framework in Frameworks */,
+				67480A3421C259EF00692450 /* UTDID.framework in Frameworks */,
+				67480A3821C259EF00692450 /* AlicloudBeacon.framework in Frameworks */,
 				CB8E99D31B81CA4D00CDD71A /* libsqlite3.0.dylib in Frameworks */,
+				67480A3621C259EF00692450 /* AlicloudHttpDNS.framework in Frameworks */,
 				E51C09881E5BE88F006FE206 /* AlicloudUtils.framework in Frameworks */,
 				CBC2333B1AEA326100B0228E /* libz.dylib in Frameworks */,
-				E5F05B041E5ED85800A832CF /* UTDID.framework in Frameworks */,
 				CB79F81C196E7E0700A1B817 /* MediaPlayer.framework in Frameworks */,
-				E5F05B031E5ED85800A832CF /* AlicloudUtils.framework in Frameworks */,
 				CBA3711E196E6549008E95ED /* CoreGraphics.framework in Frameworks */,
 				CBA37120196E6549008E95ED /* UIKit.framework in Frameworks */,
-				E5F05B021E5ED85800A832CF /* AlicloudHttpDNS.framework in Frameworks */,
 				CBA3711C196E6549008E95ED /* Foundation.framework in Frameworks */,
 				E5F05B051E5ED85800A832CF /* libpolyvSDK.a in Frameworks */,
+				67480A3521C259EF00692450 /* UTMini.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,9 +588,11 @@
 		E5F05AE81E5ED85800A832CF /* AdditionalLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				E5F05AE91E5ED85800A832CF /* AlicloudHttpDNS.framework */,
-				E5F05AEA1E5ED85800A832CF /* AlicloudUtils.framework */,
-				E5F05AEB1E5ED85800A832CF /* UTDID.framework */,
+				67480A3321C259EF00692450 /* AlicloudBeacon.framework */,
+				67480A3121C259EE00692450 /* AlicloudHttpDNS.framework */,
+				67480A3221C259EF00692450 /* AlicloudUtils.framework */,
+				67480A2F21C259EE00692450 /* UTDID.framework */,
+				67480A3021C259EE00692450 /* UTMini.framework */,
 			);
 			path = AdditionalLibrary;
 			sourceTree = "<group>";
