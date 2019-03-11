@@ -36,18 +36,21 @@
 	
 	// 配置sdk加密串
 	// NSString *appKey = @"你的app sdk加密串";
-    
-    NSString *appKey = @"iPGXfu3KLEOeCW4KXzkWGl1UYgrJP7hRxUfsJGldI6DEWJpYfhaXvMA+32YIYqAOocWd051v5XUAU17LoVlgZCSEVNkx11g7CxYadcFPYPozslnQhFjkxzzjOt7lUPsWF/CO2xt5xZemQCBkkSKLGA==";
+    NSString *appKey = @"yQRmgnzPyCUYDx6weXRATIN8gkp7BYGAl3ATjE/jHZunrULx8CoKa1WGMjfHftVChhIQlCA9bFeDDX+ThiuBHLjsNRjotqxhiz97ZjYaCQH/MhUrbEURv58317PwPuGEf3rbLVPOa4c9jliBcO+22A==";
     
 	// 使用默认加密秘钥和加密向量解密 sdk加密串
 	NSArray *config = [PolyvUtil decryptUserConfig:[appKey dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	// 配置信息必须在初始化设置之前！
-	[[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
+	[[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1]
+                                            Readtoken:[config objectAtIndex:2]
+                                           Writetoken:[config objectAtIndex:3]
+                                               UserId:[config objectAtIndex:0]];
     
-    /// viewlog 支持传递终端用户的userid，昵称
-    [PolyvSettings sharedInstance].viewerName = @"播放时需要统记的观看用户昵称";
+    /// viewlog 支持传递终端用户的用户Id，昵称，头像
     [PolyvSettings sharedInstance].viewerID = @"播放时需要统记的观看用户UID";
+    [PolyvSettings sharedInstance].viewerName = @"播放时需要统记的观看用户昵称";
+    [PolyvSettings sharedInstance].viewerAvatar = @"播放时需要统记的观看用户头像Url";
     
 	// 配置sdk加密串示例(使用网络接口)
 	/*
@@ -59,7 +62,7 @@
 		[[PolyvSettings sharedInstance] setDownloadDir:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/plvideo/a"]];
 		[[PolyvSettings sharedInstance] initVideoSettings:[config objectAtIndex:1] Readtoken:[config objectAtIndex:2] Writetoken:[config objectAtIndex:3] UserId:[config objectAtIndex:0]];
 	}
-	 */
+    */
 	
 	// 配置音频会话，忽略系统静音开关
 	[self setupAudioSession];
