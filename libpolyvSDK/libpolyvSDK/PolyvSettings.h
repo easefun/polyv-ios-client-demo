@@ -73,6 +73,9 @@ userInfo[PLVErrorMessageKey] = errorMessage;\
 /// viewerName 观看终端用户名称，用于viewlog
 @property (nonatomic, copy) NSString *viewerName;
 
+/// viewerAvatar 观看终端用户头像
+@property (nonatomic, copy) NSString *viewerAvatar;
+
 
 /**
  Polyv SDK 初始化

@@ -156,4 +156,7 @@
 /// 创建路径对应的目录
 + (BOOL)createDirOfPath:(NSString *)filePath error:(NSError **)error;
 
+/// url safe Base64 编码
++ (NSString *)urlSafeBase64String:(NSString *)inputString;
+
 @end

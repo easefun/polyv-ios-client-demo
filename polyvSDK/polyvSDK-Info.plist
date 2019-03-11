@@ -17,38 +17,34 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.6.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
-	<!-- 添加ATS配置 -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
 			<dict>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPSLoads</key>
-				<false/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPSLoads</key>
+				<false/>
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>1.0</string>
 				<key>NSTemporaryExceptionRequiresForwardSecrecy</key>
 				<false/>
 			</dict>
 		</dict>
-		<!-- 项目还有 HTTP 请求，或开启 HttpDNS 功能，保留以下配置 -->
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 	</dict>
-	
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要您的同意才能访问图库</string>
 	<key>UIBackgroundModes</key>
